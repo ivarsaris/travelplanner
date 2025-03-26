@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -15,32 +15,34 @@ export class PlacesSearchComponent implements AfterViewInit {
   placeAddress: string = '';
   placeLocation: { lat: number, lng: number } | null = null;
 
-  constructor() { }
+  constructor(private ngZone: NgZone) { }
 
   ngAfterViewInit() {
     this.initAutoCompleteApi();
   }
 
   initAutoCompleteApi() {
+
     try {
       const autocomplete = new google.maps.places.Autocomplete(
         this.standardPlacesInput.nativeElement
       );
 
       autocomplete.addListener('place_changed', () => {
-        const place = autocomplete.getPlace();
-        
-        if (place.geometry && place.geometry.location) {
-          this.placeName = place.name || '';
-          this.placeAddress = place.formatted_address || '';
-          this.placeLocation = {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng()
-          };
-          console.log('place', place);
-        }
-      });
+        this.ngZone.run(() => {
+          const place = autocomplete.getPlace();
 
+          if (place.geometry && place.geometry.location) {
+            this.placeName = place.name || '';
+            this.placeAddress = place.formatted_address || '';
+            this.placeLocation = {
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng()
+            };
+            console.log('place', place);
+          }
+        });
+      });
     } catch (error) {
       console.error('Error initializing API:', error);
     }
