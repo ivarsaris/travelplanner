@@ -8,4 +8,8 @@ import { tripsList } from "./trips.list";
 export class TripsService {
     private tripsList = new BehaviorSubject<Trip[]>(tripsList);
     tripsList$ = this.tripsList.asObservable();
+
+    getTripById(id: string) {
+        return this.tripsList.value.find(trip => trip.id === id);
+    }
 }
