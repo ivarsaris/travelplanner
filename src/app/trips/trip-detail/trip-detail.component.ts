@@ -4,16 +4,19 @@ import { Trip } from '../trip.model';
 import { ActivatedRoute } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
 import { TripStop } from '../trip-stop.model';
+import { DisplayRouteMapComponent } from '../../display-route-map/display-route-map.component';
+
 @Component({
   selector: 'app-trip-detail',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [NgIf, NgFor, DisplayRouteMapComponent],
   templateUrl: './trip-detail.component.html',
   styleUrl: './trip-detail.component.scss'
 })
 export class TripDetailComponent implements OnInit {
   private tripsService = inject(TripsService);
   trip!: Trip;
+  stops!: TripStop[];
 
   constructor(private route: ActivatedRoute) { }
 
@@ -23,9 +26,8 @@ export class TripDetailComponent implements OnInit {
     const trip = this.tripsService.getTripById(id ?? '');
     if (trip) {
       this.trip = trip;
+      this.stops = trip.stops;
     }
-
-    console.log(this.trip);
   }
 
   trackByOrder(index: number, stop: TripStop) {

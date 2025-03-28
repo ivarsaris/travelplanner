@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { RouterOutlet } from '@angular/router';
 import { GoogleMapsModule, MapDirectionsRenderer, MapDirectionsService } from '@angular/google-maps';
 import { map, Observable, catchError, of } from 'rxjs';
+import { TripStop } from '../trips/trip-stop.model';
 
 
 @Component({
@@ -14,6 +14,8 @@ import { map, Observable, catchError, of } from 'rxjs';
 })
 
 export class DisplayRouteMapComponent implements OnInit {
+  // the component requires an array of a minimum of 2 stops
+  @Input() stops!: TripStop[];
   display: any;
   center: google.maps.LatLngLiteral = { lat: 13, lng: 6 };
   zoom = 12;
@@ -23,13 +25,26 @@ export class DisplayRouteMapComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initDirections();
+    if (this.stops && this.stops.length > 1) {
+      this.initDirections();
+    }
   }
 
   initDirections() {
+    const origin = this.stops[0];
+    const destination = this.stops[this.stops.length - 1];
+    const waypoints: google.maps.DirectionsWaypoint[] = [];
+    if (this.stops.length > 2) {
+      for (let i = 1; i < this.stops.length - 1; i++) {
+        waypoints.push({location: {lat: this.stops[i].lat, lng: this.stops[i].lng}, stopover: true})
+      }
+    }
+    
     const request = {
-      destination: { lat: 12, lng: 4 },
-      origin: { lat: 14, lng: 8 },
+      origin: origin,
+      destination: destination,
+      waypoints: waypoints.length > 0 ? waypoints : undefined,
+      optimizeWaypoints: true,
       travelMode: google.maps.TravelMode.DRIVING
     };
     this.directionsResults$ = this.mapDirectionsService.route(request).pipe(
