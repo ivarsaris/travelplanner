@@ -1,5 +1,6 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, NgZone } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, NgZone, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-places-search',
@@ -10,10 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PlacesSearchComponent implements AfterViewInit {
   @ViewChild('standardPlacesInput') standardPlacesInput!: ElementRef;
-
-  placeName: string = '';
-  placeAddress: string = '';
-  placeLocation: { lat: number, lng: number } | null = null;
+  @Output() placeSelected = new EventEmitter<any>();
 
   constructor(private ngZone: NgZone) { }
 
@@ -33,13 +31,13 @@ export class PlacesSearchComponent implements AfterViewInit {
           const place = autocomplete.getPlace();
 
           if (place.geometry && place.geometry.location) {
-            this.placeName = place.name || '';
-            this.placeAddress = place.formatted_address || '';
-            this.placeLocation = {
+            this.placeSelected.emit({
+              name: place.name || '',
+              address: place.formatted_address || '',
               lat: place.geometry.location.lat(),
-              lng: place.geometry.location.lng()
-            };
-            console.log('place', place);
+              lng: place.geometry.location.lng(),
+              googlePlaceId: place.place_id || ''
+            });
           }
         });
       });

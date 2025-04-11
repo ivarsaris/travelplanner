@@ -1,1 +1,14 @@
-<p>create-trip works!</p>
+<div class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-2 gap-6">
+        <div>
+            <app-places-search (placeSelected)="onPlaceSelected($event)"></app-places-search>
+            <button class="bg-blue-600 hover:bg-blue-400 text-white px-4 py-2 rounded-md"
+                (click)="onAddLocationToTrip()">Add Location to Trip</button>
+        </div>
+        <div *ngIf="places && places.length > 0">
+            <div *ngFor="let stop of places">
+                <p>{{stop.name}}</p>
+            </div>
+        </div>
+    </div>
+</div>
