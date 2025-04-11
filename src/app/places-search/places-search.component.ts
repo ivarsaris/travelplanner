@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ElementRef, ViewChild, NgZone, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { Place } from '../place.model';
 
 @Component({
   selector: 'app-places-search',
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PlacesSearchComponent implements AfterViewInit {
   @ViewChild('standardPlacesInput') standardPlacesInput!: ElementRef;
-  @Output() placeSelected = new EventEmitter<any>();
+  @Output() placeSelected = new EventEmitter<Place>();
 
   constructor(private ngZone: NgZone) { }
 

@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { PlacesSearchComponent } from '../places-search/places-search.component';
 import { NgFor, NgIf} from '@angular/common';
+import { Place } from '../place.model';
 
 @Component({
   selector: 'app-create-trip',
@@ -10,16 +11,18 @@ import { NgFor, NgIf} from '@angular/common';
   styleUrl: './create-trip.component.scss'
 })
 export class CreateTripComponent {
-  places: any[] = [];
-  googleMapsLocation: any;
+  places: Place[] = [];
+  googleMapsLocation: Place | null = null;
 
-  onPlaceSelected(event: any) {
+  onPlaceSelected(event: Place) {
     this.googleMapsLocation = event;
   }
 
   onAddLocationToTrip() {
-    this.places.push(this.googleMapsLocation);
-    console.log('place', this.places);
+    if (this.googleMapsLocation) {
+      this.places.push(this.googleMapsLocation);
+      console.log('place', this.places);
+    }
   }
 }
 
