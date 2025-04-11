@@ -36,13 +36,13 @@ export class DisplayRouteMapComponent implements OnInit {
     const waypoints: google.maps.DirectionsWaypoint[] = [];
     if (this.stops.length > 2) {
       for (let i = 1; i < this.stops.length - 1; i++) {
-        waypoints.push({location: {lat: this.stops[i].lat, lng: this.stops[i].lng}, stopover: true})
+        waypoints.push({location: {lat: this.stops[i].location.lat, lng: this.stops[i].location.lng}, stopover: true})
       }
     }
     
     const request = {
-      origin: origin,
-      destination: destination,
+      origin: origin.location,
+      destination: destination.location,
       waypoints: waypoints.length > 0 ? waypoints : undefined,
       optimizeWaypoints: true,
       travelMode: google.maps.TravelMode.DRIVING
