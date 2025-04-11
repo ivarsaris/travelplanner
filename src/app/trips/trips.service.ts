@@ -12,4 +12,8 @@ export class TripsService {
     getTripById(id: string) {
         return this.tripsList.value.find(trip => trip.id === id);
     }
+
+    addTripToList(trip: Trip) {
+        this.tripsList.next([...this.tripsList.value, trip]);
+    }
 }

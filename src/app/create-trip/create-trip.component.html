@@ -6,9 +6,15 @@
                 (click)="onAddLocationToTrip()">Add Location to Trip</button>
         </div>
         <div *ngIf="places && places.length > 0">
-            <div *ngFor="let stop of places">
-                <p>{{stop.name}}</p>
+            <div *ngFor="let stop of places; let i = index">
+                <div class="flex gap-4">
+                    <span>{{ i + 1}}:</span>
+                    <span>{{stop.location.name}}</span>
+
+                </div>
             </div>
+            <button class="bg-blue-600 hover:bg-blue-400 text-white px-4 py-2 rounded-md"
+                (click)="onAddTripToTripList()">Add Trip to recommended</button>
         </div>
     </div>
 </div>
