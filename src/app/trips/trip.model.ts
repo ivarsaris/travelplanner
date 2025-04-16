@@ -5,6 +5,5 @@ export interface Trip {
     image: string;
     title: string;
     description: string;
-    duration: string;
     stops: TripStop[];
 }

@@ -22,4 +22,8 @@ export class TripsComponent {
       this.tripsList = tripsList;
     });
   }
+
+  getTripDuration(trip: Trip) {
+    return this.tripsService.getTripDuration(trip);
+  }
 }

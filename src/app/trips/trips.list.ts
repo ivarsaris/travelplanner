@@ -6,7 +6,6 @@ export const tripsList: Trip[] = [
     image: 'assets/images/european-tour.jpg',
     title: 'European City Tour',
     description: 'Explore the beautiful cities of Europe from Antwerp to Zurich',
-    duration: '7 days',
     stops: [
       {
         order: '1',
@@ -63,7 +62,6 @@ export const tripsList: Trip[] = [
     image: 'assets/images/southwest-adventure.jpg',
     title: 'Southwest USA Adventure',
     description: 'Experience the natural wonders of the American Southwest',
-    duration: '5 days',
     stops: [
       {
         order: '1',

@@ -4,12 +4,13 @@ import { Trip } from '../trip.model';
 import { ActivatedRoute } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
 import { TripStop } from '../trip-stop.model';
+import { DecimalPipe } from '@angular/common';
 import { DisplayRouteMapComponent } from '../../display-route-map/display-route-map.component';
 
 @Component({
   selector: 'app-trip-detail',
   standalone: true,
-  imports: [NgIf, NgFor, DisplayRouteMapComponent],
+  imports: [NgIf, NgFor, DisplayRouteMapComponent, DecimalPipe],
   templateUrl: './trip-detail.component.html',
   styleUrl: './trip-detail.component.scss'
 })
@@ -32,6 +33,10 @@ export class TripDetailComponent implements OnInit {
 
   trackByOrder(index: number, stop: TripStop) {
     return stop.order;
+  }
+
+  getTripDuration(trip: Trip) {
+    return this.tripsService.getTripDuration(trip);
   }
 }
 
