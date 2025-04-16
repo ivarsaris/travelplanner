@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { PlacesSearchComponent } from '../places-search/places-search.component';
 import { NgFor, NgIf} from '@angular/common';
 import { Place } from '../place.model';
@@ -17,13 +17,16 @@ export class CreateTripComponent {
   places: TripStop[] = [];
   googleMapsLocation: Place | null = null;
   tripsService = inject(TripsService);
+  @ViewChild('durationInput') durationInput!: ElementRef;
+
+
   onPlaceSelected(event: Place) {
     this.googleMapsLocation = event;
   }
 
   onAddLocationToTrip() {
     if (this.googleMapsLocation) {
-      this.places.push({order: (this.places.length + 1).toString(), location:this.googleMapsLocation});
+      this.places.push({order: (this.places.length + 1).toString(), duration: this.durationInput.nativeElement.value, location:this.googleMapsLocation});
       console.log('place', this.places);
     }
   }

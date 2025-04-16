@@ -10,6 +10,7 @@ export const tripsList: Trip[] = [
     stops: [
       {
         order: '1',
+        duration: '1',
         location: {
           name: 'Antwerp',
           address: 'Antwerp, Belgium',
@@ -21,6 +22,7 @@ export const tripsList: Trip[] = [
       },
       {
         order: '2',
+        duration: '1',
         location: {
           name: 'Brussels',
           address: 'Brussels, Belgium',
@@ -32,6 +34,7 @@ export const tripsList: Trip[] = [
       },
       {
         order: '3',
+        duration: '1',
         location: {
           name: 'Luxembourg City',
           address: 'Luxembourg City, Luxembourg',
@@ -43,6 +46,7 @@ export const tripsList: Trip[] = [
       },
       {
         order: '4',
+        duration: '1',
         location: {
           name: 'Zurich',
           address: 'Zurich, Switzerland',
@@ -63,6 +67,7 @@ export const tripsList: Trip[] = [
     stops: [
       {
         order: '1',
+        duration: '1',
         location: {
           name: 'Las Vegas',
           address: 'Las Vegas, Nevada',
@@ -74,6 +79,7 @@ export const tripsList: Trip[] = [
       },
       {
         order: '2',
+        duration: '1',
         location: {
           name: 'Grand Canyon',
           address: 'Grand Canyon, Arizona',
@@ -85,6 +91,7 @@ export const tripsList: Trip[] = [
       },
       {
         order: '3',
+        duration: '1',
         location: {
           name: 'Bryce Canyon',
           address: 'Bryce Canyon, Utah',
@@ -96,6 +103,7 @@ export const tripsList: Trip[] = [
       },
       {
         order: '4',
+        duration: '1',
         location: {
           name: 'Las Vegas',
           address: 'Las Vegas, Nevada',
