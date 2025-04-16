@@ -18,6 +18,8 @@ export class CreateTripComponent {
   googleMapsLocation: Place | null = null;
   tripsService = inject(TripsService);
   @ViewChild('durationInput') durationInput!: ElementRef;
+  @ViewChild('titleInput') titleInput!: ElementRef;
+  @ViewChild('descriptionInput') descriptionInput!: ElementRef;
 
 
   onPlaceSelected(event: Place) {
@@ -35,9 +37,8 @@ export class CreateTripComponent {
     const trip: Trip = {
       id: '4',
       image: 'https://via.placeholder.com/150',
-      title: 'Placeholder title',
-      description: 'Placeholder description',
-      duration: '10 days',
+      title: this.titleInput.nativeElement.value,
+      description: this.descriptionInput.nativeElement.value,
       stops: this.places
     }
     this.tripsService.addTripToList(trip);
