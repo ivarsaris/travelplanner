@@ -4,23 +4,30 @@
             <div class="bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-xl font-semibold mb-4">Add Location</h2>
                 <app-places-search (placeSelected)="onPlaceSelected($event)"></app-places-search>
-                
-                <div *ngIf="googleMapsLocation !== null" class="mt-4 bg-blue-50 p-4 rounded-md border-l-4 border-blue-500">
+
+                <div *ngIf="googleMapsLocation !== null"
+                    class="mt-4 bg-blue-50 p-4 rounded-md border-l-4 border-blue-500">
                     <p class="my-1"><span class="font-bold">Name:</span> {{ googleMapsLocation.name }}</p>
                     <p class="my-1"><span class="font-bold">Address:</span> {{ googleMapsLocation.address }}</p>
+                    <div class="relative h-32 mb-4 rounded-lg overflow-hidden">
+                        <img [src]="googleMapsLocation.image" [alt]="googleMapsLocation.name"
+                            class="w-full h-full object-cover">
+                    </div>
                 </div>
-                
+
                 <div class="mt-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Duration of Stay</label>
                     <select #durationInput
-                            class="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        class="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="" disabled selected>Select duration</option>
-                        <option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}} {{i === 1 ? 'day' : 'days'}}</option>
+                        <option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [value]="i">{{i}} {{i === 1 ? 'day' : 'days'}}
+                        </option>
                     </select>
                 </div>
-                
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md mt-4 transition-colors duration-200"
-                        (click)="onAddLocationToTrip()">
+
+                <button
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md mt-4 transition-colors duration-200"
+                    (click)="onAddLocationToTrip()">
                     Add Location to Trip
                 </button>
             </div>
@@ -28,25 +35,29 @@
 
         <div *ngIf="places && places.length > 0" class="bg-white rounded-lg shadow-md p-6">
             <h2 class="text-xl font-semibold mb-4">Trip Details</h2>
-            
+
             <!-- Trip Information -->
             <div class="mb-6 p-4 bg-gray-50 rounded-lg">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Trip Information</h3>
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Trip Title</label>
-                        <input type="text" 
-                               class="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
-                               placeholder="e.g., Summer European Adventure"
-                               #titleInput>
+                        <input type="text"
+                            class="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="e.g., Summer European Adventure" #titleInput>
                     </div>
-                    
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Trip Description</label>
-                        <textarea class="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
-                                  placeholder="Describe your trip..."
-                                  rows="3"
-                                  #descriptionInput></textarea>
+                        <textarea
+                            class="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Describe your trip..." rows="3" #descriptionInput></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Trip Image</label>
+                        <input type="text"
+                            class="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="image url" #imageInput>
                     </div>
                 </div>
             </div>
@@ -55,9 +66,10 @@
             <div class="mb-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Itinerary</h3>
                 <div class="space-y-4">
-                    <div *ngFor="let stop of places; let i = index" 
-                         class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                        <div class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
+                    <div *ngFor="let stop of places; let i = index"
+                        class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                        <div
+                            class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
                             {{ i + 1 }}
                         </div>
                         <div class="ml-4 flex-grow">
@@ -65,16 +77,18 @@
                             <p class="text-sm text-gray-600">{{stop.location.address}}</p>
                         </div>
                         <div class="ml-4">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                            <span
+                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                                 {{stop.duration}} days
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <button class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md mt-6 transition-colors duration-200"
-                    (click)="onAddTripToTripList()">
+
+            <button
+                class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md mt-6 transition-colors duration-200"
+                (click)="onAddTripToTripList()">
                 Save Trip
             </button>
         </div>

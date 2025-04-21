@@ -20,23 +20,23 @@ export class CreateTripComponent {
   @ViewChild('durationInput') durationInput!: ElementRef;
   @ViewChild('titleInput') titleInput!: ElementRef;
   @ViewChild('descriptionInput') descriptionInput!: ElementRef;
-
+  @ViewChild('imageInput') imageInput!: ElementRef;
 
   onPlaceSelected(event: Place) {
     this.googleMapsLocation = event;
+    console.log(this.googleMapsLocation);
   }
 
   onAddLocationToTrip() {
     if (this.googleMapsLocation) {
       this.places.push({order: (this.places.length + 1).toString(), duration: this.durationInput.nativeElement.value, location:this.googleMapsLocation});
-      console.log('place', this.places);
     }
   }
 
   onAddTripToTripList() {
     const trip: Trip = {
       id: '4',
-      image: 'https://via.placeholder.com/150',
+      image: this.imageInput.nativeElement.value,
       title: this.titleInput.nativeElement.value,
       description: this.descriptionInput.nativeElement.value,
       stops: this.places
@@ -44,4 +44,3 @@ export class CreateTripComponent {
     this.tripsService.addTripToList(trip);
   }
 }
-
