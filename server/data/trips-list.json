@@ -1,0 +1,114 @@
+[
+    {
+        "id": "1",
+        "image": "https://img.static-kl.com/images/media/506F5E1C-28C1-4555-A238CB9D4AD6039E",
+        "title": "European City Tour",
+        "description": "Explore the beautiful cities of Europe from Antwerp to Zurich",
+        "stops": [
+            {
+                "order": "1",
+                "duration": "1",
+                "location": {
+                    "name": "Antwerp",
+                    "address": "Antwerp, Belgium",
+                    "googlePlaceId": "ChIJfYjDv472w0cRuIqogoRErz4",
+                    "lat": 51.219448,
+                    "lng": 4.402464,
+                    "image": "https://www.in12uur.nl/wp-content/uploads/2025/01/antwerpen-in-12uur.jpg"
+                }
+            },
+            {
+                "order": "2",
+                "duration": "1",
+                "location": {
+                    "name": "Brussels",
+                    "address": "Brussels, Belgium",
+                    "googlePlaceId": "ChIJZ2jHc-2kw0cRpwJzeGY6i8E",
+                    "lat": 50.8503,
+                    "lng": 4.3517,
+                    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDOyiluyZMOqfhw5FZx240PqsInYjDFjZFGA&s"
+                }
+            },
+            {
+                "order": "3",
+                "duration": "1",
+                "location": {
+                    "name": "Luxembourg City",
+                    "address": "Luxembourg City, Luxembourg",
+                    "googlePlaceId": "ChIJVyzznc1IlUcREG0F0dbRAAQ",
+                    "lat": 49.6116,
+                    "lng": 6.1319,
+                    "image": "https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/93B0/production/_127980873_gettyimages-1168733050.jpg"
+                }
+            },
+            {
+                "order": "4",
+                "duration": "1",
+                "location": {
+                    "name": "Zurich",
+                    "address": "Zurich, Switzerland",
+                    "googlePlaceId": "ChIJGaK-SZcLkEcRA9wf5_GNbuY",
+                    "lat": 47.3769,
+                    "lng": 8.5417,
+                    "image": "https://www.foyer.lu/wp-content/uploads/2025/01/Quartiers-nouveaux-arrivants-Sticky-WP.jpg"
+                }
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "image": "https://assets.simpleviewcms.com/simpleview/image/upload/c_fill,f_jpg,h_757,q_65,w_640/v1/clients/lasvegas/Strip_Pic_1200x800_24d79803-65f2-429a-a330-ce6edb8bcc8d.jpg",
+        "title": "Southwest USA Adventure",
+        "description": "Experience the natural wonders of the American Southwest",
+        "stops": [
+            {
+                "order": "1",
+                "duration": "1",
+                "location": {
+                    "name": "Las Vegas",
+                    "address": "Las Vegas, Nevada",
+                    "googlePlaceId": "ChIJ0X31pIK3voARo3mz1ebVzDo",
+                    "lat": 36.1699,
+                    "lng": -115.1398,
+                    "image": "https://static01.nyt.com/images/2023/04/13/multimedia/13hours-LasVegas-03-zjkm/13hours-LasVegas-03-zjkm-videoSixteenByNineJumbo1600-v2.jpg"
+                }
+            },
+            {
+                "order": "2",
+                "duration": "1",
+                "location": {
+                    "name": "Grand Canyon",
+                    "address": "Grand Canyon, Arizona",
+                    "googlePlaceId": "ChIJjeAnvVQGzIARjS7UQkRVwrE",
+                    "lat": 36.0544,
+                    "lng": -112.1401,
+                    "image": "https://www.globalnationalparks.com/wp-content/uploads/national-park-grand-canyon.jpg"
+                }
+            },
+            {
+                "order": "3",
+                "duration": "1",
+                "location": {
+                    "name": "Bryce Canyon",
+                    "address": "Bryce Canyon, Utah",
+                    "googlePlaceId": "ChIJLevDAsZrNYcRBm2svvvY6Ws",
+                    "lat": 37.5930,
+                    "lng": -112.1871,
+                    "image": "https://i.natgeofe.com/n/6d837654-0c5e-4dd9-981f-c52bfdbf3430/01-bryce-canyon-national-park-utah.jpg"
+                }
+            },
+            {
+                "order": "4",
+                "duration": "1",
+                "location": {
+                    "name": "Las Vegas",
+                    "address": "Las Vegas, Nevada",
+                    "googlePlaceId": "ChIJ0X31pIK3voARo3mz1ebVzDo",
+                    "lat": 36.1699,
+                    "lng": -115.1398,
+                    "image": "https://static01.nyt.com/images/2023/04/13/multimedia/13hours-LasVegas-03-zjkm/13hours-LasVegas-03-zjkm-videoSixteenByNineJumbo1600-v2.jpg"
+                }
+            }
+        ]
+    }
+]
