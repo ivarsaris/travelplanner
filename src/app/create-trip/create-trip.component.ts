@@ -1,9 +1,8 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { PlacesSearchComponent } from '../places-search/places-search.component';
-import { NgFor, NgIf} from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Place } from '../place.model';
 import { TripStop } from '../trips/trip-stop.model';
-import { Trip } from '../trips/trip.model';
 import { TripsService } from '../trips/trips.service';
 
 @Component({
@@ -29,18 +28,17 @@ export class CreateTripComponent {
 
   onAddLocationToTrip() {
     if (this.googleMapsLocation) {
-      this.places.push({order: (this.places.length + 1).toString(), duration: this.durationInput.nativeElement.value, location:this.googleMapsLocation});
+      this.places.push({ order: (this.places.length + 1).toString(), duration: this.durationInput.nativeElement.value, location: this.googleMapsLocation });
     }
   }
 
   onAddTripToTripList() {
-    const trip: Trip = {
-      id: '4',
+    const tripData = {
       image: this.imageInput.nativeElement.value,
       title: this.titleInput.nativeElement.value,
       description: this.descriptionInput.nativeElement.value,
       stops: this.places
     }
-    this.tripsService.addTripToList(trip);
+    this.tripsService.addTripToList(tripData);
   }
 }
