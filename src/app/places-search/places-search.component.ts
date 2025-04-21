@@ -36,7 +36,11 @@ export class PlacesSearchComponent implements AfterViewInit {
               address: place.formatted_address || '',
               lat: place.geometry.location.lat(),
               lng: place.geometry.location.lng(),
-              googlePlaceId: place.place_id || ''
+              googlePlaceId: place.place_id || '',
+              image: place.photos ? place.photos[0].getUrl({
+                maxWidth: 720,
+                maxHeight: 480
+              }) : ""
             });
           }
         });
