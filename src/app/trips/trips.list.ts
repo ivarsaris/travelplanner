@@ -3,7 +3,7 @@ import { Trip } from "./trip.model";
 export const tripsList: Trip[] = [
   {
     id: '1',
-    image: 'assets/images/european-tour.jpg',
+    image: 'https://img.static-kl.com/images/media/506F5E1C-28C1-4555-A238CB9D4AD6039E',
     title: 'European City Tour',
     description: 'Explore the beautiful cities of Europe from Antwerp to Zurich',
     stops: [
@@ -16,7 +16,7 @@ export const tripsList: Trip[] = [
           googlePlaceId: 'ChIJfYjDv472w0cRuIqogoRErz4',
           lat: 51.219448,
           lng: 4.402464,
-          image: 'assets/images/antwerp.jpg'
+          image: 'https://www.in12uur.nl/wp-content/uploads/2025/01/antwerpen-in-12uur.jpg'
         }
       },
       {
@@ -28,7 +28,7 @@ export const tripsList: Trip[] = [
           googlePlaceId: 'ChIJZ2jHc-2kw0cRpwJzeGY6i8E',
           lat: 50.8503,
           lng: 4.3517,
-          image: 'assets/images/brussels.jpg'
+          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDOyiluyZMOqfhw5FZx240PqsInYjDFjZFGA&s'
         }
       },
       {
@@ -40,7 +40,7 @@ export const tripsList: Trip[] = [
           googlePlaceId: 'ChIJVyzznc1IlUcREG0F0dbRAAQ',
           lat: 49.6116,
           lng: 6.1319,
-          image: 'assets/images/luxembourg.jpg'
+          image: 'https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/93B0/production/_127980873_gettyimages-1168733050.jpg'
         }
       },
       {
@@ -52,14 +52,14 @@ export const tripsList: Trip[] = [
           googlePlaceId: 'ChIJGaK-SZcLkEcRA9wf5_GNbuY',
           lat: 47.3769,
           lng: 8.5417,
-          image: 'assets/images/zurich.jpg'
+          image: 'https://www.foyer.lu/wp-content/uploads/2025/01/Quartiers-nouveaux-arrivants-Sticky-WP.jpg'
         }
       }
     ]
   },
   {
     id: '2',
-    image: 'assets/images/southwest-adventure.jpg',
+    image: 'https://assets.simpleviewcms.com/simpleview/image/upload/c_fill,f_jpg,h_757,q_65,w_640/v1/clients/lasvegas/Strip_Pic_1200x800_24d79803-65f2-429a-a330-ce6edb8bcc8d.jpg',
     title: 'Southwest USA Adventure',
     description: 'Experience the natural wonders of the American Southwest',
     stops: [
@@ -72,7 +72,7 @@ export const tripsList: Trip[] = [
           googlePlaceId: 'ChIJ0X31pIK3voARo3mz1ebVzDo',
           lat: 36.1699,
           lng: -115.1398,
-          image: 'assets/images/las-vegas.jpg'
+          image: 'https://static01.nyt.com/images/2023/04/13/multimedia/13hours-LasVegas-03-zjkm/13hours-LasVegas-03-zjkm-videoSixteenByNineJumbo1600-v2.jpg'
         }
       },
       {
@@ -84,7 +84,7 @@ export const tripsList: Trip[] = [
           googlePlaceId: 'ChIJjeAnvVQGzIARjS7UQkRVwrE',
           lat: 36.0544,
           lng: -112.1401,
-          image: 'assets/images/grand-canyon.jpg'
+          image: 'https://www.globalnationalparks.com/wp-content/uploads/national-park-grand-canyon.jpg'
         }
       },
       {
@@ -96,7 +96,7 @@ export const tripsList: Trip[] = [
           googlePlaceId: 'ChIJLevDAsZrNYcRBm2svvvY6Ws',
           lat: 37.5930,
           lng: -112.1871,
-          image: 'assets/images/bryce-canyon.jpg'
+          image: 'https://i.natgeofe.com/n/6d837654-0c5e-4dd9-981f-c52bfdbf3430/01-bryce-canyon-national-park-utah.jpg'
         }
       },
       {
@@ -108,7 +108,7 @@ export const tripsList: Trip[] = [
           googlePlaceId: 'ChIJ0X31pIK3voARo3mz1ebVzDo',
           lat: 36.1699,
           lng: -115.1398,
-          image: 'assets/images/las-vegas.jpg'
+          image: 'https://static01.nyt.com/images/2023/04/13/multimedia/13hours-LasVegas-03-zjkm/13hours-LasVegas-03-zjkm-videoSixteenByNineJumbo1600-v2.jpg'
         }
       }
     ]
