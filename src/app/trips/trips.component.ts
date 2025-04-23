@@ -23,15 +23,6 @@ export class TripsComponent implements OnInit {
     this.tripsListSubscription = this.tripsService.tripsList$.subscribe(tripsList => {
       this.tripsList = tripsList;
     });
-
-    this.httpClient.get<Trip[]>('http://localhost:3000/trips-list').subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-      error: (error) => {
-        console.error('Error fetching trips:', error);
-      }
-    });
   }
 
   getTripDuration(trip: Trip) {

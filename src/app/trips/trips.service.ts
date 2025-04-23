@@ -1,4 +1,4 @@
-import { Injectable, OnInit, inject } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { Trip } from "./trip.model";
 import { tripsList } from "./trips.list";
@@ -7,16 +7,19 @@ import { HttpClient } from "@angular/common/http";
 
 @Injectable({ providedIn: 'root' })
 
-export class TripsService implements OnInit {
-    private tripsList = new BehaviorSubject<Trip[]>(tripsList);
+export class TripsService {
+    private tripsList = new BehaviorSubject<Trip[]>([]);
     tripsList$ = this.tripsList.asObservable();
 
     private httpClient = inject(HttpClient);
 
-    ngOnInit() {
+    constructor() {
         this.httpClient.get<Trip[]>('http://localhost:3000/trips-list').subscribe({
             next: (response) => {
-                console.log(response);
+                this.tripsList.next(response);
+            },
+            error: (error) => {
+                console.error('Error fetching trips:', error);
             }
         });
     }
