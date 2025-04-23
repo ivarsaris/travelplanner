@@ -6,6 +6,8 @@ import { NgIf, NgFor } from '@angular/common';
 import { TripStop } from '../trip-stop.model';
 import { DecimalPipe } from '@angular/common';
 import { DisplayRouteMapComponent } from '../../display-route-map/display-route-map.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { TripEditComponent } from '../trip-edit/trip-edit.component';
 
 @Component({
   selector: 'app-trip-detail',
@@ -19,7 +21,7 @@ export class TripDetailComponent implements OnInit {
   trip!: Trip;
   stops!: TripStop[];
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -29,6 +31,13 @@ export class TripDetailComponent implements OnInit {
       this.trip = trip;
       this.stops = trip.stops;
     }
+  }
+
+  openDialog() {
+    console.log(this.trip);
+    this.dialog.open(TripEditComponent, {
+      data: this.trip
+    });
   }
 
   trackByOrder(index: number, stop: TripStop) {

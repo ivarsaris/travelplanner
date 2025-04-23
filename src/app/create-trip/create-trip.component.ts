@@ -4,6 +4,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { Place } from '../place.model';
 import { TripStop } from '../trips/trip-stop.model';
 import { TripsService } from '../trips/trips.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-trip',
