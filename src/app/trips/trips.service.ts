@@ -28,16 +28,25 @@ export class TripsService {
         return this.tripsList.value.find(trip => trip.id === id);
     }
 
-    addTripToList(tripData: { image: string, title: string, description: string, stops: TripStop[] }) {
+    addTripToList(newTripData: { image: string, title: string, description: string, stops: TripStop[] }) {
+
         const newTrip: Trip = {
             id: (this.tripsList.value.length + 1).toString(),
-            image: tripData.image,
-            title: tripData.title,
-            description: tripData.description,
-            stops: tripData.stops
+            image: newTripData.image,
+            title: newTripData.title,
+            description: newTripData.description,
+            stops: newTripData.stops
         }
 
-        this.tripsList.next([...this.tripsList.value, newTrip]);
+        this.httpClient
+            .put<Trip>('http://localhost:3000/trips-list', {
+                tripData: newTrip
+            })
+            .subscribe({
+                next: (responseData) => {
+                    this.tripsList.next([...this.tripsList.value, newTrip]);
+                }
+            });
     }
 
     getTripDuration(trip: Trip) {
