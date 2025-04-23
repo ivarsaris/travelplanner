@@ -38,5 +38,9 @@ export class TripDetailComponent implements OnInit {
   getTripDuration(trip: Trip) {
     return this.tripsService.getTripDuration(trip);
   }
+
+  onDeleteTripFromList(id: string) {
+    this.tripsService.removeTripFromList(id);
+  }
 }
 

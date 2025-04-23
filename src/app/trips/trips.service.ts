@@ -49,6 +49,15 @@ export class TripsService {
             });
     }
 
+    removeTripFromList(id: string) {
+        this.httpClient.delete<string>(`http://localhost:3000/trips-list/${id}`, {})
+            .subscribe({
+                next: (responseData) => {
+                    this.tripsList.next(this.tripsList.value.filter(trip => trip.id !== id));
+                }
+            });
+    }
+
     getTripDuration(trip: Trip) {
         let duration = 0;
         for (const stop of trip.stops) {

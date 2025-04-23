@@ -24,15 +24,32 @@ app.put("/trips-list", (request, response) => {
 
     if (tripsListData.some((trip) => trip.id === newTrip.id)) {
         response.status(500).json({ message: `500 - trip with id ${newTrip.id} already exists`});
-        
+
     } else {
-        updatedTripsListData = [...tripsListData, newTrip];
+        const updatedTripsListData = [...tripsListData, newTrip];
 
         fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));   
 
         response.status(200).json({message: `200 - trip "${newTrip.title}" added to list`});
     }
 });
+
+app.delete("/trips-list/:id", (request, response) => {
+    const tripId = request.params.id;
+
+    const tripsListData = JSON.parse(fs.readFileSync('./data/trips-list.json'));
+
+    if (!tripsListData.some((trip) => trip.id === tripId)) {
+        response.status(500).json({message: `500 - trip with ID ${tripId} doesn't exist.`});
+        
+    } else {
+        const updatedTripsListData = tripsListData.filter(trip => trip.id !== tripId);
+
+        fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));
+
+        response.status(200).json({message: `200 - trip with id ${tripId} deleted from list`});
+    }
+})
 
 app.use((request, response, next) => {
     if (request.method === "OPTIONS") {
