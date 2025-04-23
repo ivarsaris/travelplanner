@@ -1,2 +1,68 @@
-<h2>{{ data.title }}</h2>
-<p>{{ data.description }}</p>
+<div class="m-4 max-w-2xl p-6 bg-white rounded-lg shadow-md">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Edit Trip</h1>
+
+    <form>
+        <!-- Trip Details Section -->
+        <div class="space-y-6 mb-8">
+            <!-- Title Field -->
+            <div class="relative">
+                <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <input type="text" id="title"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    [value]="data.title">
+            </div>
+
+            <!-- Description Field -->
+            <div class="relative">
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="description" rows="4"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    [value]="data.description"></textarea>
+            </div>
+
+            <!-- Image URL Field -->
+            <div class="relative">
+                <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                <input type="text" id="image"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    [value]="data.image">
+            </div>
+        </div>
+
+        @for (stop of data.stops; track stop.order) {
+        <fieldset class="border border-gray-300 rounded-md p-4 mb-8">
+            <legend class="text-lg font-medium text-gray-700 px-2">{{ stop.location.name }}</legend>
+
+            <div class="space-y-4">
+                <!-- Order Field -->
+                <div class="relative">
+                    <label for="order" class="block text-sm font-medium text-gray-700 mb-1">Order</label>
+                    <input type="text" id="order"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        [value]="stop.order">
+                </div>
+
+                <!-- Duration Field -->
+                <div class="relative">
+                    <label for="duration" class="block text-sm font-medium text-gray-700 mb-1">Duration (days)</label>
+                    <input type="text" id="duration"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        [value]="stop.duration">
+                </div>
+            </div>
+        </fieldset>
+        }
+
+        <!-- Form Actions -->
+        <div class="flex justify-end space-x-4">
+            <button type="button"
+                class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Cancel
+            </button>
+            <button type="submit"
+                class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Save Trip
+            </button>
+        </div>
+    </form>
+</div>
