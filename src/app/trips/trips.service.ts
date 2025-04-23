@@ -58,6 +58,20 @@ export class TripsService {
             });
     }
 
+    updateTrip(updatedTrip: Trip) {
+        console.log(updatedTrip);
+
+        this.httpClient
+            .patch<Trip>(`http://localhost:3000/trips-list/${updatedTrip.id}`, {
+                tripData: updatedTrip
+            })
+            .subscribe({
+                next: (responseData) => {
+                    this.tripsList.next(tripsList.map((trip) => (trip.id === updatedTrip.id ? {...trip, ...updatedTrip} : trip)));
+                }
+            });
+    }
+
     getTripDuration(trip: Trip) {
         let duration = 0;
         for (const stop of trip.stops) {

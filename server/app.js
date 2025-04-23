@@ -6,7 +6,7 @@ app.use(express.json());
 
 app.use((request, response, next) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
     response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
@@ -48,6 +48,23 @@ app.delete("/trips-list/:id", (request, response) => {
         fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));
 
         response.status(200).json({message: `200 - trip with id ${tripId} deleted from list`});
+    }
+});
+
+app.patch("/trips-list/:id", (request, response) => {
+    const updatedTrip = request.body.tripData;
+
+    const tripsListData = JSON.parse(fs.readFileSync('./data/trips-list.json'));
+
+    if (!tripsListData.some(trip => trip.id === updatedTrip.id)) {
+        response.status(500).json({message: `500 - trip with ID ${updatedTrip.id} doesn't exist.`});
+
+    } else {
+        const updatedTripsListData = tripsListData.map((trip) => (trip.id === updatedTrip.id ? {...trip, ...updatedTrip} : trip));
+
+        fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));
+
+        response.status(200).json({message: `200 - trip ${updatedTrip.title} updated`});
     }
 });
 
