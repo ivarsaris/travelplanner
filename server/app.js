@@ -41,7 +41,7 @@ app.delete("/trips-list/:id", (request, response) => {
 
     if (!tripsListData.some((trip) => trip.id === tripId)) {
         response.status(500).json({message: `500 - trip with ID ${tripId} doesn't exist.`});
-        
+
     } else {
         const updatedTripsListData = tripsListData.filter(trip => trip.id !== tripId);
 
@@ -49,7 +49,7 @@ app.delete("/trips-list/:id", (request, response) => {
 
         response.status(200).json({message: `200 - trip with id ${tripId} deleted from list`});
     }
-})
+});
 
 app.use((request, response, next) => {
     if (request.method === "OPTIONS") {
