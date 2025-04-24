@@ -34,7 +34,6 @@ export class TripDetailComponent implements OnInit {
   }
 
   openDialog() {
-    console.log(this.trip);
     this.dialog.open(TripEditComponent, {
       data: this.trip
     });

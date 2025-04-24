@@ -5,6 +5,7 @@
 body .cdk-overlay-pane.mat-mdc-dialog-panel {
     width: 90%;
     max-width: 672px;
+    overflow: scroll;
 }
 
 body .cdk-overlay-pane .mdc-dialog__surface {
