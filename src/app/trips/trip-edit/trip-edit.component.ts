@@ -43,4 +43,8 @@ export class TripEditComponent {
     this.tripsService.updateTrip(updatedTrip);
     this.dialog.close(true);
   }
+
+  onCloseModal() {
+    this.dialog.close(true);
+  }
 }
