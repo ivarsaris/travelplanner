@@ -14,6 +14,10 @@ export class TripsService {
     private httpClient = inject(HttpClient);
 
     constructor() {
+        this.getTrips();
+    }
+
+    getTrips() {
         this.httpClient.get<Trip[]>('http://localhost:3000/trips-list').subscribe({
             next: (response) => {
                 this.tripsList.next(response);
@@ -59,7 +63,6 @@ export class TripsService {
     }
 
     updateTrip(updatedTrip: Trip) {
-        console.log(updatedTrip);
 
         this.httpClient
             .patch<Trip>(`http://localhost:3000/trips-list/${updatedTrip.id}`, {
@@ -67,7 +70,7 @@ export class TripsService {
             })
             .subscribe({
                 next: (responseData) => {
-                    this.tripsList.next(tripsList.map((trip) => (trip.id === updatedTrip.id ? {...trip, ...updatedTrip} : trip)));
+                    this.tripsList.next(this.tripsList.value.map((trip) => (trip.id === updatedTrip.id ? trip = updatedTrip : trip)));
                 }
             });
     }

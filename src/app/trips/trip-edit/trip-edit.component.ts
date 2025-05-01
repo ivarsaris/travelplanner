@@ -3,11 +3,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Trip } from '../trip.model';
 import { TripsService } from '../trips.service';
 import { TripStop } from '../trip-stop.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-trip-edit',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './trip-edit.component.html',
   styleUrl: './trip-edit.component.scss'
 })
@@ -20,9 +21,10 @@ export class TripEditComponent {
   @ViewChildren('stopOrderInputs') stopOrderInputs!: QueryList<ElementRef>;
   @ViewChildren('stopDurationInputs') stopDurationInputs!: QueryList<ElementRef>;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Trip) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Trip,
+    private dialog: MatDialogRef<TripEditComponent>) { }
 
-  onUpdateTrip($e: any) {
+  onUpdateTrip() {
 
     const updatedTrip: Trip = {
       id: this.data.id,
@@ -39,5 +41,6 @@ export class TripEditComponent {
     };
 
     this.tripsService.updateTrip(updatedTrip);
+    this.dialog.close(true);
   }
 }
