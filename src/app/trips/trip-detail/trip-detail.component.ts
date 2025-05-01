@@ -30,7 +30,7 @@ export class TripDetailComponent implements OnInit {
     const trip = this.tripsService.getTripById(this.id ?? '');
     if (trip) {
       this.trip = trip;
-      this.stops = trip.stops;
+      this.stops = this.sortStopsByOrder(trip.stops);
     }
   }
 
@@ -40,22 +40,15 @@ export class TripDetailComponent implements OnInit {
     });
 
     dialog.afterClosed().subscribe(() => {
-      setTimeout(() => {
-        
-        if (this.id) {
-          console.log('1', this.tripsService.getTripById(this.id));
-          const updatedTrip = this.tripsService.getTripById(this.id);
-          if (updatedTrip) {
-            this.trip = updatedTrip;
-            this.stops = updatedTrip.stops;
-          }
-        }
-      }, 1000);
-    });
-  }
 
-  trackByOrder(index: number, stop: TripStop) {
-    return stop.order;
+      if (this.id) {
+        const updatedTrip = this.tripsService.getTripById(this.id);
+        if (updatedTrip) {
+          this.trip = updatedTrip;
+          this.stops = this.sortStopsByOrder(updatedTrip.stops);
+        }
+      }
+    });
   }
 
   getTripDuration(trip: Trip) {
@@ -64,6 +57,10 @@ export class TripDetailComponent implements OnInit {
 
   onDeleteTripFromList(id: string) {
     this.tripsService.removeTripFromList(id);
+  }
+
+  sortStopsByOrder(stops: TripStop[]) {
+    return stops.sort((a, b) => Number(a.order) - Number(b.order));
   }
 }
 
