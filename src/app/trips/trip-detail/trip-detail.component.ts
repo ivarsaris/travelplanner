@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { TripsService } from '../trips.service';
 import { Trip } from '../trip.model';
 import { ActivatedRoute } from '@angular/router';
-import { NgIf, NgFor } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { TripStop } from '../trip-stop.model';
 import { DecimalPipe } from '@angular/common';
 import { DisplayRouteMapComponent } from '../../display-route-map/display-route-map.component';
@@ -12,7 +12,7 @@ import { TripEditComponent } from '../trip-edit/trip-edit.component';
 @Component({
   selector: 'app-trip-detail',
   standalone: true,
-  imports: [NgIf, NgFor, DisplayRouteMapComponent, DecimalPipe],
+  imports: [NgIf, DisplayRouteMapComponent, DecimalPipe],
   templateUrl: './trip-detail.component.html',
   styleUrl: './trip-detail.component.scss'
 })

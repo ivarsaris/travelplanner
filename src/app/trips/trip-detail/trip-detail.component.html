@@ -44,8 +44,8 @@
 
             <!-- Timeline Items -->
             <div class="space-y-8">
-                <div *ngFor="let stop of trip.stops; trackBy: trackByOrder; let i = index"
-                    class="relative flex items-center">
+                @for (stop of trip.stops; track stop.order; let i = $index) {
+                <div class="relative flex items-center">
                     <!-- Timeline Dot -->
                     <div
                         class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-lg">
@@ -84,6 +84,7 @@
                         </div>
                     </div>
                 </div>
+                }
             </div>
         </div>
     </div>
