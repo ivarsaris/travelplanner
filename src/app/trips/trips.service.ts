@@ -33,9 +33,11 @@ export class TripsService {
     }
 
     addTripToList(newTripData: { image: string, title: string, description: string, stops: TripStop[] }) {
-
+  
+        const highestId = Math.max(...this.tripsList.value.map(trip => Number(trip.id)));
+        
         const newTrip: Trip = {
-            id: (this.tripsList.value.length + 1).toString(),
+            id: (highestId + 1).toString(),
             image: newTripData.image,
             title: newTripData.title,
             description: newTripData.description,
