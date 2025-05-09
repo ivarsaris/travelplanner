@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GoogleMapsModule, MapDirectionsRenderer, MapDirectionsService } from '@angular/google-maps';
 import { map, Observable, catchError, of } from 'rxjs';
@@ -13,7 +13,7 @@ import { TripStop } from '../trips/trip-stop.model';
   styleUrl: './display-route-map.component.scss'
 })
 
-export class DisplayRouteMapComponent implements OnInit {
+export class DisplayRouteMapComponent implements OnInit, OnChanges {
   // the component requires an array of a minimum of 2 stops
   @Input() stops!: TripStop[];
   display: any;
@@ -26,6 +26,12 @@ export class DisplayRouteMapComponent implements OnInit {
 
   ngOnInit() {
     if (this.stops && this.stops.length > 1) {
+      this.initDirections();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['stops'] && this.stops && this.stops.length > 1) {
       this.initDirections();
     }
   }
