@@ -4,11 +4,13 @@ import { Trip } from '../trip.model';
 import { TripsService } from '../trips.service';
 import { TripStop } from '../trip-stop.model';
 import { FormsModule } from '@angular/forms';
+import { PlacesSearchComponent } from '../../places-search/places-search.component';
+import { Place } from '../../place.model';
 
 @Component({
   selector: 'app-trip-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, PlacesSearchComponent],
   templateUrl: './trip-edit.component.html',
   styleUrl: './trip-edit.component.scss'
 })
@@ -21,8 +23,16 @@ export class TripEditComponent {
   @ViewChildren('stopOrderInputs') stopOrderInputs!: QueryList<ElementRef>;
   @ViewChildren('stopDurationInputs') stopDurationInputs!: QueryList<ElementRef>;
 
+  googleMapsLocation: Place | null = null;
+  @ViewChild('newStopDurationInput') newStopDurationInput!: ElementRef;
+
+  tripStops!: TripStop[];
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: Trip,
-    private dialog: MatDialogRef<TripEditComponent>) { }
+    private dialog: MatDialogRef<TripEditComponent>) {
+
+      this.tripStops = this.data.stops;
+  }
 
   onUpdateTrip() {
 
@@ -31,7 +41,7 @@ export class TripEditComponent {
       image: this.imageInput.nativeElement.value,
       title: this.titleInput.nativeElement.value,
       description: this.descriptionTextarea.nativeElement.value,
-      stops: this.data.stops.map((stop, index) => {
+      stops: this.tripStops.map((stop, index) => {
         return {
           order: this.stopOrderInputs.toArray()[index].nativeElement.value,
           duration: this.stopDurationInputs.toArray()[index].nativeElement.value,
@@ -42,6 +52,17 @@ export class TripEditComponent {
 
     this.tripsService.updateTrip(updatedTrip);
     this.dialog.close(true);
+  }
+
+  onPlaceSelected(event: Place) {
+    this.googleMapsLocation = event;
+  }
+
+  onAddStopToTrip() {
+    if (this.googleMapsLocation) {
+      this.data.stops.push({ order: (this.data.stops.length + 1).toString(), duration: this.newStopDurationInput.nativeElement.value, location: this.googleMapsLocation });
+      this.tripStops = this.data.stops;
+    }
   }
 
   onCloseModal() {

@@ -24,7 +24,6 @@ export class CreateTripComponent {
 
   onPlaceSelected(event: Place) {
     this.googleMapsLocation = event;
-    console.log(this.googleMapsLocation);
   }
 
   onAddLocationToTrip() {
