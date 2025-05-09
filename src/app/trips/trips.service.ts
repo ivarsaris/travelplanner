@@ -4,6 +4,7 @@ import { Trip } from "./trip.model";
 import { tripsList } from "./trips.list";
 import { TripStop } from "./trip-stop.model";
 import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
 
@@ -13,7 +14,7 @@ export class TripsService {
 
     private httpClient = inject(HttpClient);
 
-    constructor() {
+    constructor(private router: Router) {
         this.getTrips();
     }
 
@@ -51,6 +52,8 @@ export class TripsService {
             .subscribe({
                 next: (responseData) => {
                     this.tripsList.next([...this.tripsList.value, newTrip]);
+                    alert(`Trip "${newTrip.title}" has been added to the list`);
+                    this.router.navigate([`/trip/${newTrip.id}`]);
                 }
             });
     }
@@ -60,6 +63,11 @@ export class TripsService {
             .subscribe({
                 next: (responseData) => {
                     this.tripsList.next(this.tripsList.value.filter(trip => trip.id !== id));
+                    this.router.navigate(['/trips']);
+                    alert(`Trip with id ${id} has been deleted`);
+                },
+                error: (error) => {
+                    console.error('could not delete trip with id ' + id);
                 }
             });
     }
@@ -73,6 +81,7 @@ export class TripsService {
             .subscribe({
                 next: (responseData) => {
                     this.tripsList.next(this.tripsList.value.map((trip) => (trip.id === updatedTrip.id ? trip = updatedTrip : trip)));
+                    alert('Trip has been updated');
                 }
             });
     }
