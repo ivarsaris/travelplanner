@@ -31,7 +31,7 @@ export class TripEditComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: Trip,
     private dialog: MatDialogRef<TripEditComponent>) {
 
-      this.tripStops = this.data.stops;
+    this.tripStops = this.data.stops;
   }
 
   onUpdateTrip() {
@@ -56,6 +56,11 @@ export class TripEditComponent {
 
   onPlaceSelected(event: Place) {
     this.googleMapsLocation = event;
+  }
+
+  onDeleteStopFromTrip(name: string, order: string) {
+    document.getElementById(`stop-${order}`)?.remove();
+    this.tripStops = this.data.stops.filter((stop) => stop.location.name !== name);
   }
 
   onAddStopToTrip() {
