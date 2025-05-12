@@ -6,11 +6,14 @@ import { TripStop } from '../trip-stop.model';
 import { FormsModule } from '@angular/forms';
 import { PlacesSearchComponent } from '../../places-search/places-search.component';
 import { Place } from '../../place.model';
+import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
+import { NgFor } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-trip-edit',
   standalone: true,
-  imports: [FormsModule, PlacesSearchComponent],
+  imports: [FormsModule, PlacesSearchComponent, CdkDrag, CdkDropList, CdkDropListGroup, NgFor, MatTooltipModule],
   templateUrl: './trip-edit.component.html',
   styleUrl: './trip-edit.component.scss'
 })
@@ -43,7 +46,7 @@ export class TripEditComponent {
       description: this.descriptionTextarea.nativeElement.value,
       stops: this.tripStops.map((stop, index) => {
         return {
-          order: this.stopOrderInputs.toArray()[index].nativeElement.value,
+          order: stop.order,
           duration: this.stopDurationInputs.toArray()[index].nativeElement.value,
           location: stop.location
         }
@@ -60,7 +63,9 @@ export class TripEditComponent {
 
   onDeleteStopFromTrip(name: string, order: string) {
     document.getElementById(`stop-${order}`)?.remove();
-    this.tripStops = this.data.stops.filter((stop) => stop.location.name !== name);
+    this.data.stops = this.data.stops.filter((stop) => stop.location.name !== name);
+    this.data.stops.forEach((stop, index) => stop.order = (index + 1).toString());
+    this.tripStops = this.data.stops;
   }
 
   onAddStopToTrip() {
@@ -72,5 +77,12 @@ export class TripEditComponent {
 
   onCloseModal() {
     this.dialog.close(true);
+  }
+
+  drop(event: CdkDragDrop<any>): void {
+    moveItemInArray(this.data.stops, event.previousIndex, event.currentIndex);
+
+    this.data.stops.forEach((stop, index) => stop.order = (index + 1).toString());
+    this.tripStops = this.data.stops;
   }
 }
