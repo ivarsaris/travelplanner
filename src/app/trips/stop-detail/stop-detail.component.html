@@ -1,0 +1,10 @@
+<div class="hidden" #placesServiceDataEl></div>
+<div class="map-container h-80 w-96 border-red-900 border-solid border" #mapContainer>
+    @if (center !== undefined) {
+    <google-map height="100%" width="100%" [center]="center" [zoom]="zoom">
+        @for (marker of markers; track marker.lat; let i = $index) {
+        <map-marker [position]="marker"></map-marker>
+        }
+    </google-map>
+    }
+</div>

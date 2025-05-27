@@ -4,13 +4,14 @@ import { PlacesSearchComponent } from './places-search/places-search.component';
 import { TripsComponent } from './trips/trips.component';
 import { CreateTripComponent } from './create-trip/create-trip.component';
 import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
+import { StopDetailComponent } from './trips/stop-detail/stop-detail.component';
 import { RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [DisplayRouteMapComponent, PlacesSearchComponent, RouterOutlet, RouterLink, RouterLinkActive, TripsComponent, TripDetailComponent, NgIf, CreateTripComponent],
+  imports: [DisplayRouteMapComponent, PlacesSearchComponent, RouterOutlet, RouterLink, RouterLinkActive, TripsComponent, TripDetailComponent, StopDetailComponent, NgIf, CreateTripComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
