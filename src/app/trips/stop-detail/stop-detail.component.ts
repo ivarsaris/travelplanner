@@ -33,7 +33,6 @@ export class StopDetailComponent implements AfterViewInit {
   }
 
   displayLocationById(placedId: string) {
-    console.log(this.googlePlacesService);
     this.googlePlacesService = new google.maps.places.PlacesService(this.placesServiceDataEl.nativeElement);
 
     const request: google.maps.places.PlaceDetailsRequest = {
@@ -42,12 +41,19 @@ export class StopDetailComponent implements AfterViewInit {
     };
 
     this.googlePlacesService.getDetails(request, (place, status) => {
-      this.ngZone.run(() => {
 
-        if (place?.geometry?.location) {
-          this.center = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
-        }
-      });
+      if (status === 'OK' && place?.formatted_address) {
+
+        this.ngZone.run(() => {
+
+          if (place?.geometry?.location) {
+
+            this.center = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
+          }
+        });
+      } else {
+        console.error('error fetching place: ' + status);
+      }
     });
   }
 }
