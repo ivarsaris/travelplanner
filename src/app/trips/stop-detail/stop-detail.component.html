@@ -1,10 +1,16 @@
 <div class="hidden" #placesServiceDataEl></div>
-<div class="map-container h-80 w-96 border-red-900 border-solid border" #mapContainer>
+<div class="map-container mt-10 h-96 w-1/2 border-red-900 border-solid border" #mapContainer>
     @if (center !== undefined) {
     <google-map height="100%" width="100%" [center]="center" [zoom]="zoom">
-        @for (marker of markers; track marker.lat; let i = $index) {
+        @for (marker of markerPositions; track marker; let i = $index) {
         <map-marker [position]="marker"></map-marker>
         }
     </google-map>
+
+    <button
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md mt-4 transition-colors duration-200"
+        (click)="fetchHotelsNearStop()">
+        find hotels in
+    </button>
     }
 </div>
