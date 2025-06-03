@@ -8,11 +8,12 @@ import { DecimalPipe } from '@angular/common';
 import { DisplayRouteMapComponent } from '../../display-route-map/display-route-map.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TripEditComponent } from '../trip-edit/trip-edit.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-trip-detail',
   standalone: true,
-  imports: [NgIf, DisplayRouteMapComponent, DecimalPipe],
+  imports: [NgIf, DisplayRouteMapComponent, DecimalPipe, RouterLink],
   templateUrl: './trip-detail.component.html',
   styleUrl: './trip-detail.component.scss'
 })
@@ -31,6 +32,7 @@ export class TripDetailComponent implements OnInit {
     if (trip) {
       this.trip = trip;
       this.stops = this.sortStopsByOrder(trip.stops);
+      console.log('trip', this.trip);
     }
   }
 

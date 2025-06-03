@@ -1,7 +1,8 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, inject, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { GoogleMapsModule, MapMarker } from '@angular/google-maps';
 import { ActivatedRoute } from '@angular/router';
+import { TripsService } from '../trips.service';
 
 @Component({
   selector: 'app-stop-detail',
@@ -11,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './stop-detail.component.scss'
 })
 export class StopDetailComponent implements AfterViewInit {
+  tripsService = inject(TripsService);
   place: any;
   center: google.maps.LatLngLiteral | undefined = undefined;
   zoom = 12;
@@ -20,6 +22,8 @@ export class StopDetailComponent implements AfterViewInit {
   regularMarkerOptions: google.maps.MarkerOptions = this.getMarkerOptions('#fe0000', '#ffa428')
   selectedMarkerOptions: google.maps.MarkerOptions = this.getMarkerOptions('#00af50', '#ffa428')
   googlePlaceID!: string | null;
+  stopId!: string | null;
+  tripId!: string | null;
   googlePlacesService?: google.maps.places.PlacesService;
   @ViewChild('mapContainer') mapContainer!: ElementRef;
   @ViewChild('placesServiceDataEl') placesServiceDataEl!: ElementRef;
@@ -27,7 +31,10 @@ export class StopDetailComponent implements AfterViewInit {
   constructor(private route: ActivatedRoute, private ngZone: NgZone) { }
 
   ngAfterViewInit() {
-    this.googlePlaceID = this.route.snapshot.paramMap.get('id');
+    this.googlePlaceID = this.route.snapshot.paramMap.get('googlePlaceId');
+    this.stopId = this.route.snapshot.paramMap.get('stopId');
+    this.tripId = this.route.snapshot.paramMap.get('tripId');
+
     if (this.googlePlaceID && typeof (this.googlePlaceID) == 'string') {
       this.displayLocationById(this.googlePlaceID);
     }
@@ -161,7 +168,21 @@ export class StopDetailComponent implements AfterViewInit {
   }
 
   addHotelToStop(i: number) {
+    const location = this.markerInfoObjects.find((marker) => marker.index === i);
+    const hotel = {
+      name: location!.markerInfo.name,
+      address: location!.markerInfo.vicinity,
+      lat: location!.location.lat,
+      lng: location!.location.lng,
+      googlePlaceId: location!.markerInfo.place_id,
+      image: location!.image
+    };
 
+    if (typeof (this.tripId) === 'string' && typeof (this.stopId) === 'string') {
+      this.tripsService.addHotelToStop(this.tripId, this.stopId, hotel)
+    } else {
+      console.error('Hotel could not be added to stop');
+    }
   }
 
   /**

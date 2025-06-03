@@ -18,7 +18,7 @@ export const routes: Routes = [
         component: TripDetailComponent,
     },
     {
-        path: 'location/:id',
+        path: 'location/:googlePlaceId/:tripId/:stopId',
         component: StopDetailComponent,
     }
 ];

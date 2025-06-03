@@ -5,6 +5,7 @@ import { tripsList } from "./trips.list";
 import { TripStop } from "./trip-stop.model";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { Place } from "../place.model";
 
 @Injectable({ providedIn: 'root' })
 
@@ -92,5 +93,19 @@ export class TripsService {
             duration += parseInt(stop.duration);
         }
         return duration;
+    }
+
+
+    // stop detail
+    getStopById(tripId: string, googleMapsLocationId: string) {
+        const trip = this.tripsList.value.find((trip) => trip.id === tripId);
+        return trip?.stops.find((stop) => stop.location.googlePlaceId === googleMapsLocationId);
+    }
+    
+    addHotelToStop(tripId: string, stopId: string, hotel: Place) {
+        const trip = this.tripsList.value.find((trip) => trip.id === tripId);
+        const stop = trip?.stops.find((stop) => stop.id === stopId);
+        console.log('stop', stop);
+        console.log('hotel', hotel);
     }
 }
