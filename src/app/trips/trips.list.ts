@@ -8,6 +8,7 @@ export const tripsList: Trip[] = [
     description: 'Explore the beautiful cities of Europe from Antwerp to Zurich',
     stops: [
       {
+        id: 'v472w0cRuIqogoRErz',
         order: '1',
         duration: '1',
         location: {
@@ -20,6 +21,7 @@ export const tripsList: Trip[] = [
         }
       },
       {
+        id: 'w0cRpwJze',
         order: '2',
         duration: '1',
         location: {
@@ -32,6 +34,7 @@ export const tripsList: Trip[] = [
         }
       },
       {
+        id: 'lUcREG0F0dbRA',
         order: '3',
         duration: '1',
         location: {
@@ -44,6 +47,7 @@ export const tripsList: Trip[] = [
         }
       },
       {
+        id: 'ZcLkEcRA9wf5',
         order: '4',
         duration: '1',
         location: {
@@ -64,6 +68,7 @@ export const tripsList: Trip[] = [
     description: 'Experience the natural wonders of the American Southwest',
     stops: [
       {
+        id: 'IJ0X31pIK3voARo3',
         order: '1',
         duration: '1',
         location: {
@@ -76,6 +81,7 @@ export const tripsList: Trip[] = [
         }
       },
       {
+        id: 'QGzIARjS7UQkR',
         order: '2',
         duration: '1',
         location: {
@@ -88,6 +94,7 @@ export const tripsList: Trip[] = [
         }
       },
       {
+        id: 'DAsZrNYcRBm2sv',
         order: '3',
         duration: '1',
         location: {
@@ -97,18 +104,6 @@ export const tripsList: Trip[] = [
           lat: 37.5930,
           lng: -112.1871,
           image: 'https://i.natgeofe.com/n/6d837654-0c5e-4dd9-981f-c52bfdbf3430/01-bryce-canyon-national-park-utah.jpg'
-        }
-      },
-      {
-        order: '4',
-        duration: '1',
-        location: {
-          name: 'Las Vegas',
-          address: 'Las Vegas, Nevada',
-          googlePlaceId: 'ChIJ0X31pIK3voARo3mz1ebVzDo',
-          lat: 36.1699,
-          lng: -115.1398,
-          image: 'https://static01.nyt.com/images/2023/04/13/multimedia/13hours-LasVegas-03-zjkm/13hours-LasVegas-03-zjkm-videoSixteenByNineJumbo1600-v2.jpg'
         }
       }
     ]

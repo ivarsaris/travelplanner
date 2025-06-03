@@ -9,6 +9,7 @@ import { Place } from '../../place.model';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NgFor } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-trip-edit',
@@ -46,6 +47,7 @@ export class TripEditComponent {
       description: this.descriptionTextarea.nativeElement.value,
       stops: this.tripStops.map((stop, index) => {
         return {
+          id: stop.id,
           order: stop.order,
           duration: this.stopDurationInputs.toArray()[index].nativeElement.value,
           location: stop.location
@@ -70,7 +72,7 @@ export class TripEditComponent {
 
   onAddStopToTrip() {
     if (this.googleMapsLocation) {
-      this.data.stops.push({ order: (this.data.stops.length + 1).toString(), duration: this.newStopDurationInput.nativeElement.value, location: this.googleMapsLocation });
+      this.data.stops.push({ id: uuid.v7(), order: (this.data.stops.length + 1).toString(), duration: this.newStopDurationInput.nativeElement.value, location: this.googleMapsLocation });
       this.tripStops = this.data.stops;
     }
   }

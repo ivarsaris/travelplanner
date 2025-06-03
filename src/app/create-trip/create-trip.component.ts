@@ -5,6 +5,7 @@ import { Place } from '../place.model';
 import { TripStop } from '../trips/trip-stop.model';
 import { TripsService } from '../trips/trips.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-create-trip',
@@ -28,7 +29,7 @@ export class CreateTripComponent {
 
   onAddLocationToTrip() {
     if (this.googleMapsLocation) {
-      this.places.push({ order: (this.places.length + 1).toString(), duration: this.durationInput.nativeElement.value, location: this.googleMapsLocation });
+      this.places.push({ id: uuid.v7(), order: (this.places.length + 1).toString(), duration: this.durationInput.nativeElement.value, location: this.googleMapsLocation });
     }
   }
 
