@@ -35,9 +35,9 @@ export class TripsService {
     }
 
     addTripToList(newTripData: { image: string, title: string, description: string, stops: TripStop[] }) {
-  
+
         const highestId = Math.max(...this.tripsList.value.map(trip => Number(trip.id)));
-        
+
         const newTrip: Trip = {
             id: (highestId + 1).toString(),
             image: newTripData.image,
@@ -101,11 +101,44 @@ export class TripsService {
         const trip = this.tripsList.value.find((trip) => trip.id === tripId);
         return trip?.stops.find((stop) => stop.location.googlePlaceId === googleMapsLocationId);
     }
-    
+
     addHotelToStop(tripId: string, stopId: string, hotel: Place) {
-        const trip = this.tripsList.value.find((trip) => trip.id === tripId);
-        const stop = trip?.stops.find((stop) => stop.id === stopId);
-        console.log('stop', stop);
-        console.log('hotel', hotel);
+        const targetTrip = this.tripsList.value.find((trip) => trip.id === tripId);
+        const targetStop = targetTrip?.stops.find((stop) => stop.id === stopId);
+
+        if (targetStop) {
+
+            targetStop.hotel = hotel;
+
+            this.httpClient
+                .patch<Place>(`http://localhost:3000/trips-list/${tripId}/${stopId}`, {
+                    hotel: hotel,
+                    tripId: tripId,
+                    stopId: stopId
+                })
+                .subscribe({
+                    next: (responseData) => {
+                        const updatedTripsList = this.tripsList.value.map((trip) => {
+                            if (trip.id === tripId) {
+                                
+                                const updatedStops = trip.stops.map((stop) => {
+                                    if (stop.id === stopId) {
+
+                                        return {...stop, hotel: hotel};
+                                    }
+                                    return stop;
+                                });
+
+                                return {...trip, stops: updatedStops};
+                            }
+                            return trip;
+                        });
+                        this.tripsList.next(updatedTripsList);
+                        alert(`hotel ${hotel.name} has been added to stop`);
+                    }
+                })
+        } else {
+            console.error('stop not found');
+        }
     }
 }
