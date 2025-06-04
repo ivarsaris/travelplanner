@@ -1,4 +1,7 @@
 <div class="hidden" #placesServiceDataEl></div>
+@if (tripId !== null) {
+    <button routerLink="/trip/{{tripId}}" class="bg-gray-600 text-white mt-10 py-2 px-4 rounded-md hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center">← Back to trip overview</button>
+}
 <div class="grid grid-cols-2 gap-8">
     @if (center !== undefined) {
     <div class="relative map-container mt-10 h-96 border-red-900 border-solid border" #mapContainer>

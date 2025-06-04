@@ -3,11 +3,12 @@ import { Component, inject, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone
 import { GoogleMapsModule, MapMarker } from '@angular/google-maps';
 import { ActivatedRoute } from '@angular/router';
 import { TripsService } from '../trips.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-stop-detail',
   standalone: true,
-  imports: [GoogleMapsModule, MapMarker, NgClass],
+  imports: [GoogleMapsModule, MapMarker, NgClass, RouterLink],
   templateUrl: './stop-detail.component.html',
   styleUrl: './stop-detail.component.scss'
 })
@@ -22,8 +23,8 @@ export class StopDetailComponent implements AfterViewInit {
   regularMarkerOptions: google.maps.MarkerOptions = this.getMarkerOptions('#fe0000', '#ffa428')
   selectedMarkerOptions: google.maps.MarkerOptions = this.getMarkerOptions('#00af50', '#ffa428')
   googlePlaceID!: string | null;
-  stopId!: string | null;
-  tripId!: string | null;
+  stopId: string | null = null;
+  tripId: string | null = null;
   googlePlacesService?: google.maps.places.PlacesService;
   @ViewChild('mapContainer') mapContainer!: ElementRef;
   @ViewChild('placesServiceDataEl') placesServiceDataEl!: ElementRef;
