@@ -57,7 +57,7 @@ export class StopDetailComponent implements AfterViewInit {
           location: {
             lat: this.stopData.hotel?.lat, lng: this.stopData.hotel?.lng
           },
-          options: this.getMarkerOptions('#fff', '#000')
+          options: this.getMarkerOptions('#dc2626', '#dc2626', 'hotel')
         };
       }
     }
@@ -218,10 +218,24 @@ export class StopDetailComponent implements AfterViewInit {
    * @param strokeColor border color of marker
    * @returns marker icon to use on map
    */
-  getMarkerOptions(fillColor: string, strokeColor: string): google.maps.MarkerOptions {
+  getMarkerOptions(fillColor: string, strokeColor: string, markerType: string = ''): google.maps.MarkerOptions {
+    
+    let path;
+
+    switch (markerType) {
+      case 'hotel':
+        path = 'M -8,-16 L -8,0 L 8,0 L 8,-16 Z M -6,-14 L -6,-12 L -4,-12 L -4,-14 Z M -2,-14 L -2,-12 L 0,-12 L 0,-14 Z M 2,-14 L 2,-12 L 4,-12 L 4,-14 Z M -6,-10 L -6,-8 L -4,-8 L -4,-10 Z M -2,-10 L -2,-8 L 0,-8 L 0,-10 Z M 2,-10 L 2,-8 L 4,-8 L 4,-10 Z M -6,-6 L -6,-4 L -4,-4 L -4,-6 Z M -2,-6 L -2,-4 L 0,-4 L 0,-6 Z M 2,-6 L 2,-4 L 4,-4 L 4,-6 Z'
+        break;
+      case 'activity':
+        path = 'M -8,-16 L -8,0 L 8,0 L 8,-16 Z M -6,-14 L -6,-12 L -4,-12 L -4,-14 Z M -2,-14 L -2,-12 L 0,-12 L 0,-14 Z M 2,-14 L 2,-12 L 4,-12 L 4,-14 Z M -6,-10 L -6,-8 L -4,-8 L -4,-10 Z M -2,-10 L -2,-8 L 0,-8 L 0,-10 Z M 2,-10 L 2,-8 L 4,-8 L 4,-10 Z M -6,-6 L -6,-4 L -4,-4 L -4,-6 Z M -2,-6 L -2,-4 L 0,-4 L 0,-6 Z M 2,-6 L 2,-4 L 4,-4 L 4,-6 Z'
+        break;
+      default:
+        path = 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z';
+    }
+
     return {
       icon: {
-        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+        path: path,
         fillColor: fillColor,
         fillOpacity: 1,
         strokeColor: strokeColor,
