@@ -64,16 +64,5 @@ export class TripDetailComponent implements OnInit {
   sortStopsByOrder(stops: TripStop[]) {
     return stops.sort((a, b) => Number(a.order) - Number(b.order));
   }
-
-  navigateToStopDetail(stop: TripStop) {
-    this.router.navigate(
-      ['/location', stop.location.googlePlaceId, this.trip!.id, stop.id],
-      {
-        state: {
-          stopData: stop,
-        }
-      }
-    );
-  }
 }
 

@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, inject, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { GoogleMapsModule, MapMarker } from '@angular/google-maps';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TripsService } from '../trips.service';
 import { RouterLink } from '@angular/router';
 import { TripStop } from '../trip-stop.model';
@@ -28,13 +28,13 @@ export class StopDetailComponent implements AfterViewInit {
   tripId: string | null = null;
   googlePlacesService?: google.maps.places.PlacesService;
 
-  stopData: TripStop | null = null;
+  stopData: TripStop | undefined = undefined;
   hotelMarker: { location: google.maps.LatLngLiteral, options: google.maps.MarkerOptions } | undefined = undefined;
 
   @ViewChild('mapContainer') mapContainer!: ElementRef;
   @ViewChild('placesServiceDataEl') placesServiceDataEl!: ElementRef;
 
-  constructor(private route: ActivatedRoute, private ngZone: NgZone, private router: Router) { }
+  constructor(private route: ActivatedRoute, private ngZone: NgZone) { }
 
   ngAfterViewInit() {
     this.googlePlaceID = this.route.snapshot.paramMap.get('googlePlaceId');
@@ -45,12 +45,8 @@ export class StopDetailComponent implements AfterViewInit {
       this.displayLocationById(this.googlePlaceID);
     }
 
-    // Check if data was passed via router state
-    const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras?.state || history.state;
-
-    if (state && state.stopData) {
-      this.stopData = state.stopData;
+    if (this.tripId && this.stopId) {
+      this.stopData = this.tripsService.getStopByTripIdAndStopId(this.tripId, this.stopId);
 
       if (this.stopData?.hotel) {
         this.hotelMarker = {
@@ -219,7 +215,7 @@ export class StopDetailComponent implements AfterViewInit {
    * @returns marker icon to use on map
    */
   getMarkerOptions(fillColor: string, strokeColor: string, markerType: string = ''): google.maps.MarkerOptions {
-    
+
     let path;
 
     switch (markerType) {

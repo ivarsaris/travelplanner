@@ -95,11 +95,9 @@ export class TripsService {
         return duration;
     }
 
-
-    // stop detail
-    getStopById(tripId: string, googleMapsLocationId: string) {
+    getStopByTripIdAndStopId(tripId: string, stopId: string) {
         const trip = this.tripsList.value.find((trip) => trip.id === tripId);
-        return trip?.stops.find((stop) => stop.location.googlePlaceId === googleMapsLocationId);
+        return trip?.stops.find((stop) => stop.id === stopId);
     }
 
     addHotelToStop(tripId: string, stopId: string, hotel: Place) {
