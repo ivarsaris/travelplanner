@@ -1,6 +1,8 @@
 <div class="hidden" #placesServiceDataEl></div>
 @if (tripId !== null) {
-    <button routerLink="/trip/{{tripId}}" class="bg-gray-600 text-white mt-10 py-2 px-4 rounded-md hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center">← Back to trip overview</button>
+<button routerLink="/trip/{{tripId}}"
+    class="bg-gray-600 text-white mt-10 py-2 px-4 rounded-md hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center">←
+    Back to trip overview</button>
 }
 <div class="grid grid-cols-2 gap-8">
     @if (center !== undefined) {
@@ -11,13 +13,24 @@
                 [options]="marker.index === selectedIndex ? selectedMarkerOptions : regularMarkerOptions"
                 (click)="highlightMarker(marker.index)"></map-marker>
             }
+            @if (hotelMarker) {
+            <map-marker [position]="hotelMarker.location" [options]="hotelMarker.options"></map-marker>
+            }
         </google-map>
 
+        @if (stopData && stopData.hotel) {
+        <h3>{{stopData.hotel.name}}</h3>
+        <span>{{stopData.hotel.address}}</span>
+        <img [src]="stopData.hotel.image" [alt]="stopData.hotel.name">
+        }
+        @else {
         <button
             class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md mt-4 transition-colors duration-200"
             (click)="fetchHotelsNearStop()">
-            find hotels in
+            find hotels
         </button>
+        }
+
         @if (fetchingHotelsActive === true) {
         <div
             class="absolute top-0 left-0 h-full w-full z-10 bg-blue-200 bg-opacity-60 flex items-center justify-center">

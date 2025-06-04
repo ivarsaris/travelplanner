@@ -8,7 +8,7 @@ import { DecimalPipe } from '@angular/common';
 import { DisplayRouteMapComponent } from '../../display-route-map/display-route-map.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TripEditComponent } from '../trip-edit/trip-edit.component';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-trip-detail',
@@ -23,7 +23,7 @@ export class TripDetailComponent implements OnInit {
   stops!: TripStop[];
   id!: string | null;
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private router: Router) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -63,6 +63,17 @@ export class TripDetailComponent implements OnInit {
 
   sortStopsByOrder(stops: TripStop[]) {
     return stops.sort((a, b) => Number(a.order) - Number(b.order));
+  }
+
+  navigateToStopDetail(stop: TripStop) {
+    this.router.navigate(
+      ['/location', stop.location.googlePlaceId, this.trip!.id, stop.id],
+      {
+        state: {
+          stopData: stop,
+        }
+      }
+    );
   }
 }
 

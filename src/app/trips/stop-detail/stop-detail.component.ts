@@ -1,9 +1,10 @@
 import { NgClass } from '@angular/common';
 import { Component, inject, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { GoogleMapsModule, MapMarker } from '@angular/google-maps';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TripsService } from '../trips.service';
 import { RouterLink } from '@angular/router';
+import { TripStop } from '../trip-stop.model';
 
 @Component({
   selector: 'app-stop-detail',
@@ -26,10 +27,14 @@ export class StopDetailComponent implements AfterViewInit {
   stopId: string | null = null;
   tripId: string | null = null;
   googlePlacesService?: google.maps.places.PlacesService;
+
+  stopData: TripStop | null = null;
+  hotelMarker: { location: google.maps.LatLngLiteral, options: google.maps.MarkerOptions } | undefined = undefined;
+
   @ViewChild('mapContainer') mapContainer!: ElementRef;
   @ViewChild('placesServiceDataEl') placesServiceDataEl!: ElementRef;
 
-  constructor(private route: ActivatedRoute, private ngZone: NgZone) { }
+  constructor(private route: ActivatedRoute, private ngZone: NgZone, private router: Router) { }
 
   ngAfterViewInit() {
     this.googlePlaceID = this.route.snapshot.paramMap.get('googlePlaceId');
@@ -38,6 +43,23 @@ export class StopDetailComponent implements AfterViewInit {
 
     if (this.googlePlaceID && typeof (this.googlePlaceID) == 'string') {
       this.displayLocationById(this.googlePlaceID);
+    }
+
+    // Check if data was passed via router state
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras?.state || history.state;
+
+    if (state && state.stopData) {
+      this.stopData = state.stopData;
+
+      if (this.stopData?.hotel) {
+        this.hotelMarker = {
+          location: {
+            lat: this.stopData.hotel?.lat, lng: this.stopData.hotel?.lng
+          },
+          options: this.getMarkerOptions('#fff', '#000')
+        };
+      }
     }
   }
 
@@ -180,7 +202,11 @@ export class StopDetailComponent implements AfterViewInit {
     };
 
     if (typeof (this.tripId) === 'string' && typeof (this.stopId) === 'string') {
-      this.tripsService.addHotelToStop(this.tripId, this.stopId, hotel)
+      this.tripsService.addHotelToStop(this.tripId, this.stopId, hotel);
+      if (this.stopData) {
+        this.stopData.hotel = hotel;
+      }
+
     } else {
       console.error('Hotel could not be added to stop');
     }
