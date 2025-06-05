@@ -68,7 +68,7 @@ app.patch("/trips-list/:id", (request, response) => {
     }
 });
 
-app.patch("/trips-list/:tripId/:stopId", (request, response) => {
+app.patch("/trips-list/hotel/:tripId/:stopId", (request, response) => {
     const hotel = request.body.hotel;
     const tripId = request.body.tripId;
     const stopId = request.body.stopId;
@@ -77,14 +77,14 @@ app.patch("/trips-list/:tripId/:stopId", (request, response) => {
     let targetStopName = '';
     
     if (!tripsListData.some(trip => trip.id === tripId)) {
-        response.status(500).json({ message: `500 - trip with ID ${tripId} doesn't exist.` });
+        return response.status(500).json({ message: `500 - trip with ID ${tripId} doesn't exist.` });
     }
 
     const updatedTripsListData = tripsListData.map((trip) => {
         if (trip.id === tripId) {
 
-            if (!trip.some(stop => stop.id === stopId)) {
-                response.status(500).json({ message: `500 - stop with ID ${stopId} doesn't exist.` });
+            if (!trip.stops.some(stop => stop.id === stopId)) {
+                return response.status(500).json({ message: `500 - stop with ID ${stopId} doesn't exist.` });
             }
             
             const updatedStops = trip.stops.map((stop) => {
