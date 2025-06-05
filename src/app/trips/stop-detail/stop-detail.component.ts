@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TripsService } from '../trips.service';
 import { RouterLink } from '@angular/router';
 import { TripStop } from '../trip-stop.model';
+import { Place } from '../../place.model';
 
 @Component({
   selector: 'app-stop-detail',
@@ -18,8 +19,8 @@ export class StopDetailComponent implements AfterViewInit {
   place: any;
   center: google.maps.LatLngLiteral | undefined = undefined;
   zoom = 12;
-  markerInfoObjects: { index: number, markerInfo: any, location: google.maps.LatLngLiteral, image: string }[] = [];
-  fetchingHotelsActive: Boolean = false;
+  markerInfoObjects: { index: number, type: string, markerInfo: any, location: google.maps.LatLngLiteral, image: string }[] = [];
+  fetchingResults: Boolean = false;
   selectedIndex: number | null = null;
   regularMarkerOptions: google.maps.MarkerOptions = this.getMarkerOptions('#fe0000', '#ffa428')
   selectedMarkerOptions: google.maps.MarkerOptions = this.getMarkerOptions('#00af50', '#ffa428')
@@ -30,6 +31,7 @@ export class StopDetailComponent implements AfterViewInit {
 
   stopData: TripStop | undefined = undefined;
   hotelMarker: { location: google.maps.LatLngLiteral, options: google.maps.MarkerOptions } | undefined = undefined;
+  activityMarkers: { location: google.maps.LatLngLiteral, options: google.maps.MarkerOptions }[] = [];
 
   @ViewChild('mapContainer') mapContainer!: ElementRef;
   @ViewChild('placesServiceDataEl') placesServiceDataEl!: ElementRef;
@@ -48,6 +50,8 @@ export class StopDetailComponent implements AfterViewInit {
     if (this.tripId && this.stopId) {
       this.stopData = this.tripsService.getStopByTripIdAndStopId(this.tripId, this.stopId);
 
+      console.log(this.stopData);
+
       if (this.stopData?.hotel) {
         this.hotelMarker = {
           location: {
@@ -55,6 +59,17 @@ export class StopDetailComponent implements AfterViewInit {
           },
           options: this.getMarkerOptions('#dc2626', '#dc2626', 'hotel')
         };
+      }
+      if (this.stopData?.activities) {
+        for (const activity of this.stopData.activities) {
+          const marker = {
+            location: {
+              lat: activity.lat, lng: activity.lng
+            },
+            options: this.getMarkerOptions('#2626dc', '#2626dc', 'hotel')
+          };
+          this.activityMarkers = [...this.activityMarkers, marker];
+        }
       }
     }
   }
@@ -97,7 +112,7 @@ export class StopDetailComponent implements AfterViewInit {
    */
   fetchHotelsNearStop() {
     // show loading screen until fetching is done
-    this.fetchingHotelsActive = true;
+    this.fetchingResults = true;
 
     // request to give to google maps places nearbySearch
     const request = {
@@ -133,7 +148,7 @@ export class StopDetailComponent implements AfterViewInit {
             }, 500);
           } else {
 
-            this.fetchingHotelsActive = false;
+            this.fetchingResults = false;
 
             // of all the results, get the 5 with the highest rating (at least 50 ratings)
             const bestRatedHotels = allFetchedHotels.filter(
@@ -150,6 +165,91 @@ export class StopDetailComponent implements AfterViewInit {
               // display marker on maps for each hotel
               this.markerInfoObjects.push({
                 index: index,
+                type: 'hotel',
+                markerInfo: place,
+                location: place.geometry!.location!.toJSON(),
+                image: place.photos ? place.photos[0].getUrl({
+                  maxWidth: 720,
+                  maxHeight: 480
+                }) : ""
+              });
+            });
+          }
+        });
+      } else {
+        console.error('error fetching hotels: ' + status);
+      }
+    });
+  }
+
+  /**
+   * send a request to google maps nearbySearch and retreives the 10 activities
+   * with the most reviews
+   */
+  fetchActivitiesNearStop() {
+    // show loading screen until fetching is done
+    this.fetchingResults = true;
+
+    // request to give to google maps places nearbySearch
+    const request = {
+      location: this.center,
+      fields: ['displayName', 'location', 'businessStatus'],
+      locationRestriction: {
+        center: this.center,
+      },
+      keyword: 'activity',
+      radius: 2000,
+      includedPrimaryTypes: [
+        'interest',
+        'Things to do',
+        'point_of_interest',
+        'tourist_attraction'
+      ],
+      // maxResultCount: 5
+    };
+
+    const allFetchedActivities: google.maps.places.PlaceResult[] = [];
+
+    // send request to google maps nearbySearch
+    this.googlePlacesService?.nearbySearch(request, (places, status, pagination) => {
+
+      if (status === 'OK' && places && places.length > 1) {
+
+        this.ngZone.run(() => {
+
+          allFetchedActivities.push(...places);
+
+          // each 'page' of results has 20 results, we want to retreive
+          // activities until the last page
+          if (pagination && pagination.hasNextPage) {
+
+            setTimeout(() => {
+              pagination.nextPage();
+
+            }, 500);
+          } else {
+
+            this.fetchingResults = false;
+
+            console.log('all activities', allFetchedActivities);
+
+            // of all the results, get the 5 with the highest rating (at least 50 ratings)
+            const mostRatedActivities = allFetchedActivities.filter(
+
+              (activity) => activity.user_ratings_total
+                && activity.user_ratings_total > 50
+                && activity.business_status === 'OPERATIONAL'
+              // && activity.types?.includes('lodging')
+            )
+              .sort((a, b) => (b.user_ratings_total ?? 0) - (a.user_ratings_total ?? 0))
+              .slice(0, 15);
+
+            mostRatedActivities.forEach((place, index) => {
+
+              // display marker on maps for each hotel
+              this.markerInfoObjects.push({
+                index: index,
+                type: 'activity',
                 markerInfo: place,
                 location: place.geometry!.location!.toJSON(),
                 image: place.photos ? place.photos[0].getUrl({
@@ -186,9 +286,15 @@ export class StopDetailComponent implements AfterViewInit {
     this.selectedIndex = i;
   }
 
+  /**
+   * 
+   * @param i index of hotel and corresponding markerInfoObject
+   * 
+   * triggers patch request in the trips service to update the trip object with a selected hotel
+   */
   addHotelToStop(i: number) {
     const location = this.markerInfoObjects.find((marker) => marker.index === i);
-    const hotel = {
+    const hotel: Place = {
       name: location!.markerInfo.name,
       address: location!.markerInfo.vicinity,
       lat: location!.location.lat,
@@ -205,6 +311,38 @@ export class StopDetailComponent implements AfterViewInit {
 
     } else {
       console.error('Hotel could not be added to stop');
+    }
+  }
+
+  /**
+   * 
+   * @param i index of activity and corresponding markerInfoObject
+   * 
+   * triggers put request in the trips service to update the trip object with a selected activity
+   */
+  addActivityToStop(i: number) {
+    const location = this.markerInfoObjects.find((marker) => marker.index === i);
+    const activity: Place = {
+      name: location!.markerInfo.name,
+      address: location!.markerInfo.vicinity,
+      lat: location!.location.lat,
+      lng: location!.location.lng,
+      googlePlaceId: location!.markerInfo.place_id,
+      image: location!.image
+    };
+
+    if (typeof (this.tripId) === 'string' && typeof (this.stopId) === 'string') {
+      this.tripsService.addActivityToStop(this.tripId, this.stopId, activity);
+
+      if (this.stopData) {
+        if (this.stopData.activities) {
+          this.stopData.activities.push(activity);
+        } else {
+          this.stopData.activities = [activity];
+        }
+      }
+    } else {
+      console.error('Activity could not be added to stop');
     }
   }
 

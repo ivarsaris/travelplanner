@@ -109,7 +109,7 @@ export class TripsService {
             targetStop.hotel = hotel;
 
             this.httpClient
-                .patch<Place>(`http://localhost:3000/trips-list/${tripId}/${stopId}`, {
+                .patch<Place>(`http://localhost:3000/trips-list/hotel/${tripId}/${stopId}`, {
                     hotel: hotel,
                     tripId: tripId,
                     stopId: stopId
@@ -118,16 +118,16 @@ export class TripsService {
                     next: (responseData) => {
                         const updatedTripsList = this.tripsList.value.map((trip) => {
                             if (trip.id === tripId) {
-                                
+
                                 const updatedStops = trip.stops.map((stop) => {
                                     if (stop.id === stopId) {
 
-                                        return {...stop, hotel: hotel};
+                                        return { ...stop, hotel: hotel };
                                     }
                                     return stop;
                                 });
 
-                                return {...trip, stops: updatedStops};
+                                return { ...trip, stops: updatedStops };
                             }
                             return trip;
                         });
@@ -137,6 +137,50 @@ export class TripsService {
                 })
         } else {
             console.error('stop not found');
+        }
+    }
+
+    addActivityToStop(tripId: string, stopId: string, activity: Place) {
+        const targetTrip = this.tripsList.value.find((trip) => trip.id === tripId);
+        const targetStop = targetTrip?.stops.find((stop) => stop.id === stopId);
+
+        if (targetStop) {
+            if (targetStop.activities) {
+                targetStop.activities.push(activity);
+            } else {
+                targetStop.activities = [activity];
+            }
+
+            this.httpClient
+                .put<Place>(`http://localhost:3000/trips-list/activities/${tripId}/${stopId}`, {
+                    activity: activity,
+                    tripId: tripId,
+                    stopId: stopId
+                })
+                .subscribe({
+                    next: (responseData) => {
+                        const updatedTripsList = this.tripsList.value.map((trip) => {
+                            if (trip.id === tripId) {
+
+                                const updatedStops = trip.stops.map((stop) => {
+                                    if (stop.id === stopId) {
+
+                                        const updatedActivities = stop.activities ? [...stop.activities, activity] : [activity];
+
+                                        stop.activities = updatedActivities;
+                                    }
+                                    return stop;
+                                });
+
+                                return { ...trip, stops: updatedStops };
+                            }
+                            return trip;
+                        });
+                        this.tripsList.next(updatedTripsList);
+                        console.log(this.tripsList);
+                        alert(`Activity ${activity.name} has been added to stop`);
+                    }
+                })
         }
     }
 }

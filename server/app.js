@@ -104,7 +104,48 @@ app.patch("/trips-list/hotel/:tripId/:stopId", (request, response) => {
 
     fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));
 
-    response.status(200).json({ message: `200 - stop ${targetStopName} updated with hotel ${hotel}` });
+    return response.status(200).json({ message: `200 - stop ${targetStopName} updated with hotel ${hotel}` });
+});
+
+app.put("/trips-list/activities/:tripId/:stopId", (request, response) => {
+    const activity = request.body.activity;
+    const tripId = request.body.tripId;
+    const stopId = request.body.stopId;
+    
+    const tripsListData = JSON.parse(fs.readFileSync('./data/trips-list.json'));
+    let targetStopName = '';
+    
+    if (!tripsListData.some(trip => trip.id === tripId)) {
+        return response.status(500).json({ message: `500 - trip with ID ${tripId} doesn't exist.` });
+    }
+
+    const updatedTripsListData = tripsListData.map((trip) => {
+        if (trip.id === tripId) {
+
+            if (!trip.stops.some(stop => stop.id === stopId)) {
+                return response.status(500).json({ message: `500 - stop with ID ${stopId} doesn't exist.` });
+            }
+            
+            const updatedStops = trip.stops.map((stop) => {
+                if (stop.id === stopId) {
+
+                    targetStopName = stop.location.name;
+
+                    const updatedActivities = stop.activities ? [...stop.activities, activity] : [activity];
+
+                    return { ...stop, activities: updatedActivities };
+                }
+                return stop;
+            });
+
+            return { ...trip, stops: updatedStops };
+        }
+        return trip;
+    });
+
+    fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));
+
+    return response.status(200).json({ message: `200 - stop ${targetStopName} updated with activity ${activity.name}` });
 });
 
 app.use((request, response, next) => {
