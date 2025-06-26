@@ -22,8 +22,10 @@ export class StopDetailComponent implements AfterViewInit {
   markerInfoObjects: { index: number, type: string, markerInfo: any, location: google.maps.LatLngLiteral, image: string }[] = [];
   fetchingResults: Boolean = false;
   selectedIndex: number | null = null;
-  regularMarkerOptions: google.maps.MarkerOptions = this.getMarkerOptions('#fe0000', '#ffa428')
-  selectedMarkerOptions: google.maps.MarkerOptions = this.getMarkerOptions('#00af50', '#ffa428')
+  hotelMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#dc2626', '#dc2626', 'hotel');
+  activityMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#2626dc', '#2626dc', 'activity');
+  regularMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#fe0000', '#ffa428');
+  selectedMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#00af50', '#ffa428');
   googlePlaceID!: string | null;
   stopId: string | null = null;
   tripId: string | null = null;
@@ -57,7 +59,7 @@ export class StopDetailComponent implements AfterViewInit {
           location: {
             lat: this.stopData.hotel?.lat, lng: this.stopData.hotel?.lng
           },
-          options: this.getMarkerOptions('#dc2626', '#dc2626', 'hotel')
+          options: this.createMarkerOptions('#dc2626', '#dc2626', 'hotel')
         };
       }
       if (this.stopData?.activities) {
@@ -66,7 +68,7 @@ export class StopDetailComponent implements AfterViewInit {
             location: {
               lat: activity.lat, lng: activity.lng
             },
-            options: this.getMarkerOptions('#2626dc', '#2626dc', 'hotel')
+            options: this.createMarkerOptions('#2626dc', '#2626dc', 'activity')
           };
           this.activityMarkers = [...this.activityMarkers, marker];
         }
@@ -75,9 +77,9 @@ export class StopDetailComponent implements AfterViewInit {
   }
 
   /**
-   * 
+   *
    * @param placedId the google maps locationId of a location
-   * 
+   *
    * gets details of a location by its locationId and focuses the map on this location
    */
   displayLocationById(placedId: string) {
@@ -164,7 +166,7 @@ export class StopDetailComponent implements AfterViewInit {
 
               // display marker on maps for each hotel
               this.markerInfoObjects.push({
-                index: index,
+                index: this.markerInfoObjects.length,
                 type: 'hotel',
                 markerInfo: place,
                 location: place.geometry!.location!.toJSON(),
@@ -248,7 +250,7 @@ export class StopDetailComponent implements AfterViewInit {
 
               // display marker on maps for each hotel
               this.markerInfoObjects.push({
-                index: index,
+                index: this.markerInfoObjects.length,
                 type: 'activity',
                 markerInfo: place,
                 location: place.geometry!.location!.toJSON(),
@@ -267,7 +269,7 @@ export class StopDetailComponent implements AfterViewInit {
   }
 
   /**
-   * 
+   *
    * @param priceLevel the price level of a location, number 1-5
    * @returns a string of euro signs symbolizing the price level
    */
@@ -279,17 +281,17 @@ export class StopDetailComponent implements AfterViewInit {
   }
 
   /**
-   * 
-   * @param i 
+   *
+   * @param i
    */
   highlightMarker(i: number) {
     this.selectedIndex = i;
   }
 
   /**
-   * 
+   *
    * @param i index of hotel and corresponding markerInfoObject
-   * 
+   *
    * triggers patch request in the trips service to update the trip object with a selected hotel
    */
   addHotelToStop(i: number) {
@@ -352,7 +354,7 @@ export class StopDetailComponent implements AfterViewInit {
    * @param strokeColor border color of marker
    * @returns marker icon to use on map
    */
-  getMarkerOptions(fillColor: string, strokeColor: string, markerType: string = ''): google.maps.MarkerOptions {
+  createMarkerOptions(fillColor: string, strokeColor: string, markerType: string = ''): google.maps.MarkerOptions {
 
     let path;
 
