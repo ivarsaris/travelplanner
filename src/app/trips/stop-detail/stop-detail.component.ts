@@ -349,7 +349,32 @@ export class StopDetailComponent implements AfterViewInit {
   }
 
   /**
-   * 
+   *
+   * @param i index of activity in stop
+   */
+  deleteActivityFromStop(i:number) {
+
+  }
+
+  /**
+   *
+   * @param marker the marker object to determine options for
+   * @returns the appropriate marker options based on marker type and selection state
+   */
+  getMarkerOptionsForMarker(marker: { index: number, type: string, markerInfo: any, location: google.maps.LatLngLiteral, image: string }): google.maps.MarkerOptions {
+    if (marker.index === this.selectedIndex) {
+      return this.selectedMarkerOptions;
+    } else if (marker.type === 'hotel') {
+      return this.hotelMarkerOptions;
+    } else if (marker.type === 'activity') {
+      return this.activityMarkerOptions;
+    } else {
+      return this.regularMarkerOptions;
+    }
+  }
+
+  /**
+   *
    * @param fillColor background color of marker
    * @param strokeColor border color of marker
    * @returns marker icon to use on map
