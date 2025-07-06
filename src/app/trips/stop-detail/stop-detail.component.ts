@@ -52,27 +52,8 @@ export class StopDetailComponent implements AfterViewInit {
     if (this.tripId && this.stopId) {
       this.stopData = this.tripsService.getStopByTripIdAndStopId(this.tripId, this.stopId);
 
-      console.log(this.stopData);
-
-      if (this.stopData?.hotel) {
-        this.hotelMarker = {
-          location: {
-            lat: this.stopData.hotel?.lat, lng: this.stopData.hotel?.lng
-          },
-          options: this.createMarkerOptions('#dc2626', '#dc2626', 'hotel')
-        };
-      }
-      if (this.stopData?.activities) {
-        for (const activity of this.stopData.activities) {
-          const marker = {
-            location: {
-              lat: activity.lat, lng: activity.lng
-            },
-            options: this.createMarkerOptions('#2626dc', '#2626dc', 'activity')
-          };
-          this.activityMarkers = [...this.activityMarkers, marker];
-        }
-      }
+      this.displayHotelMarker();
+      this.displayActivitiesMarkers();
     }
   }
 
@@ -416,6 +397,37 @@ export class StopDetailComponent implements AfterViewInit {
         fillOpacity: 1,
         strokeColor: strokeColor,
         strokeWeight: 2,
+      }
+    }
+  }
+
+  /**
+   * display marker on the map for the location of the hotel
+   */
+  displayHotelMarker() {
+    if (this.stopData?.hotel) {
+      this.hotelMarker = {
+        location: {
+          lat: this.stopData.hotel?.lat, lng: this.stopData.hotel?.lng
+        },
+        options: this.createMarkerOptions('#dc2626', '#dc2626', 'hotel')
+      };
+    }
+  }
+
+  /**
+   * display markers on the map for locations of the activities
+   */
+  displayActivitiesMarkers() {
+    if (this.stopData?.activities) {
+      for (const activity of this.stopData.activities) {
+        const marker = {
+          location: {
+            lat: activity.lat, lng: activity.lng
+          },
+          options: this.createMarkerOptions('#2626dc', '#2626dc', 'activity')
+        };
+        this.activityMarkers = [...this.activityMarkers, marker];
       }
     }
   }
