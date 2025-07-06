@@ -217,8 +217,6 @@ export class StopDetailComponent implements AfterViewInit {
 
             this.fetchingResults = false;
 
-            console.log('all activities', allFetchedActivities);
-
             // of all the results, get the 5 with the highest rating (at least 50 ratings)
             const mostRatedActivities = allFetchedActivities.filter(
 
@@ -293,13 +291,11 @@ export class StopDetailComponent implements AfterViewInit {
 
     if (typeof (this.tripId) === 'string' && typeof (this.stopId) === 'string') {
       this.tripsService.addHotelToStop(this.tripId, this.stopId, hotel);
-      if (this.stopData) {
-        this.stopData.hotel = hotel;
-        this.displayHotelMarker();
-      }
+
+      this.displayHotelMarker();
+
       // empty markerInfoObjects array
       this.markerInfoObjects = [];
-
     } else {
       console.error('Hotel could not be added to stop');
     }
@@ -333,18 +329,11 @@ export class StopDetailComponent implements AfterViewInit {
       image: location!.image
     };
 
+
     if (typeof (this.tripId) === 'string' && typeof (this.stopId) === 'string') {
       this.tripsService.addActivityToStop(this.tripId, this.stopId, activity);
 
-      if (this.stopData) {
-        if (this.stopData.activities) {
-          this.stopData.activities.push(activity);
-          this.displayActivitiesMarkers();
-
-        } else {
-          this.stopData.activities = [activity];
-        }
-      }
+      this.displayActivitiesMarkers();
     } else {
       console.error('Activity could not be added to stop');
     }
@@ -432,6 +421,7 @@ export class StopDetailComponent implements AfterViewInit {
    * display markers on the map for locations of the activities
    */
   displayActivitiesMarkers() {
+    this.activityMarkers = []; // Clear existing markers first
     if (this.stopData?.activities) {
       for (const activity of this.stopData.activities) {
         const marker = {
@@ -440,7 +430,7 @@ export class StopDetailComponent implements AfterViewInit {
           },
           options: this.createMarkerOptions('#2626dc', '#2626dc', 'activity')
         };
-        this.activityMarkers = [...this.activityMarkers, marker];
+        this.activityMarkers.push(marker);
       }
     }
   }

@@ -145,11 +145,6 @@ export class TripsService {
         const targetStop = targetTrip?.stops.find((stop) => stop.id === stopId);
 
         if (targetStop) {
-            if (targetStop.activities) {
-                targetStop.activities.push(activity);
-            } else {
-                targetStop.activities = [activity];
-            }
 
             this.httpClient
                 .put<Place>(`http://localhost:3000/trips-list/activities/${tripId}/${stopId}`, {
@@ -177,7 +172,6 @@ export class TripsService {
                             return trip;
                         });
                         this.tripsList.next(updatedTripsList);
-                        console.log(this.tripsList);
                         alert(`Activity ${activity.name} has been added to stop`);
                     }
                 })
