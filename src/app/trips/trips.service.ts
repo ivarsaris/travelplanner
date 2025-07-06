@@ -183,4 +183,51 @@ export class TripsService {
                 })
         }
     }
+
+    /**
+     * @param tripId id of the trip
+     * @param stopId id of the stop
+     *
+     * deletes the hotel object from a stop of a trip. this method sends a delete
+     * request to the server, and updates the tripsList value
+     *
+     */
+    deleteHotelFromStop(tripId: string, stopId: string) {
+        const targetTrip = this.tripsList.value.find((trip) => trip.id === tripId);
+        const targetStop = targetTrip?.stops.find((stop) => stop.id === stopId);
+
+        if (targetStop) {
+
+            this.httpClient.delete<string>(`http://localhost:3000/stop-hotel/${tripId}/${stopId}`, {})
+                .subscribe({
+                    next: (responseData) => {
+                        const updatedTripsList = this.tripsList.value.map((trip) => {
+                            if (trip.id === tripId) {
+
+                                const updatedStops = trip.stops.map((stop) => {
+                                    if (stop.id === stopId) {
+
+                                        delete stop.hotel;
+                                    }
+                                    return stop;
+                                });
+
+                                return { ...trip, stops: updatedStops };
+                            }
+                            return trip;
+                        });
+                        this.tripsList.next(updatedTripsList);
+
+                        alert(`Hotel has been removed from stop`);
+                    },
+                    error: (error) => {
+                        console.error('could not remove hotel');
+                    }
+                });
+        }
+    }
+
+    deleteActivityFromStop() {
+
+    }
 }

@@ -241,7 +241,6 @@ export class StopDetailComponent implements AfterViewInit {
               (activity) => activity.user_ratings_total
                 && activity.user_ratings_total > 50
                 && activity.business_status === 'OPERATIONAL'
-              // && activity.types?.includes('lodging')
             )
               .sort((a, b) => (b.user_ratings_total ?? 0) - (a.user_ratings_total ?? 0))
               .slice(0, 15);
@@ -317,9 +316,16 @@ export class StopDetailComponent implements AfterViewInit {
   }
 
   /**
-   * 
+   * triggers delete request in the trips service to remove the selected hotel from this stop
+   */
+  deleteHotelFromStop() {
+    this.tripsService.deleteHotelFromStop(this.tripId!, this.stopId!);
+  }
+
+  /**
+   *
    * @param i index of activity and corresponding markerInfoObject
-   * 
+   *
    * triggers put request in the trips service to update the trip object with a selected activity
    */
   addActivityToStop(i: number) {
