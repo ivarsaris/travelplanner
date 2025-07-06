@@ -227,7 +227,48 @@ export class TripsService {
         }
     }
 
-    deleteActivityFromStop() {
+     /**
+     * @param tripId id of the trip
+     * @param stopId id of the stop
+     * @param activityIndex index of the activity in the activities array
+     *
+     * deletes the activity at a given index from a stop of a trip. this method sends a delete
+     * request to the server, and updates the tripsList value
+     *
+     */
+    deleteActivityFromStop(tripId: string, stopId: string, activityIndex: number) {
+        const targetTrip = this.tripsList.value.find((trip) => trip.id === tripId);
+        const targetStop = targetTrip?.stops.find((stop) => stop.id === stopId);
 
+        if (targetStop) {
+
+            this.httpClient.delete<string>(`http://localhost:3000/stop-activity/${tripId}/${stopId}/${activityIndex}`, {})
+                .subscribe({
+                    next: (responseData) => {
+                        const updatedTripsList = this.tripsList.value.map((trip) => {
+                            if (trip.id === tripId) {
+
+                                const updatedStops = trip.stops.map((stop) => {
+                                    if (stop.id === stopId) {
+                                        if (stop.activities?.[activityIndex]) {
+                                            stop.activities.splice(activityIndex, 1);
+                                        }
+                                    }
+                                    return stop;
+                                });
+
+                                return { ...trip, stops: updatedStops };
+                            }
+                            return trip;
+                        });
+                        this.tripsList.next(updatedTripsList);
+
+                        alert(`Activity has been removed from stop`);
+                    },
+                    error: (error) => {
+                        console.error('could not remove activity');
+                    }
+                });
+        }
     }
 }

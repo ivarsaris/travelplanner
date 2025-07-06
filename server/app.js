@@ -152,6 +152,53 @@ app.delete("/stop-hotel/:tripId/:stopId", (request, response) => {
     return response.status(200).json({ message: `200 - stop Deleted hotel from stop ${targetStopName}` });
 });
 
+/**
+ * receives a delete request from the angular application and deletes the
+ * activity of a certain index from a stop
+ */
+app.delete("/stop-activity/:tripId/:stopId/:activityIndex", (request, response) => {
+    const tripId = request.params.tripId;
+    const stopId = request.params.stopId;
+    const activityIndex = request.params.activityIndex;
+
+    const tripsListData = JSON.parse(fs.readFileSync('./data/trips-list.json'));
+
+    if (!tripsListData.some((trip) => trip.id === tripId)) {
+        return response.status(500).json({ message: `500 - trip with ID ${tripId} doesn't exist.` });
+    }
+
+    const updatedTripsListData = tripsListData.map((trip) => {
+        if (trip.id === tripId) {
+
+            if (!trip.stops.some(stop => stop.id === stopId)) {
+                return response.status(500).json({ message: `500 - stop with ID ${stopId} doesn't exist.` });
+            }
+            else {
+
+                const updatedStops = trip.stops.map((stop) => {
+                    if (stop.id === stopId) {
+
+                        targetStopName = stop.location.name;
+                        activityName = stop.activities[activityIndex].name;
+
+                        stop.activities.splice(activityIndex, 1);
+                    }
+                    return stop;
+                });
+
+                return { ...trip, stops: updatedStops };
+            }
+
+        }
+
+        return trip;
+    });
+
+    fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));
+
+    return response.status(200).json({ message: `200 - Deleted activity ${activityName} from stop ${targetStopName}` });
+});
+
 app.put("/trips-list/activities/:tripId/:stopId", (request, response) => {
     const activity = request.body.activity;
     const tripId = request.body.tripId;

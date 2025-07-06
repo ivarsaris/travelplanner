@@ -353,9 +353,16 @@ export class StopDetailComponent implements AfterViewInit {
   /**
    *
    * @param i index of activity in stop
+   *
+   * deletes activity of given index from the stop
+   *
    */
-  deleteActivityFromStop(i:number) {
+  deleteActivityFromStop(i: number) {
+    this.tripsService.deleteActivityFromStop(this.tripId!, this.stopId!, i);
 
+    if (this.stopData!.activities) {
+      this.activityMarkers.splice(i, 1);
+    }
   }
 
   /**
