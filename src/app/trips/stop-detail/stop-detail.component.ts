@@ -295,6 +295,7 @@ export class StopDetailComponent implements AfterViewInit {
       this.tripsService.addHotelToStop(this.tripId, this.stopId, hotel);
       if (this.stopData) {
         this.stopData.hotel = hotel;
+        this.displayHotelMarker();
       }
       // empty markerInfoObjects array
       this.markerInfoObjects = [];
@@ -309,7 +310,10 @@ export class StopDetailComponent implements AfterViewInit {
    */
   deleteHotelFromStop() {
     this.tripsService.deleteHotelFromStop(this.tripId!, this.stopId!);
-    this.stopData!.hotel && delete this.stopData!.hotel;
+    if (this.stopData!.hotel) {
+      delete this.stopData!.hotel;
+      this.hotelMarker = undefined;
+    }
   }
 
   /**
@@ -335,6 +339,8 @@ export class StopDetailComponent implements AfterViewInit {
       if (this.stopData) {
         if (this.stopData.activities) {
           this.stopData.activities.push(activity);
+          this.displayActivitiesMarkers();
+
         } else {
           this.stopData.activities = [activity];
         }
