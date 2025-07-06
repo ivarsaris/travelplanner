@@ -162,6 +162,9 @@ export class StopDetailComponent implements AfterViewInit {
               .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
               .slice(0, 5);
 
+            // empty markerInfoObjects array
+            this.markerInfoObjects = [];
+
             bestRatedHotels.forEach((place, index) => {
 
               // display marker on maps for each hotel
@@ -245,6 +248,9 @@ export class StopDetailComponent implements AfterViewInit {
               .sort((a, b) => (b.user_ratings_total ?? 0) - (a.user_ratings_total ?? 0))
               .slice(0, 15);
 
+            // empty markerInfoObjects array
+            this.markerInfoObjects = [];
+
             mostRatedActivities.forEach((place, index) => {
 
               // display marker on maps for each hotel
@@ -309,6 +315,8 @@ export class StopDetailComponent implements AfterViewInit {
       if (this.stopData) {
         this.stopData.hotel = hotel;
       }
+      // empty markerInfoObjects array
+      this.markerInfoObjects = [];
 
     } else {
       console.error('Hotel could not be added to stop');
@@ -320,6 +328,7 @@ export class StopDetailComponent implements AfterViewInit {
    */
   deleteHotelFromStop() {
     this.tripsService.deleteHotelFromStop(this.tripId!, this.stopId!);
+    this.stopData!.hotel && delete this.stopData!.hotel;
   }
 
   /**
