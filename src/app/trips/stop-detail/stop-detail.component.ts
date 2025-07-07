@@ -1,11 +1,12 @@
 import { NgClass } from '@angular/common';
-import { Component, inject, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, inject, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { GoogleMapsModule, MapMarker } from '@angular/google-maps';
 import { ActivatedRoute } from '@angular/router';
 import { TripsService } from '../trips.service';
 import { RouterLink } from '@angular/router';
 import { TripStop } from '../trip-stop.model';
 import { Place } from '../../place.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-stop-detail',
@@ -14,7 +15,7 @@ import { Place } from '../../place.model';
   templateUrl: './stop-detail.component.html',
   styleUrl: './stop-detail.component.scss'
 })
-export class StopDetailComponent implements AfterViewInit {
+export class StopDetailComponent implements AfterViewInit, OnDestroy {
   tripsService = inject(TripsService);
   place: any;
   center: google.maps.LatLngLiteral | undefined = undefined;
@@ -37,6 +38,8 @@ export class StopDetailComponent implements AfterViewInit {
   hotelMarker: { location: google.maps.LatLngLiteral, options: google.maps.MarkerOptions } | undefined = undefined;
   activityMarkers: { location: google.maps.LatLngLiteral, options: google.maps.MarkerOptions }[] = [];
 
+  private tripsSubscription?: Subscription;
+
   @ViewChild('mapContainer') mapContainer!: ElementRef;
   @ViewChild('placesServiceDataEl') placesServiceDataEl!: ElementRef;
 
@@ -52,11 +55,18 @@ export class StopDetailComponent implements AfterViewInit {
     }
 
     if (this.tripId && this.stopId) {
-      this.stopData = this.tripsService.getStopByTripIdAndStopId(this.tripId, this.stopId);
 
-      this.displayHotelMarker();
-      this.displayActivitiesMarkers();
+      // Subscribe to tripsList changes to keep stopData in sync
+      this.tripsSubscription = this.tripsService.tripsList$.subscribe(() => {
+        this.stopData = this.tripsService.getStopByTripIdAndStopId(this.tripId!, this.stopId!);
+        this.displayHotelMarker();
+        this.displayActivitiesMarkers();
+      });
     }
+  }
+
+  ngOnDestroy() {
+    this.tripsSubscription?.unsubscribe();
   }
 
   /**
@@ -294,8 +304,6 @@ export class StopDetailComponent implements AfterViewInit {
     if (typeof (this.tripId) === 'string' && typeof (this.stopId) === 'string') {
       this.tripsService.addHotelToStop(this.tripId, this.stopId, hotel);
 
-      this.displayHotelMarker();
-
       // empty markerInfoObjects array
       this.markerInfoObjects = [];
     } else {
@@ -308,10 +316,6 @@ export class StopDetailComponent implements AfterViewInit {
    */
   deleteHotelFromStop() {
     this.tripsService.deleteHotelFromStop(this.tripId!, this.stopId!);
-    if (this.stopData!.hotel) {
-      delete this.stopData!.hotel;
-      this.hotelMarker = undefined;
-    }
   }
 
   /**
@@ -334,8 +338,6 @@ export class StopDetailComponent implements AfterViewInit {
 
     if (typeof (this.tripId) === 'string' && typeof (this.stopId) === 'string') {
       this.tripsService.addActivityToStop(this.tripId, this.stopId, activity);
-
-      this.displayActivitiesMarkers();
     } else {
       console.error('Activity could not be added to stop');
     }
@@ -345,15 +347,11 @@ export class StopDetailComponent implements AfterViewInit {
    *
    * @param i index of activity in stop
    *
-   * deletes activity of given index from the stop
+   * triggers delete request in the trips service to remove activity from stop at a certain index
    *
    */
   deleteActivityFromStop(i: number) {
     this.tripsService.deleteActivityFromStop(this.tripId!, this.stopId!, i);
-
-    if (this.stopData!.activities) {
-      this.activityMarkers.splice(i, 1);
-    }
   }
 
   /**
@@ -416,6 +414,8 @@ export class StopDetailComponent implements AfterViewInit {
         },
         options: this.createMarkerOptions('#dc2626', '#dc2626', 'hotel')
       };
+    } else {
+      this.hotelMarker = undefined;
     }
   }
 
@@ -424,6 +424,7 @@ export class StopDetailComponent implements AfterViewInit {
    */
   displayActivitiesMarkers() {
     this.activityMarkers = []; // Clear existing markers first
+
     if (this.stopData?.activities) {
       for (const activity of this.stopData.activities) {
         const marker = {
