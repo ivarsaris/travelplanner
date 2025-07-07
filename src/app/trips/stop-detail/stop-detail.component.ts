@@ -22,10 +22,12 @@ export class StopDetailComponent implements AfterViewInit {
   markerInfoObjects: { index: number, type: string, markerInfo: any, location: google.maps.LatLngLiteral, image: string }[] = [];
   fetchingResults: Boolean = false;
   selectedIndex: number | null = null;
-  hotelMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#dc2626', '#dc2626', 'hotel');
-  activityMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#2626dc', '#2626dc', 'activity');
+  hotelMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#ffa428', '#dc2626');
+  selectedHotelMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#dc2626', '#dc2626', 'hotel');
+  activityMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#ffa428', '#2626dc');
+  selectedActivityMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#2626dc', '#2626dc', 'activity');
   regularMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#fe0000', '#ffa428');
-  selectedMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#00af50', '#ffa428');
+  selectedMarkerOptions: google.maps.MarkerOptions = this.createMarkerOptions('#00af50', '#00af50');
   googlePlaceID!: string | null;
   stopId: string | null = null;
   tripId: string | null = null;

@@ -28,11 +28,11 @@
           (click)="highlightMarker(marker.index)"></map-marker>
         }
         @if (hotelMarker) {
-        <map-marker [position]="hotelMarker.location" [options]="hotelMarkerOptions"></map-marker>
+        <map-marker [position]="hotelMarker.location" [options]="selectedHotelMarkerOptions"></map-marker>
         }
         @if (activityMarkers && activityMarkers.length) {
         @for (marker of activityMarkers; track $index;) {
-        <map-marker [position]="marker.location" [options]="activityMarkerOptions"></map-marker>
+        <map-marker [position]="marker.location" [options]="selectedActivityMarkerOptions"></map-marker>
         }
         }
       </google-map>
