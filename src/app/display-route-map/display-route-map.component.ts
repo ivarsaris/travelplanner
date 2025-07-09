@@ -45,7 +45,7 @@ export class DisplayRouteMapComponent implements OnInit, OnChanges {
         waypoints.push({location: {lat: this.stops[i].location.lat, lng: this.stops[i].location.lng}, stopover: true})
       }
     }
-    
+
     const request = {
       origin: origin.location,
       destination: destination.location,
@@ -62,13 +62,5 @@ export class DisplayRouteMapComponent implements OnInit, OnChanges {
         return of(undefined);
       })
     );
-  }
-
-  moveMap(event: google.maps.MapMouseEvent) {
-    if (event.latLng != null) this.center = (event.latLng.toJSON());
-  }
-
-  move(event: google.maps.MapMouseEvent) {
-    if (event.latLng != null) this.display = event.latLng.toJSON();
   }
 }

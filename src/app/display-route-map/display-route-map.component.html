@@ -3,18 +3,10 @@
     <google-map height="300px"
               width="100%"
               [center]="center"
-              [zoom]="zoom"
-              (mapClick)="moveMap($event)"
-              (mapMousemove)="move($event)">
+              [zoom]="zoom">
         @if (directionsResults$ | async; as directionsResults) {
             <map-directions-renderer [directions]="directionsResults" />
         }
     </google-map>
-  </div>
-
-  <div class="bg-gray-100 p-4 rounded-lg shadow mt-5">
-    <h3 class="mt-0 mb-3 text-gray-800 font-medium">Current Coordinates</h3>
-    <div class="text-gray-600 my-1">Latitude: {{display?.lat}}</div>
-    <div class="text-gray-600 my-1">Longitude: {{display?.lng}}</div>
   </div>
 </div>
