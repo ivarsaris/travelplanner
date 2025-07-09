@@ -23,7 +23,7 @@ export class CreateTripComponent {
   @ViewChild('durationInput') durationInput!: ElementRef;
   @ViewChild('titleInput') titleInput!: ElementRef;
   @ViewChild('descriptionInput') descriptionInput!: ElementRef;
-  @ViewChild('imageInput') imageInput!: ElementRef;
+  @ViewChild('tripImageEl') tripImageEl!: ElementRef;
 
   onPlaceSelected(event: Place) {
     this.googleMapsLocation = event;
@@ -37,7 +37,7 @@ export class CreateTripComponent {
 
   onAddTripToTripList() {
     const tripData = {
-      image: this.imageInput.nativeElement.value,
+      image: this.tripImageEl.nativeElement.src,
       title: this.titleInput.nativeElement.value,
       description: this.descriptionInput.nativeElement.value,
       stops: this.places
