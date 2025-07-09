@@ -67,8 +67,8 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Itinerary</h3>
 
                 <div cdkListGroup class="space-y-4">
-                    <div cdkDropList [cdkDropListData]="places" (cdkDropListDropped)="drop($event)">
-                        <div cdkDrag *ngFor="let stop of places; let i = index"
+                    <div cdkDropList [cdkDropListData]="places" (cdkDropListDropped)="drop($event)" class="flex flex-col gap-4">
+                        <div cdkDrag *ngFor="let stop of places; let i = index" [id]="'stop-' + i"
                             class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                             <div cdkDragHandle class="cursor-move text-gray-400 hover:text-gray-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8"

@@ -47,6 +47,17 @@ export class CreateTripComponent {
 
   /**
    *
+   * @param index
+   *
+   * delete stop from trip at given index
+   */
+  onDeleteStopFromTrip(index: number) {
+    document.getElementById(`stop-${index}`)?.remove();
+    this.places = this.places.filter((stop) => stop.order !== (index + 1).toString());
+  }
+
+  /**
+   *
    * @param event drag and drop event
    *
    * allow for changing the order of the stops by drag and drop
