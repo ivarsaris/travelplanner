@@ -42,6 +42,8 @@ export class PlacesSearchComponent implements AfterViewInit {
                 maxHeight: 480
               }) : ""
             });
+
+            this.standardPlacesInput.nativeElement.value = '';
           }
         });
       });
