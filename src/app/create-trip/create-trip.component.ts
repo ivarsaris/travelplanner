@@ -5,12 +5,14 @@ import { Place } from '../place.model';
 import { TripStop } from '../trips/trip-stop.model';
 import { TripsService } from '../trips/trips.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-create-trip',
   standalone: true,
-  imports: [PlacesSearchComponent, NgIf, NgFor],
+  imports: [PlacesSearchComponent, NgIf, NgFor, CdkDrag, CdkDropList, CdkDropListGroup, MatTooltipModule],
   templateUrl: './create-trip.component.html',
   styleUrl: './create-trip.component.scss'
 })
@@ -41,5 +43,18 @@ export class CreateTripComponent {
       stops: this.places
     }
     this.tripsService.addTripToList(tripData);
+  }
+
+  /**
+   *
+   * @param event drag and drop event
+   *
+   * allow for changing the order of the stops by drag and drop
+   *
+   */
+  drop(event: CdkDragDrop<any>): void {
+    moveItemInArray(this.places, event.previousIndex, event.currentIndex);
+
+    this.places.forEach((stop, index) => stop.order = (index + 1).toString());
   }
 }
