@@ -26,6 +26,7 @@ export class TripEditComponent {
   @ViewChild('imageInput') imageInput!: ElementRef;
   @ViewChildren('stopOrderInputs') stopOrderInputs!: QueryList<ElementRef>;
   @ViewChildren('stopDurationInputs') stopDurationInputs!: QueryList<ElementRef>;
+  @ViewChild(PlacesSearchComponent) placesSearchComponent!: PlacesSearchComponent;
 
   googleMapsLocation: Place | null = null;
   @ViewChild('newStopDurationInput') newStopDurationInput!: ElementRef;
@@ -74,6 +75,8 @@ export class TripEditComponent {
     if (this.googleMapsLocation) {
       this.data.stops.push({ id: uuid.v7(), order: (this.data.stops.length + 1).toString(), duration: this.newStopDurationInput.nativeElement.value, location: this.googleMapsLocation });
       this.tripStops = this.data.stops;
+      this.placesSearchComponent.clearInput();
+      this.googleMapsLocation = null;
     }
   }
 

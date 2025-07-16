@@ -19,6 +19,10 @@ export class PlacesSearchComponent implements AfterViewInit {
     this.initAutoCompleteApi();
   }
 
+  clearInput() {
+    this.standardPlacesInput.nativeElement.value = '';
+  }
+
   initAutoCompleteApi() {
 
     try {
@@ -42,8 +46,6 @@ export class PlacesSearchComponent implements AfterViewInit {
                 maxHeight: 480
               }) : ""
             });
-
-            this.standardPlacesInput.nativeElement.value = '';
           }
         });
       });
