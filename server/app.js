@@ -11,6 +11,16 @@ app.use((request, response, next) => {
     next();
 });
 
+
+/**
+ * =    =   =   =   =   =   =
+ *
+ * Trip requests
+ *
+ * =    =   =   =   =   =   =
+ */
+
+
 app.get('/trips-list', (request, response) => {
     const tripsListData = JSON.parse(fs.readFileSync('./data/trips-list.json'));
 
@@ -28,7 +38,7 @@ app.put("/trips-list", (request, response) => {
     } else {
         const updatedTripsListData = [...tripsListData, newTrip];
 
-        fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));   
+        fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));
 
         response.status(200).json({message: `200 - trip "${newTrip.title}" added to list`});
     }
@@ -58,12 +68,12 @@ app.patch("/trips-list/:id", (request, response) => {
 
     if (!tripsListData.some(trip => trip.id === updatedTrip.id)) {
         response.status(500).json({ message: `500 - trip with ID ${updatedTrip.id} doesn't exist.` });
-        
+
     } else {
         const updatedTripsListData = tripsListData.map((trip) => (trip.id === updatedTrip.id ? { ...trip, ...updatedTrip } : trip));
-        
+
         fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));
-        
+
         response.status(200).json({ message: `200 - trip ${updatedTrip.title} updated` });
     }
 });
@@ -72,10 +82,10 @@ app.patch("/trips-list/hotel/:tripId/:stopId", (request, response) => {
     const hotel = request.body.hotel;
     const tripId = request.body.tripId;
     const stopId = request.body.stopId;
-    
+
     const tripsListData = JSON.parse(fs.readFileSync('./data/trips-list.json'));
     let targetStopName = '';
-    
+
     if (!tripsListData.some(trip => trip.id === tripId)) {
         return response.status(500).json({ message: `500 - trip with ID ${tripId} doesn't exist.` });
     }
@@ -86,7 +96,7 @@ app.patch("/trips-list/hotel/:tripId/:stopId", (request, response) => {
             if (!trip.stops.some(stop => stop.id === stopId)) {
                 return response.status(500).json({ message: `500 - stop with ID ${stopId} doesn't exist.` });
             }
-            
+
             const updatedStops = trip.stops.map((stop) => {
                 if (stop.id === stopId) {
 
@@ -203,10 +213,10 @@ app.put("/trips-list/activities/:tripId/:stopId", (request, response) => {
     const activity = request.body.activity;
     const tripId = request.body.tripId;
     const stopId = request.body.stopId;
-    
+
     const tripsListData = JSON.parse(fs.readFileSync('./data/trips-list.json'));
     let targetStopName = '';
-    
+
     if (!tripsListData.some(trip => trip.id === tripId)) {
         return response.status(500).json({ message: `500 - trip with ID ${tripId} doesn't exist.` });
     }
@@ -217,7 +227,7 @@ app.put("/trips-list/activities/:tripId/:stopId", (request, response) => {
             if (!trip.stops.some(stop => stop.id === stopId)) {
                 return response.status(500).json({ message: `500 - stop with ID ${stopId} doesn't exist.` });
             }
-            
+
             const updatedStops = trip.stops.map((stop) => {
                 if (stop.id === stopId) {
 
@@ -239,6 +249,44 @@ app.put("/trips-list/activities/:tripId/:stopId", (request, response) => {
 
     return response.status(200).json({ message: `200 - stop ${targetStopName} updated with activity ${activity.name}` });
 });
+
+/**
+ * =    =   =   =   =   =   =
+ *
+ * User requests
+ *
+ * =    =   =   =   =   =   =
+ */
+
+/**
+ * retreive list of users through a get request
+ */
+app.get('/users-list', (request, response) => {
+    const usersListData = JSON.parse(fs.readFileSync('./data/users-list.json'));
+
+    response.status(200).json(usersListData);
+});
+
+/**
+ * add user to users list through a put request
+ */
+app.put("/users-list", (request, response) => {
+    const newUser = request.body.user;
+
+    const usersListData = JSON.parse(fs.readFileSync('./data/users-list.json'));
+
+    if (usersListData.some((user) => user.id === newUser.id)) {
+        response.status(500).json({ message: `500 - user with id ${newUser.id} already exists`});
+
+    } else {
+        const updatedUsersListData = [...usersListData, newUser];
+
+        fs.writeFileSync('./data/users-list.json', JSON.stringify(updatedUsersListData));
+
+        response.status(200).json({message: `200 - User "${newUser.username}" added to list`});
+    }
+});
+
 
 app.use((request, response, next) => {
     if (request.method === "OPTIONS") {

@@ -1,0 +1,30 @@
+[
+    {
+        "id": "942814c9-403d-73da-8d28-849dms9dc5234",
+        "username": "Admin",
+        "email": "admin@example.com",
+        "password": "Hello123!",
+        "role": "admin",
+        "isActive": true,
+        "createdAt": "2024-01-15T10:30:00Z",
+        "profile": {
+            "firstName": "John",
+            "lastName": "Doe",
+            "avatar": ""
+        }
+    },
+    {
+        "id": "094114c9-148x-73da-8d28-849dms9dc3385",
+        "username": "Pete",
+        "email": "pete@example.com",
+        "password": "Hello123!",
+        "role": "user",
+        "isActive": true,
+        "createdAt": "2024-01-15T10:30:00Z",
+        "profile": {
+            "firstName": "Pete",
+            "lastName": "Peterson",
+            "avatar": ""
+        }
+    }
+]

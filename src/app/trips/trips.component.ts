@@ -17,7 +17,6 @@ export class TripsComponent implements OnInit {
   private tripsService = inject(TripsService);
   private tripsListSubscription!: Subscription;
   tripsList: Trip[] = [];
-  private httpClient = inject(HttpClient);
 
   ngOnInit() {
     this.tripsListSubscription = this.tripsService.tripsList$.subscribe(tripsList => {
