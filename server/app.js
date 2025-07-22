@@ -33,14 +33,14 @@ app.put("/trips-list", (request, response) => {
     const tripsListData = JSON.parse(fs.readFileSync('./data/trips-list.json'));
 
     if (tripsListData.some((trip) => trip.id === newTrip.id)) {
-        response.status(500).json({ message: `500 - trip with id ${newTrip.id} already exists`});
+        response.status(500).json({ message: `500 - trip with id ${newTrip.id} already exists` });
 
     } else {
         const updatedTripsListData = [...tripsListData, newTrip];
 
         fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));
 
-        response.status(200).json({message: `200 - trip "${newTrip.title}" added to list`});
+        response.status(200).json({ message: `200 - trip "${newTrip.title}" added to list` });
     }
 });
 
@@ -50,14 +50,14 @@ app.delete("/trips-list/:id", (request, response) => {
     const tripsListData = JSON.parse(fs.readFileSync('./data/trips-list.json'));
 
     if (!tripsListData.some((trip) => trip.id === tripId)) {
-        response.status(500).json({message: `500 - trip with ID ${tripId} doesn't exist.`});
+        response.status(500).json({ message: `500 - trip with ID ${tripId} doesn't exist.` });
 
     } else {
         const updatedTripsListData = tripsListData.filter(trip => trip.id !== tripId);
 
         fs.writeFileSync('./data/trips-list.json', JSON.stringify(updatedTripsListData));
 
-        response.status(200).json({message: `200 - trip with id ${tripId} deleted from list`});
+        response.status(200).json({ message: `200 - trip with id ${tripId} deleted from list` });
     }
 });
 
@@ -276,14 +276,34 @@ app.put("/users-list", (request, response) => {
     const usersListData = JSON.parse(fs.readFileSync('./data/users-list.json'));
 
     if (usersListData.some((user) => user.id === newUser.id)) {
-        response.status(500).json({ message: `500 - user with id ${newUser.id} already exists`});
+        response.status(500).json({ message: `500 - user with id ${newUser.id} already exists` });
 
     } else {
         const updatedUsersListData = [...usersListData, newUser];
 
         fs.writeFileSync('./data/users-list.json', JSON.stringify(updatedUsersListData));
 
-        response.status(200).json({message: `200 - User "${newUser.username}" added to list`});
+        response.status(200).json({ message: `200 - User "${newUser.username}" added to list` });
+    }
+});
+
+/**
+ * login in using email and password
+ */
+app.post('/auth/login', (request, response) => {
+    const email = request.body.email;
+    const password = request.body.password;
+
+    const users = JSON.parse(fs.readFileSync('./data/users-list.json'));
+    const user = users.find(user => user.email === email);
+
+    if (password === user.password) {
+        const token = 'ycgvwhqewofhuigyuvqw';
+
+        response.status(200).json({
+            token: token,
+            user: user
+        });
     }
 });
 

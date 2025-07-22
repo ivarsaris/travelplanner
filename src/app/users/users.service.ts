@@ -1,8 +1,12 @@
 import { Injectable, inject } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable, tap } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { Router } from "@angular/router";
 import { User } from "./user.model";
+
+export interface AuthResponse {
+    token: string;
+    user: User;
+}
 
 @Injectable({ providedIn: 'root' })
 
@@ -10,9 +14,12 @@ export class UsersService {
     private usersList = new BehaviorSubject<User[]>([]);
     usersList$ = this.usersList.asObservable();
 
+    private currentUser = new BehaviorSubject<User | undefined>(undefined);
+    currentUser$ = this.currentUser.asObservable();
+
     private httpClient = inject(HttpClient);
 
-    constructor(private router: Router) {
+    constructor() {
         this.getUsers();
     }
 
@@ -28,5 +35,34 @@ export class UsersService {
                 console.error('Error fetching users:', error);
             }
         });
+    }
+
+    /**
+     * log in with email and password
+     */
+    login(email: string, password: string): Observable<AuthResponse> {
+        return this.httpClient.post<AuthResponse>('http://localhost:3000/auth/login', { email, password }).pipe(
+            tap(response => {
+                this.setSession(response);
+            })
+        );
+    }
+
+    /**
+     * log out, remove user from localStorage
+     */
+    logout(): void {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        this.currentUser.next(undefined);
+    }
+
+    /**
+     * set session
+     */
+    private setSession(authResult: AuthResponse) {
+        localStorage.setItem('token', authResult.token);
+        localStorage.setItem('user', JSON.stringify(authResult.user));
+        this.currentUser.next(authResult.user)
     }
 }
