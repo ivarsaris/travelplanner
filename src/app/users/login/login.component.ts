@@ -41,12 +41,4 @@ export class LoginComponent {
             });
         }
     }
-
-    /**
-     * log out user
-     */
-    onLogout() {
-        this.usersService.logout();
-        this.router.navigate(['/login']);
-    }
 }
