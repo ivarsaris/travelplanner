@@ -21,6 +21,27 @@ export class UsersService {
 
     constructor() {
         this.getUsers();
+        this.loadUserFromStorage();
+    }
+
+    /**
+     * Load user from localStorage if available
+     */
+    private loadUserFromStorage(): void {
+        if (typeof window !== 'undefined' && window.localStorage) {
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (user && token) {
+                try {
+                    const parsedUser = JSON.parse(user);
+                    this.currentUser.next(parsedUser);
+                } catch (error) {
+                    console.error('Error parsing user from localStorage:', error);
+                    this.logout();
+                }
+            }
+        }
     }
 
     /**
