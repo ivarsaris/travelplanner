@@ -34,7 +34,7 @@ export class TripsService {
         return this.tripsList.value.find(trip => trip.id === id);
     }
 
-    addTripToList(newTripData: { image: string, title: string, description: string, stops: TripStop[] }) {
+    addTripToList(newTripData: { image: string, title: string, description: string, stops: TripStop[], userId: string, isRecommended: boolean }) {
 
         const highestId = Math.max(...this.tripsList.value.map(trip => Number(trip.id)));
 
@@ -43,7 +43,9 @@ export class TripsService {
             image: newTripData.image,
             title: newTripData.title,
             description: newTripData.description,
-            stops: newTripData.stops
+            stops: newTripData.stops,
+            userId: newTripData.userId,
+            isRecommended: newTripData.isRecommended
         }
 
         this.httpClient
