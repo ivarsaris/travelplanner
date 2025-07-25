@@ -9,6 +9,8 @@ import { DisplayRouteMapComponent } from '../../display-route-map/display-route-
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TripEditComponent } from '../trip-edit/trip-edit.component';
 import { RouterLink, Router } from '@angular/router';
+import { UsersService } from '../../users/users.service';
+import { User } from '../../users/user.model';
 
 @Component({
   selector: 'app-trip-detail',
@@ -19,20 +21,38 @@ import { RouterLink, Router } from '@angular/router';
 })
 export class TripDetailComponent implements OnInit {
   private tripsService = inject(TripsService);
+  private usersService = inject(UsersService);
   trip!: Trip | undefined;
   stops!: TripStop[];
   id!: string | null;
+  currentUser: User | undefined = undefined;
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog, private router: Router) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
 
+    // Subscribe to current user
+    this.usersService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
+
     const trip = this.tripsService.getTripById(this.id ?? '');
     if (trip) {
       this.trip = trip;
       this.stops = this.sortStopsByOrder(trip.stops);
       console.log('trip', this.trip);
+    }
+  }
+
+  /**
+   * Get the appropriate back route based on user role
+   */
+  getBackRoute(): string {
+    if (this.currentUser?.role === 'admin') {
+      return '/trips/recommended';
+    } else {
+      return '/trips/personal';
     }
   }
 
