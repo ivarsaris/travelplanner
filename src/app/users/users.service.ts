@@ -19,7 +19,7 @@ export class UsersService {
 
     private httpClient = inject(HttpClient);
 
-    constructor() {
+    constructor(private router: Router) {
         this.getUsers();
         this.loadUserFromStorage();
     }
@@ -62,7 +62,10 @@ export class UsersService {
      * log in with email and password
      */
     login(email: string, password: string): Observable<AuthResponse> {
-        return this.httpClient.post<AuthResponse>('http://localhost:3000/auth/login', { email, password }).pipe(
+
+        const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+
+        return this.httpClient.post<AuthResponse>('http://localhost:3000/auth/login', { email, password: hashedPassword }).pipe(
             tap(response => {
                 this.setSession(response);
             })
