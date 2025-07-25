@@ -34,6 +34,19 @@ export class TripsService {
         return this.tripsList.value.find(trip => trip.id === id);
     }
 
+    /**
+     *
+     * @param id user Id
+     * @returns trips matching the user id
+     */
+    getTripsByUserId(id: string) {
+        return this.tripsList.value.filter(trip => trip.userId === id);
+    }
+
+    getRecommendedTrips() {
+        return this.tripsList.value.filter(trip => trip.isRecommended === true);
+    }
+
     addTripToList(newTripData: { image: string, title: string, description: string, stops: TripStop[], userId: string, isRecommended: boolean }) {
 
         const highestId = Math.max(...this.tripsList.value.map(trip => Number(trip.id)));

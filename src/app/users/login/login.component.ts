@@ -32,7 +32,7 @@ export class LoginComponent {
                 next: (response) => {
                     console.log('Login successful:', response);
                     this.loading = false;
-                    this.router.navigate(['/trips']);
+                    this.router.navigate(['/trips/recommended']);
                 },
                 error: (error) => {
                     console.error('Login failed:', error);

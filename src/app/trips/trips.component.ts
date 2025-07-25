@@ -14,8 +14,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './trips.component.scss'
 })
 export class TripsComponent implements OnInit {
-  private tripsService = inject(TripsService);
-  private tripsListSubscription!: Subscription;
+  protected tripsService = inject(TripsService);
+  protected tripsListSubscription!: Subscription;
   tripsList: Trip[] = [];
 
   ngOnInit() {

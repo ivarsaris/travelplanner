@@ -32,9 +32,18 @@
             </div>
             <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
-                    <a routerLink="/trips" routerLinkActive="bg-gray-100 text-gray-900"
+                    <a routerLink="/trips/recommended" routerLinkActive="bg-gray-100 text-gray-900"
                         class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200">
                         Recommended Trips
+                    </a>
+                </div>
+            </div>
+            <!-- Personal Trips link for users only -->
+            <div *ngIf="currentUser && currentUser.role === 'user'" class="hidden md:block">
+                <div class="ml-10 flex items-baseline space-x-4">
+                    <a routerLink="/trips/personal" routerLinkActive="bg-gray-100 text-gray-900"
+                        class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200">
+                        My Trips
                     </a>
                 </div>
             </div>
