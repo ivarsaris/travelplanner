@@ -2,6 +2,9 @@ import { Injectable, inject } from "@angular/core";
 import { BehaviorSubject, Observable, tap } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { User } from "./user.model";
+import * as CryptoJS from 'crypto-js';
+import * as uuid from 'uuid';
+import { Router } from "@angular/router";
 
 export interface AuthResponse {
     token: string;
