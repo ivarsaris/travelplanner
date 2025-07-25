@@ -79,6 +79,26 @@ export class UsersService {
     }
 
     /**
+     * register new user with put request
+     */
+    register(newUser: User) {
+        newUser.password = CryptoJS.SHA256(newUser.password).toString(CryptoJS.enc.Hex);
+        newUser.id = uuid.v7();
+
+        this.httpClient.put<User>('http://localhost:3000/user/register', {user: newUser})
+            .subscribe({
+                next: (responseData) => {
+                    this.usersList.next([...this.usersList.value, newUser]);
+                    this.router.navigate(['/login']);
+                    alert(`Welcome ${newUser.username}, please log in with your credentials.`);
+                },
+                error: (error) => {
+                    console.error('Error registering:', error);
+                }
+            })
+    }
+
+    /**
      * set session
      */
     private setSession(authResult: AuthResponse) {

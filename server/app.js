@@ -270,7 +270,7 @@ app.get('/users-list', (request, response) => {
 /**
  * add user to users list through a put request
  */
-app.put("/users-list", (request, response) => {
+app.put("/user/register", (request, response) => {
     const newUser = request.body.user;
 
     const usersListData = JSON.parse(fs.readFileSync('./data/users-list.json'));

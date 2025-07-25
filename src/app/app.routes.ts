@@ -6,6 +6,7 @@ import { StopDetailComponent } from './trips/stop-detail/stop-detail.component';
 import { LoginComponent } from './users/login/login.component';
 import { RecommendedTripsComponent } from './trips/recommended-trips/recommended-trips.component';
 import { PersonalTripsComponent } from './trips/personal-trips/personal-trips.component';
+import { RegisterComponent } from './users/register/register.component';
 
 export const routes: Routes = [
     {
@@ -35,5 +36,9 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
+    },
+    {
+        path: 'register',
+        component: RegisterComponent,
     },
 ];
