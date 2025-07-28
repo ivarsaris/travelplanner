@@ -13,6 +13,7 @@ export class RegisterComponent {
     private usersService = inject(UsersService);
     private router = inject(Router);
 
+    // TO DO: ability to choose avatar
     avatar = '';
 
     @ViewChild('emailInput') emailInput!: ElementRef;
