@@ -64,11 +64,11 @@
                         <div *ngIf="isDropdownOpen"
                              class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                             <a routerLink="/login" (click)="toggleDropdown()"
-                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                               class="dropdown-link">
                                 Login
                             </a>
                             <a routerLink="/register" (click)="toggleDropdown()"
-                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                               class="dropdown-link">
                                 Register
                             </a>
                         </div>
@@ -89,16 +89,16 @@
                         <div *ngIf="isDropdownOpen"
                             class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                             <a routerLink="/account" (click)="toggleDropdown()"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                class="dropdown-link">
                                 Account
                             </a>
                             <!-- only link to users edit when currentUser is admin -->
                             <a *ngIf="currentUser && currentUser.role ==='admin'" routerLink="/users" (click)="toggleDropdown()"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                class="dropdown-link">
                                 Manage users
                             </a>
                             <button (click)="onLogout()"
-                                class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                class="w-full text-left dropdown-link">
                                 Logout
                             </button>
                         </div>
