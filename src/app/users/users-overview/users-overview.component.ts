@@ -39,6 +39,9 @@ export class UsersOverviewComponent implements OnInit {
     return this.users.filter(user => user.role === 'admin').length;
   }
 
+  /**
+   * format date to legible string
+   */
   formatDate(date: Date): string {
     return new Date(date).toLocaleDateString();
   }
