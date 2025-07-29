@@ -1,180 +1,173 @@
 <div class="hidden" #placesServiceDataEl></div>
 @if (tripId !== null && stopData) {
 <div class="relative flex justify-center mt-10">
-  <button routerLink="/trip/{{tripId}}"
-    class="absolute left-0 bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center">←
-    Back to trip overview</button>
+    <button routerLink="/trip/{{tripId}}" class="absolute left-0 btn btn-gray">←
+        Back to trip overview</button>
 
-  <div class="flex flex-col items-center">
-    <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ stopData.location.name }}</h1>
-    <div class="flex items-center justify-center text-gray-500 mb-4">
-      <span class="mr-10">Stop {{ stopData.order }}</span>
-      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-      </svg>
-      <span>{{ stopData.duration }} days</span>
+    <div class="flex flex-col items-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ stopData.location.name }}</h1>
+        <div class="flex items-center justify-center text-gray-500 mb-4">
+            <span class="mr-10">Stop {{ stopData.order }}</span>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>{{ stopData.duration }} days</span>
+        </div>
     </div>
-  </div>
 </div>
 }
 <div class="grid grid-cols-2 gap-8">
-  @if (center !== undefined) {
-  <div class="mt-10">
-    <div class="relative map-container h-96 border-red-900 border-solid border" #mapContainer>
-      <google-map height="100%" width="100%" [center]="center" [zoom]="zoom">
-        @for (marker of markerInfoObjects; track marker.index;) {
-        <map-marker [position]="marker.location" [options]="getMarkerOptionsForMarker(marker)"
-          (click)="highlightMarker(marker.index)"></map-marker>
-        }
-        @if (hotelMarker) {
-        <map-marker [position]="hotelMarker.location" [options]="selectedHotelMarkerOptions"></map-marker>
-        }
-        @if (activityMarkers && activityMarkers.length) {
-        @for (marker of activityMarkers; track $index;) {
-        <map-marker [position]="marker.location" [options]="selectedActivityMarkerOptions"></map-marker>
-        }
-        }
-      </google-map>
-      @if (fetchingResults === true) {
-      <div class="absolute top-0 left-0 h-full w-full z-10 bg-blue-200 bg-opacity-60 flex items-center justify-center">
-        <span class="h-8 text-3xl font-bold">Loading results...</span>
-      </div>
-      }
-    </div>
+    @if (center !== undefined) {
     <div class="mt-10">
-      @if (stopData) {
-      @if (stopData.hotel) {
-      <div class="bg-white rounded-lg shadow-lg p-4 border border-gray-200 text-blue-700">
-        <div class="flex items-start gap-4">
-          <div class="flex-shrink-0">
-            <img [src]="stopData.hotel.image" [alt]="stopData.hotel.name"
-              class="w-20 h-20 object-cover rounded-lg shadow-md">
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m0 0H5">
-                </path>
-              </svg>
-              <span class="text-xs font-medium text-red-600 uppercase tracking-wide">Selected Hotel</span>
-              <button type="button"
-                class="w-10 h-10 ml-auto flex items-center justify-center rounded-full bg-red-100 hover:bg-red-500 hover:text-white text-red-500 transition-colors duration-150 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-300"
-                (click)="deleteHotelFromStop()" aria-label="Delete Hotel">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+        <div class="relative map-container h-96 border-red-900 border-solid border" #mapContainer>
+            <google-map height="100%" width="100%" [center]="center" [zoom]="zoom">
+                @for (marker of markerInfoObjects; track marker.index;) {
+                <map-marker [position]="marker.location" [options]="getMarkerOptionsForMarker(marker)"
+                    (click)="highlightMarker(marker.index)"></map-marker>
+                }
+                @if (hotelMarker) {
+                <map-marker [position]="hotelMarker.location" [options]="selectedHotelMarkerOptions"></map-marker>
+                }
+                @if (activityMarkers && activityMarkers.length) {
+                @for (marker of activityMarkers; track $index;) {
+                <map-marker [position]="marker.location" [options]="selectedActivityMarkerOptions"></map-marker>
+                }
+                }
+            </google-map>
+            @if (fetchingResults === true) {
+            <div
+                class="absolute top-0 left-0 h-full w-full z-10 bg-blue-200 bg-opacity-60 flex items-center justify-center">
+                <span class="h-8 text-3xl font-bold">Loading results...</span>
             </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-1 truncate">{{stopData.hotel.name}}</h3>
-            <div class="flex items-start gap-1">
-              <svg class="w-3 h-3 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                </path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-              <span class="text-sm text-gray-600 leading-tight">{{stopData.hotel.address}}</span>
-            </div>
-          </div>
+            }
         </div>
-      </div>
-      }
-      @else {
-      <button
-        class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md mt-4 transition-colors duration-200"
-        (click)="fetchHotelsNearStop()">
-        find hotels
-      </button>
-      }
-      @if (stopData.activities && stopData.activities.length) {
-      <div class="mt-10 bg-white rounded-lg shadow-lg p-4 border border-gray-200">
-        <div class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m0 0H5">
-            </path>
-          </svg>
-          <span class="font-medium text-blue-600 uppercase tracking-wide">Selected activities</span>
-        </div>
-        @for (activity of stopData.activities ; track $index) {
-        <div class="flex items-start gap-4 mt-4 py-4 border-t-2">
-          <div class="flex-shrink-0">
-            <img [src]="activity.image" [alt]="activity.name" class="w-20 h-20 object-cover rounded-lg shadow-md">
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex align-center content-between">
-              <h3 class="text-lg font-bold text-gray-900 mb-1 truncate">{{activity.name}}</h3>
-              <button type="button"
-                class="w-10 h-10 ml-auto flex items-center justify-center rounded-full bg-blue-100 hover:bg-blue-500 hover:text-white text-blue-500 transition-colors duration-150 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
-                (click)="deleteActivityFromStop($index)" aria-label="Delete stop">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+        <div class="mt-10">
+            @if (stopData) {
+            @if (stopData.hotel) {
+            <div class="bg-white rounded-lg shadow-lg p-4 border border-gray-200 text-blue-700">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <img [src]="stopData.hotel.image" [alt]="stopData.hotel.name"
+                            class="w-20 h-20 object-cover rounded-lg shadow-md">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m0 0H5">
+                                </path>
+                            </svg>
+                            <span class="text-xs font-medium text-red-600 uppercase tracking-wide">Selected Hotel</span>
+                            <button type="button" class="w-10 h-10 ml-auto btn btn-red-light !rounded-full !p-0"
+                                (click)="deleteHotelFromStop()" aria-label="Delete Hotel">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-1 truncate">{{stopData.hotel.name}}</h3>
+                        <div class="flex items-start gap-1">
+                            <svg class="w-3 h-3 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-sm text-gray-600 leading-tight">{{stopData.hotel.address}}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-start gap-1">
-              <svg class="w-3 h-3 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                </path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-              <span class="text-sm text-gray-600 leading-tight">{{activity.address}}</span>
+            }
+            @else {
+            <button class="w-full btn btn-red" (click)="fetchHotelsNearStop()">
+                find hotels
+            </button>
+            }
+            @if (stopData.activities && stopData.activities.length) {
+            <div class="mt-10 bg-white rounded-lg shadow-lg p-4 border border-gray-200">
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5m0 0H5">
+                        </path>
+                    </svg>
+                    <span class="font-medium text-blue-600 uppercase tracking-wide">Selected activities</span>
+                </div>
+                @for (activity of stopData.activities ; track $index) {
+                <div class="flex items-start gap-4 mt-4 py-4 border-t-2">
+                    <div class="flex-shrink-0">
+                        <img [src]="activity.image" [alt]="activity.name"
+                            class="w-20 h-20 object-cover rounded-lg shadow-md">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex align-center content-between">
+                            <h3 class="text-lg font-bold text-gray-900 mb-1 truncate">{{activity.name}}</h3>
+                            <button type="button" class="w-10 h-10 ml-auto btn btn-blue-light !rounded-full !p-0"
+                                (click)="deleteActivityFromStop($index)" aria-label="Delete stop">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="flex items-start gap-1">
+                            <svg class="w-3 h-3 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-sm text-gray-600 leading-tight">{{activity.address}}</span>
+                        </div>
+                    </div>
+                </div>
+                }
             </div>
-          </div>
-        </div>
-        }
-      </div>
-      }
-      }
+            }
+            }
 
-      <button
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md mt-4 transition-colors duration-200"
-        (click)="fetchActivitiesNearStop()">
-        find activities
-      </button>
-    </div>
-  </div>
-  @if (markerInfoObjects !== []) {
-  <div class="mt-10">
-    @for (marker of markerInfoObjects; track marker.index;) {
-    <div class="p-6 border-b-2 flex gap-6 cursor-pointer hover:bg-blue-200"
-      [ngClass]="{'bg-green-300': marker.index === selectedIndex}" (click)="highlightMarker(marker.index)">
-      <img [src]="marker.image" [alt]="marker.markerInfo.name" class="w-40 h-auto object-cover">
-      <div>
-        <div class="flex gap-4">
-          <h3 class="text-xl">{{marker.markerInfo.name}}</h3>
-          <span class="text-xm text-gray-500">{{marker.markerInfo.rating}} *</span>
-          <span>{{getPriceLevelString(marker.markerInfo.price_level)}}</span>
+            <button class="w-full btn btn-blue mt-4" (click)="fetchActivitiesNearStop()">
+                find activities
+            </button>
         </div>
-        @if (marker.index === selectedIndex) {
-        <p>{{marker.markerInfo.editorialSummary }}</p>
-        @if (marker.type === 'hotel') {
-        <button
-          class="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md mt-4 transition-colors duration-200"
-          (click)="addHotelToStop(marker.index)">
-          Add hotel to stop
-        </button>
-        } @else {
-        <button
-          class="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md mt-4 transition-colors duration-200"
-          (click)="addActivityToStop(marker.index)">
-          Add activity to stop
-        </button>
+    </div>
+    @if (markerInfoObjects !== []) {
+    <div class="mt-10">
+        @for (marker of markerInfoObjects; track marker.index;) {
+        <div class="p-6 border-b-2 flex gap-6 cursor-pointer hover:bg-blue-200"
+            [ngClass]="{'bg-green-300': marker.index === selectedIndex}" (click)="highlightMarker(marker.index)">
+            <img [src]="marker.image" [alt]="marker.markerInfo.name" class="w-40 h-auto object-cover">
+            <div>
+                <div class="flex gap-4">
+                    <h3 class="text-xl">{{marker.markerInfo.name}}</h3>
+                    <span class="text-xm text-gray-500">{{marker.markerInfo.rating}} *</span>
+                    <span>{{getPriceLevelString(marker.markerInfo.price_level)}}</span>
+                </div>
+                @if (marker.index === selectedIndex) {
+                <p>{{marker.markerInfo.editorialSummary }}</p>
+                @if (marker.type === 'hotel') {
+                <button class="w-full btn btn-gray mt-4" (click)="addHotelToStop(marker.index)">
+                    Add hotel to stop
+                </button>
+                } @else {
+                <button class="w-full btn btn-gray mt-4" (click)="addActivityToStop(marker.index)">
+                    Add activity to stop
+                </button>
+                }
+                }
+            </div>
+        </div>
         }
-        }
-      </div>
     </div>
     }
-  </div>
-  }
-  }
+    }
 </div>

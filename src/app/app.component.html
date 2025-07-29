@@ -25,7 +25,7 @@
             <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
                     <a routerLink="/create-trip" routerLinkActive="bg-gray-100 text-gray-900"
-                        class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200">
+                        class="header-link">
                         Create Trip
                     </a>
                 </div>
@@ -33,7 +33,7 @@
             <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
                     <a routerLink="/trips/recommended" routerLinkActive="bg-gray-100 text-gray-900"
-                        class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200">
+                        class="header-link">
                         Recommended Trips
                     </a>
                 </div>
@@ -42,7 +42,7 @@
             <div *ngIf="currentUser && currentUser.role === 'user'" class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
                     <a routerLink="/trips/personal" routerLinkActive="bg-gray-100 text-gray-900"
-                        class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200">
+                        class="header-link">
                         My Trips
                     </a>
                 </div>
@@ -53,7 +53,7 @@
                     <div *ngIf="!currentUser" class="relative">
                         <button
                             (click)="toggleDropdown()"
-                            class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200"
+                            class="flex items-center header-link"
                             type="button">
                             <span class="mr-2">Account</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +78,7 @@
                     <div *ngIf="currentUser" class="relative">
                         <button
                             (click)="toggleDropdown()"
-                            class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200"
+                            class="flex items-center header-link"
                             type="button">
                             <span class="mr-2">{{ currentUser.profile.firstName || currentUser.username }}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -3,19 +3,18 @@
         <!-- If no user is logged in -->
         <div *ngIf="!currentUser" class="bg-white rounded-lg shadow p-6 text-center">
             <a routerLink="/login"
-                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+                class="inline-flex btn btn-indigo">
                 Login
             </a>
             <p>or</p>
             <a routerLink="/register"
-                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700">Register</a>
+                class="inline-flex btn btn-red">Register</a>
         </div>
 
         <!-- If user is logged in -->
         <div *ngIf="currentUser" class="space-y-6">
             <div class="bg-white rounded-lg shadow overflow-hidden">
                 <div class="bg-indigo-600 px-6 py-8">
-
                     <h1 class="text-2xl font-bold text-white">{{currentUser.profile.firstName}}
                         {{currentUser.profile.lastName}}</h1>
                     <p class="text-indigo-200">{{currentUser.username}}</p>
@@ -68,7 +67,7 @@
                         </div>
                         <h3 class="text-sm font-medium text-gray-900 mb-2">No trips yet</h3>
                         <a routerLink="/create-trip"
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                            class="inline-flex btn btn-indigo">
                             Create Trip
                         </a>
                     </div>
@@ -91,7 +90,7 @@
 
                         <div class="pt-4 border-t border-gray-200">
                             <a routerLink="/trips/personal"
-                                class="inline-flex items-center px-4 py-2 border border-indigo-300 rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+                                class="inline-flex btn btn-indigo">
                                 <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5l7 7-7 7" />

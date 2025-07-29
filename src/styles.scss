@@ -11,3 +11,47 @@ body .cdk-overlay-pane.mat-mdc-dialog-panel {
 body .cdk-overlay-pane .mdc-dialog__surface {
     background-color: lightgrey;
 }
+
+.btn {
+    @apply py-2 px-4 border border-transparent font-medium text-sm shadow-sm rounded-md flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200;
+
+    &-indigo {
+        @apply text-white bg-indigo-600 hover:bg-indigo-800;
+    }
+
+    &-indigo-light {
+        @apply text-indigo-600 bg-indigo-100 hover:bg-indigo-600 hover:text-white;
+    }
+
+    &-gray {
+        @apply text-white bg-gray-600 hover:bg-gray-800;
+    }
+
+    &-gray-light {
+        @apply text-gray-600 bg-gray-100 hover:bg-gray-600 hover:text-white;
+    }
+
+    &-red {
+        @apply text-white bg-red-600 hover:bg-red-800;
+    }
+
+    &-red-light {
+        @apply text-red-600 bg-red-100 hover:bg-red-600 hover:text-white;
+    }
+
+    &-blue {
+        @apply text-white bg-blue-600 hover:bg-blue-800;
+    }
+
+    &-blue-light {
+        @apply text-blue-600 bg-blue-100 hover:bg-blue-600 hover:text-white;
+    }
+
+    &-green {
+        @apply text-white bg-green-600 hover:bg-green-800;
+    }
+
+    &-green-light {
+        @apply text-green-600 bg-green-100 hover:bg-green-600 hover:text-white;
+    }
+}

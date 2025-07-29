@@ -1,10 +1,10 @@
 <div class="container mx-auto px-4 py-8">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let trip of tripsList" 
+        <div *ngFor="let trip of tripsList"
             class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
             <!-- Trip Image -->
             <div class="relative h-48 overflow-hidden">
-                <img [src]="trip.image" 
+                <img [src]="trip.image"
                     [alt]="trip.title"
                     class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300">
             </div>
@@ -13,7 +13,7 @@
             <div class="p-6">
                 <h2 class="text-xl font-bold text-gray-800 mb-2">{{trip.title}}</h2>
                 <p class="text-gray-600 text-sm mb-4">{{trip.description}}</p>
-                
+
                 <!-- Trip Details -->
                 <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
                     <div class="flex items-center">
@@ -32,7 +32,7 @@
                 </div>
 
                 <!-- View Trip Button -->
-                <button routerLink="/trip/{{trip.id}}" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center">
+                <button routerLink="/trip/{{trip.id}}" class="w-full btn btn-blue">
                     <span>View Trip</span>
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>

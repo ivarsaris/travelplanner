@@ -1,18 +1,18 @@
 <div *ngIf="trip" class="relative text-center my-8 mx-8">
     <!-- Delete button positioned at top right -->
-    <div class="absolute top-0 left-0 flex">
+    <div class="absolute top-0 left-0 flex w-48">
         <button [routerLink]="getBackRoute()"
-            class="absolute left-0 bg-gray-600 text-white w-max py-2 px-4 rounded-md hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center">←
+            class="absolute left-0 btn btn-gray">←
             Back to overview</button>
     </div>
     <div class="absolute top-0 right-0 flex gap-4">
         <button
-            class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-md hover:shadow-lg"
+            class="inline-flex btn btn-blue"
             (click)="openDialog()">
             Edit trip
         </button>
         <button
-            class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 shadow-md hover:shadow-lg"
+            class="inline-flex btn btn-red"
             (click)="onDeleteTripFromList(trip.id)">
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
