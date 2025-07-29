@@ -11,11 +11,12 @@ import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 import * as uuid from 'uuid';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-create-trip',
     standalone: true,
-    imports: [PlacesSearchComponent, NgIf, NgFor, CdkDrag, CdkDropList, CdkDropListGroup, MatTooltipModule],
+    imports: [PlacesSearchComponent, NgIf, NgFor, CdkDrag, CdkDropList, CdkDropListGroup, MatTooltipModule, MatIconModule],
     templateUrl: './create-trip.component.html',
     styleUrl: './create-trip.component.scss'
 })

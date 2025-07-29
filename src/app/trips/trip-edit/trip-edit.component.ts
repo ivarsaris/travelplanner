@@ -10,11 +10,12 @@ import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } 
 import { NgFor } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import * as uuid from 'uuid';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-trip-edit',
   standalone: true,
-  imports: [FormsModule, PlacesSearchComponent, CdkDrag, CdkDropList, CdkDropListGroup, NgFor, MatTooltipModule],
+  imports: [FormsModule, PlacesSearchComponent, CdkDrag, CdkDropList, CdkDropListGroup, NgFor, MatTooltipModule, MatIconModule],
   templateUrl: './trip-edit.component.html',
   styleUrl: './trip-edit.component.scss'
 })

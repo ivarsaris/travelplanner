@@ -2,47 +2,38 @@
     <!-- Delete button positioned at top right -->
     <div class="absolute top-0 left-0 flex w-48">
         <button [routerLink]="getBackRoute()"
-            class="absolute left-0 btn btn-gray">←
+            class="absolute left-0 btn btn-gray flex items-center">
+            <mat-icon class="text-sm">arrow_back</mat-icon>
             Back to overview</button>
     </div>
     <div class="absolute top-0 right-0 flex gap-4">
         <button
-            class="inline-flex btn btn-indigo"
+            class="inline-flex btn btn-indigo gap-2 items-center"
             (click)="openDialog()">
             Edit trip
+            <mat-icon class="text-sm">edit</mat-icon>
         </button>
         <button
-            class="inline-flex btn btn-red"
+            class="inline-flex btn btn-red gap-2 items-center"
             (click)="onDeleteTripFromList(trip.id)">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                </path>
-            </svg>
             Delete trip
+            <mat-icon>delete</mat-icon>
         </button>
     </div>
 
     <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ trip.title }}</h1>
     <p class="text-gray-600 mb-2">{{ trip.description }}</p>
-    <div class="flex items-center justify-center text-gray-500 mb-4">
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
+    <div class="flex items-center justify-center text-gray-500 mb-4 gap-1">
+        <mat-icon class="!text-base">schedule</mat-icon>
         <span>{{ getTripDuration(trip) }} days</span>
     </div>
 </div>
 <div *ngIf="trip" class="flex h-screen">
-    <!-- Fixed Map Section -->
     <div class="w-1/2 h-full sticky top-0">
         <app-display-route-map [stops]="stops"></app-display-route-map>
     </div>
 
-    <!-- Scrollable Content Section -->
     <div class="w-1/2 h-full overflow-y-auto px-8 py-8">
-
-        <!-- Timeline -->
         <div class="relative">
             <!-- Vertical Line -->
             <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-blue-200"></div>
@@ -56,42 +47,26 @@
                         class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-lg">
                     </div>
 
-                    <!-- Content -->
                     <div [class.ml-auto]="i % 2 === 0" [class.mr-auto]="i % 2 === 1"
                         class="w-5/12 bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200">
-                        <!-- Stop Image -->
                         <div class="relative h-32 mb-4 rounded-lg overflow-hidden">
                             <img [src]="stop.location.image" [alt]="stop.location.name"
                                 class="w-full h-full object-cover">
                         </div>
 
-                        <!-- Stop Details -->
                         <h2 class="text-xl font-bold text-gray-800 mb-2">
                             <a [routerLink]="['/location', stop.location.googlePlaceId, trip.id, stop.id]"
-                                class="inline-flex items-center text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-150 cursor-pointer">
+                                class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-150 cursor-pointer">
                                 {{ stop.location.name }}
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                </svg>
+                                <mat-icon>open_in_new</mat-icon>
                             </a>
                         </h2>
-                        <div class="flex items-center text-sm text-gray-500 mb-2">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
+                        <div class="flex items-center gap-1 text-sm text-gray-500 mb-2">
+                            <mat-icon>location_on</mat-icon>
                             <span>Stop {{ stop.order }}</span>
                         </div>
-                        <div class="flex items-center text-sm text-gray-500 mb-2">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                        <div class="flex items-center gap-1 text-sm text-gray-500 mb-2">
+                            <mat-icon class="!text-base">schedule</mat-icon>
                             <span
                                 class="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                 {{stop.duration}} {{stop.duration === '1' ? 'day' : 'days'}}

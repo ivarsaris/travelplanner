@@ -11,11 +11,12 @@ import { TripEditComponent } from '../trip-edit/trip-edit.component';
 import { RouterLink, Router } from '@angular/router';
 import { UsersService } from '../../users/users.service';
 import { User } from '../../users/user.model';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-trip-detail',
   standalone: true,
-  imports: [NgIf, DisplayRouteMapComponent, DecimalPipe, RouterLink],
+  imports: [NgIf, DisplayRouteMapComponent, DecimalPipe, RouterLink, MatIconModule],
   templateUrl: './trip-detail.component.html',
   styleUrl: './trip-detail.component.scss'
 })

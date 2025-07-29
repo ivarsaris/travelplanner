@@ -6,11 +6,12 @@ import { TripsComponent } from '../trips.component';
 import { UsersService } from '../../users/users.service';
 import { User } from '../../users/user.model';
 import { Trip } from '../trip.model';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-personal-trips',
     standalone: true,
-    imports: [NgFor, RouterLink],
+    imports: [NgFor, RouterLink, MatIconModule],
     templateUrl: '../trips.component.html',
     styleUrl: '../trips.component.scss'
 })

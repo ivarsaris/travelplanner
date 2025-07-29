@@ -26,6 +26,7 @@
 
                 <button class="w-full btn btn-indigo mt-4" (click)="onAddLocationToTrip()">
                     Add Location to Trip
+                    <mat-icon class="ml-1">add</mat-icon>
                 </button>
             </div>
         </div>
@@ -60,12 +61,7 @@
                         <div cdkDrag *ngFor="let stop of places; let i = index" [id]="'stop-' + i"
                             class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                             <div cdkDragHandle class="cursor-move text-gray-400 hover:text-gray-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8"
-                                    matTooltip="Drag and drop stop to change order" matTooltipPosition="above"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 8h16M4 16h16" />
-                                </svg>
+                                <mat-icon class="!text-2xl">reorder</mat-icon>
                             </div>
                             <div
                                 class="ml-4 flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
@@ -84,11 +80,7 @@
                             <div class="ml-4">
                                 <button type="button" class="w-10 h-10 btn btn-red-light !p-0 !rounded-full"
                                     (click)="onDeleteStopFromTrip(i)" aria-label="Delete stop">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
+                                    <mat-icon>close</mat-icon>
                                 </button>
                             </div>
                         </div>

@@ -60,15 +60,13 @@
                 <div class="px-6 py-6">
                     <div *ngIf="tripCount === 0" class="text-center py-8">
                         <div class="text-gray-400 mb-4">
-                            <svg class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                            </svg>
+                            <mat-icon class="!text-5xl">map</mat-icon>
                         </div>
                         <h3 class="text-sm font-medium text-gray-900 mb-2">No trips yet</h3>
                         <a routerLink="/create-trip"
                             class="inline-flex btn btn-indigo">
                             Create Trip
+                            <mat-icon class="ml-1">add</mat-icon>
                         </a>
                     </div>
 
@@ -92,10 +90,7 @@
                             <a routerLink="/trips/personal"
                                 class="inline-flex btn btn-indigo">
                                 View All Personal Trips
-                                <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7" />
-                                </svg>
+                                <mat-icon class="ml-1 !text-base">chevron_right</mat-icon>
                             </a>
                         </div>
                     </div>

@@ -7,22 +7,19 @@
             <!-- Title Field -->
             <div class="relative">
                 <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                <input type="text" id="title"
-                    [value]="data.title" #titleInput>
+                <input type="text" id="title" [value]="data.title" #titleInput>
             </div>
 
             <!-- Description Field -->
             <div class="relative">
                 <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea id="description" rows="4"
-                    [value]="data.description" #descriptionTextarea></textarea>
+                <textarea id="description" rows="4" [value]="data.description" #descriptionTextarea></textarea>
             </div>
 
             <!-- Image URL Field -->
             <div class="relative">
                 <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-                <input type="text" id="image"
-                    [value]="data.image" #imageInput>
+                <input type="text" id="image" [value]="data.image" #imageInput>
             </div>
         </div>
 
@@ -31,16 +28,18 @@
 
                 <fieldset *ngFor="let stop of data.stops" cdkDrag [id]="'stop-' + stop.order"
                     class="border border-gray-300 rounded-md p-4 mb-8">
-                    <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center mb-3">
+                        <div cdkDragHandle class="cursor-move text-gray-400 hover:text-gray-600 mr-3 flex items-center">
+                            <mat-icon class="!text-2xl">reorder</mat-icon>
+                        </div>
                         <legend class="text-lg font-medium text-gray-700 px-2 flex items-center">
                             <span>{{ stop.location.name }}</span>
                             <span class="ml-2 text-sm text-gray-500">- Stop {{ stop.order }}</span>
                         </legend>
-                        <div cdkDragHandle class="cursor-move text-gray-400 hover:text-gray-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" matTooltip="Drag and drop stop to change order" matTooltipPosition="above" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-                            </svg>
-                        </div>
+                        <button type="button" class="w-10 h-10 btn btn-red-light ml-auto !p-0 !rounded-full"
+                            (click)="onDeleteStopFromTrip(stop.location.name, stop.order)" aria-label="Delete stop">
+                            <mat-icon class="!text-lg">close</mat-icon>
+                        </button>
                     </div>
 
                     <div class="flex gap-4">
@@ -48,19 +47,7 @@
                         <div class="relative flex-grow">
                             <label for="duration" class="block text-sm font-medium text-gray-700 mb-1">Duration
                                 (days)</label>
-                            <input type="text" id="duration"
-                                [value]="stop.duration" #stopDurationInputs>
-                        </div>
-                        <div class="relative">
-                            <button type="button"
-                                class="w-10 h-10 btn btn-red-light !p-0 !rounded-full"
-                                (click)="onDeleteStopFromTrip(stop.location.name, stop.order)" aria-label="Delete stop">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
+                            <input type="text" id="duration" [value]="stop.duration" #stopDurationInputs>
                         </div>
                     </div>
                 </fieldset>
@@ -84,8 +71,7 @@
                         <option [value]="i">{{i}} {{i === 1 ? 'day' : 'days'}}</option>
                         }
                     </select>
-                    <button type="button" (click)="onAddStopToTrip()"
-                        class="btn btn-indigo mt-4">
+                    <button type="button" (click)="onAddStopToTrip()" class="btn btn-indigo mt-4">
                         + Add Stop
                     </button>
                 </div>
@@ -94,12 +80,10 @@
 
         <!-- Form Actions -->
         <div class="flex justify-end space-x-4">
-            <button type="button" (click)="onCloseModal()"
-                class="btn btn-red">
+            <button type="button" (click)="onCloseModal()" class="btn btn-red">
                 Cancel
             </button>
-            <button type="submit"
-                class="btn btn-green">
+            <button type="submit" class="btn btn-green">
                 Save Trip
             </button>
         </div>

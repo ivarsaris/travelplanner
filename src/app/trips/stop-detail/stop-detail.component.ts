@@ -7,11 +7,12 @@ import { RouterLink } from '@angular/router';
 import { TripStop } from '../trip-stop.model';
 import { Place } from '../../place.model';
 import { Subscription } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-stop-detail',
   standalone: true,
-  imports: [GoogleMapsModule, MapMarker, NgClass, RouterLink],
+  imports: [GoogleMapsModule, MapMarker, NgClass, RouterLink, MatIconModule],
   templateUrl: './stop-detail.component.html',
   styleUrl: './stop-detail.component.scss'
 })

@@ -5,11 +5,12 @@ import { UsersService } from '../users.service';
 import { TripsService } from '../../trips/trips.service';
 import { User } from '../user.model';
 import { Trip } from '../../trips/trip.model';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-user-detail',
     standalone: true,
-    imports: [CommonModule, RouterLink],
+    imports: [CommonModule, RouterLink, MatIconModule],
     templateUrl: './user-detail.component.html',
     styleUrl: './user-detail.component.scss'
 })

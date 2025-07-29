@@ -5,11 +5,12 @@ import { TripsService } from './trips.service';
 import { NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-trips',
   standalone: true,
-  imports: [NgFor, RouterLink],
+  imports: [NgFor, RouterLink, MatIconModule],
   templateUrl: './trips.component.html',
   styleUrl: './trips.component.scss'
 })
