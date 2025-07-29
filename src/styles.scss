@@ -39,14 +39,6 @@ body .cdk-overlay-pane .mdc-dialog__surface {
         @apply text-red-600 bg-red-100 hover:bg-red-600 hover:text-white;
     }
 
-    &-blue {
-        @apply text-white bg-blue-600 hover:bg-blue-800;
-    }
-
-    &-blue-light {
-        @apply text-blue-600 bg-blue-100 hover:bg-blue-600 hover:text-white;
-    }
-
     &-green {
         @apply text-white bg-green-600 hover:bg-green-800;
     }
@@ -54,4 +46,14 @@ body .cdk-overlay-pane .mdc-dialog__surface {
     &-green-light {
         @apply text-green-600 bg-green-100 hover:bg-green-600 hover:text-white;
     }
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="tel"],
+input[type="email"],
+textarea,
+select {
+    @apply relative block w-full px-3 py-2 border-2 border-gray-300 rounded-md placeholder-gray-500 outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500;
 }
