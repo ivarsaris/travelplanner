@@ -8,6 +8,8 @@ import { RecommendedTripsComponent } from './trips/recommended-trips/recommended
 import { PersonalTripsComponent } from './trips/personal-trips/personal-trips.component';
 import { RegisterComponent } from './users/register/register.component';
 import { UserDetailComponent } from './users/user-detail/user-detail.component';
+import { UsersOverviewComponent } from './users/users-overview/users-overview.component';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
     {
@@ -45,5 +47,10 @@ export const routes: Routes = [
     {
         path: 'account',
         component: UserDetailComponent,
+    },
+    {
+        path: 'users',
+        component: UsersOverviewComponent,
+        canActivate: [adminGuard],
     },
 ];
