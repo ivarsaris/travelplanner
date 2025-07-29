@@ -23,15 +23,15 @@
                 <div class="px-6 py-6">
                     <dl class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <div>
-                            <dt class="text-sm font-medium text-gray-500">Email</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{currentUser.email}}</dd>
+                            <dt class="user-info-label">Email</dt>
+                            <dd class="user-info-content">{{currentUser.email}}</dd>
                         </div>
                         <div>
-                            <dt class="text-sm font-medium text-gray-500">Role</dt>
-                            <dd class="mt-1 text-sm text-gray-900 capitalize">{{currentUser.role}}</dd>
+                            <dt class="user-info-label">Role</dt>
+                            <dd class="user-info-content capitalize">{{currentUser.role}}</dd>
                         </div>
                         <div>
-                            <dt class="text-sm font-medium text-gray-500">Status</dt>
+                            <dt class="user-info-label">Status</dt>
                             <dd class="mt-1">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                                     [class]="currentUser.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
@@ -40,8 +40,8 @@
                             </dd>
                         </div>
                         <div>
-                            <dt class="text-sm font-medium text-gray-500">Member since</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{formatDate(currentUser.createdAt)}}</dd>
+                            <dt class="user-info-label">Member since</dt>
+                            <dd class="user-info-content">{{formatDate(currentUser.createdAt)}}</dd>
                         </div>
                     </dl>
                 </div>
@@ -91,11 +91,11 @@
                         <div class="pt-4 border-t border-gray-200">
                             <a routerLink="/trips/personal"
                                 class="inline-flex btn btn-indigo">
+                                View All Personal Trips
                                 <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5l7 7-7 7" />
                                 </svg>
-                                View All Personal Trips
                             </a>
                         </div>
                     </div>
