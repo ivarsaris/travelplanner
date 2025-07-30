@@ -189,22 +189,18 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     // show loading screen until fetching is done
     this.fetchingResults = true;
 
-    // request to give to google maps places nearbySearch
+    // request to give to google maps places nearbySearch,
+    // find the most prominent tourist attractions withing a 10km radius
     const request = {
       location: this.center,
       fields: ['displayName', 'location', 'businessStatus'],
       locationRestriction: {
         center: this.center,
       },
-      keyword: 'activity',
-      radius: 2000,
-      includedPrimaryTypes: [
-        'interest',
-        'Things to do',
-        'point_of_interest',
-        'tourist_attraction'
-      ],
-      // maxResultCount: 5
+      keyword: 'tourist_attraction',
+      rankby: 'prominence',
+      radius: 10000,
+      type: 'tourist_attraction',
     };
 
     const allFetchedActivities: google.maps.places.PlaceResult[] = [];
