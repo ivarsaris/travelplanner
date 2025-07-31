@@ -25,11 +25,11 @@
                     (click)="highlightMarker(marker.index)"></map-marker>
                 }
                 @if (hotelMarker) {
-                <map-marker [position]="hotelMarker.location" [options]="selectedHotelMarkerOptions"></map-marker>
+                <map-marker [position]="hotelMarker.location" [options]="hotelMarker.options" (click)="highlightHotelMarker()"></map-marker>
                 }
                 @if (activityMarkers && activityMarkers.length) {
                 @for (marker of activityMarkers; track $index;) {
-                <map-marker [position]="marker.location" [options]="selectedActivityMarkerOptions"></map-marker>
+                <map-marker [position]="marker.location" [options]="marker.options" (click)="highlightActivityMarker($index)"></map-marker>
                 }
                 }
             </google-map>
@@ -43,7 +43,9 @@
         <div class="mt-10">
             @if (stopData) {
             @if (stopData.hotel) {
-            <div class="bg-white rounded-lg shadow-lg p-4 border border-gray-200 text-blue-700">
+            <div class="bg-white rounded-lg shadow-lg p-4 border border-gray-200 text-blue-700 cursor-pointer hover:bg-blue-50 transition-colors"
+                 [ngClass]="{'!bg-green-100 !border-l-green-600': highlightedHotel}"
+                 (click)="highlightHotelMarker()">
                 <div class="flex items-start gap-4">
                     <div class="flex-shrink-0">
                         <img [src]="stopData.hotel.image" [alt]="stopData.hotel.name"
@@ -51,7 +53,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
-                            <mat-icon class="!text-lg text-red-600">hotel</mat-icon>
+                            <mat-icon class="!text-2xl text-red-600">hotel</mat-icon>
                             <span class="text-xs font-medium text-red-600 uppercase tracking-wide">Selected Hotel</span>
                             <button type="button" class="w-10 h-10 ml-auto btn btn-red-light !rounded-full !p-0"
                                 (click)="deleteHotelFromStop()" aria-label="Delete Hotel">
@@ -76,11 +78,13 @@
             @if (stopData.activities && stopData.activities.length) {
             <div class="mt-10 bg-white rounded-lg shadow-lg p-4 border border-gray-200">
                 <div class="flex items-center gap-2">
-                    <mat-icon class="!text-lg mr-1 text-blue-600">attractions</mat-icon>
+                    <mat-icon class="!text-2xl mr-1 text-blue-600">attractions</mat-icon>
                     <span class="font-medium text-blue-600 uppercase tracking-wide">Selected activities</span>
                 </div>
                 @for (activity of stopData.activities ; track $index) {
-                <div class="flex items-start gap-4 mt-4 py-4 border-t-2">
+                <div class="flex items-start gap-4 mt-4 py-4 border-t-2 cursor-pointer hover:bg-blue-50 transition-colors"
+                     [ngClass]="{'!bg-green-100 !border-l-green-600': highlightedActivityIndex === $index}"
+                     (click)="highlightActivityMarker($index)">
                     <div class="flex-shrink-0">
                         <img [src]="activity.image" [alt]="activity.name"
                             class="w-20 h-20 object-cover rounded-lg shadow-md">
@@ -110,8 +114,12 @@
             </button>
         </div>
     </div>
-    @if (markerInfoObjects !== []) {
+    @if (markerInfoObjects.length > 0) {
     <div class="mt-10">
+        <button class="btn btn-gray mt-4" (click)="clearSearchResultsMarkers()">
+            clear search results
+            <mat-icon class="ml-1">delete</mat-icon>
+        </button>
         @for (marker of markerInfoObjects; track marker.index;) {
         <div class="p-6 border-b-2 flex gap-6 cursor-pointer hover:bg-blue-200"
             [ngClass]="{'bg-green-300': marker.index === selectedIndex}" (click)="highlightMarker(marker.index)">
