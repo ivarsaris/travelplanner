@@ -111,6 +111,7 @@ export class UsersService {
                 },
                 error: (error) => {
                     console.error('Error registering:', error);
+                    this.notificationService.showNotification('error', error.error.message);
                 }
             })
     }

@@ -276,7 +276,7 @@ app.put("/user/register", (request, response) => {
     const usersListData = JSON.parse(fs.readFileSync('./data/users-list.json'));
 
     if (usersListData.some((user) => user.email === newUser.email)) {
-        response.status(500).json({ message: `500 - user with email ${newUser.email} already exists` });
+        response.status(500).json({ message: `user with email ${newUser.email} already exists` });
 
     } else {
         const updatedUsersListData = [...usersListData, newUser];
