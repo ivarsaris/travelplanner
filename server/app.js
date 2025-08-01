@@ -297,14 +297,14 @@ app.post('/auth/login', (request, response) => {
     const users = JSON.parse(fs.readFileSync('./data/users-list.json'));
     const user = users.find(user => user.email === email);
 
-    if (password === user.password) {
-        const token = 'ycgvwhqewofhuigyuvqw';
-
-        response.status(200).json({
-            token: token,
-            user: user
-        });
+    if (!user || user.password !== password) {
+        return response.status(401).json({ message: 'Invalid credentials' });
     }
+
+    response.status(200).json({
+        token: 'ycgvwhqewofhuigyuvqw',
+        user: user
+    });
 });
 
 
