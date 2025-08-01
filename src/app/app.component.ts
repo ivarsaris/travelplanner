@@ -11,11 +11,12 @@ import { UsersService } from './users/users.service';
 import { User } from './users/user.model';
 import { Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
+import { NotificationComponent } from './notification/notification/notification.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [DisplayRouteMapComponent, PlacesSearchComponent, RouterOutlet, RouterLink, RouterLinkActive, TripsComponent, TripDetailComponent, StopDetailComponent, NgIf, CreateTripComponent, MatIconModule],
+  imports: [DisplayRouteMapComponent, PlacesSearchComponent, RouterOutlet, RouterLink, RouterLinkActive, TripsComponent, TripDetailComponent, StopDetailComponent, NgIf, CreateTripComponent, MatIconModule, NotificationComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

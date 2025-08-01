@@ -1,0 +1,11 @@
+.message-success {
+    @apply bg-green-50 border-green-500;
+}
+
+.message-error {
+    @apply bg-red-50 border-red-500;
+}
+
+.message-message {
+    @apply bg-indigo-50 border-indigo-500;
+}
