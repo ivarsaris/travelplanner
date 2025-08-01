@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { BehaviorSubject, Observable, tap } from "rxjs";
+import { BehaviorSubject, Observable, tap, catchError, throwError } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { User } from "./user.model";
 import * as CryptoJS from 'crypto-js';
@@ -74,6 +74,12 @@ export class UsersService {
         return this.httpClient.post<AuthResponse>('http://localhost:3000/auth/login', { email, password: hashedPassword }).pipe(
             tap(response => {
                 this.setSession(response);
+                this.notificationService.showNotification('success', `Hello, ${response.user.username}!`);
+                this.router.navigate(['/trips/personal']);
+            }),
+            catchError(error => {
+                this.notificationService.showNotification('error', 'Login failed. Please check your credentials and try again.');
+                return throwError(() => error);
             })
         );
     }

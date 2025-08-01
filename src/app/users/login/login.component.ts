@@ -30,16 +30,11 @@ export class LoginComponent {
         this.loading = true;
 
         this.usersService.login(email, password).subscribe({
-            next: (response) => {
-                console.log('Login successful:', response);
+            next: () => {
                 this.loading = false;
-                this.notificationService.showNotification('success', `Hello, ${response.user.username}!`);
-                this.router.navigate(['/trips/recommended']);
             },
-            error: (error) => {
-                console.error('Login failed:', error);
+            error: () => {
                 this.loading = false;
-                this.notificationService.showNotification('error', 'Login failed. Please check your credentials and try again.');
             }
         });
     }
