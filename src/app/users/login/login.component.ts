@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { UsersService } from '../users.service';
+import { NotificationService } from '../../notification/notification.service';
 
 @Component({
     selector: 'app-login',
@@ -12,6 +13,7 @@ import { UsersService } from '../users.service';
 export class LoginComponent {
     private usersService = inject(UsersService);
     private router = inject(Router);
+    private notificationService = inject(NotificationService);
 
     @ViewChild('emailInput') emailInput!: ElementRef;
     @ViewChild('passwordInput') passwordInput!: ElementRef;
@@ -25,20 +27,20 @@ export class LoginComponent {
         const email = this.emailInput.nativeElement.value;
         const password = this.passwordInput.nativeElement.value;
 
-        if (email && password) {
-            this.loading = true;
+        this.loading = true;
 
-            this.usersService.login(email, password).subscribe({
-                next: (response) => {
-                    console.log('Login successful:', response);
-                    this.loading = false;
-                    this.router.navigate(['/trips/recommended']);
-                },
-                error: (error) => {
-                    console.error('Login failed:', error);
-                    this.loading = false;
-                }
-            });
-        }
+        this.usersService.login(email, password).subscribe({
+            next: (response) => {
+                console.log('Login successful:', response);
+                this.loading = false;
+                this.notificationService.showNotification('success', `Hello, ${response.user.username}!`);
+                this.router.navigate(['/trips/recommended']);
+            },
+            error: (error) => {
+                console.error('Login failed:', error);
+                this.loading = false;
+                this.notificationService.showNotification('error', 'Login failed. Please check your credentials and try again.');
+            }
+        });
     }
 }
