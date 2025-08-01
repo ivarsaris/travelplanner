@@ -5,6 +5,7 @@ import { User } from "./user.model";
 import * as CryptoJS from 'crypto-js';
 import * as uuid from 'uuid';
 import { Router } from "@angular/router";
+import { NotificationService } from "../notification/notification.service";
 
 export interface AuthResponse {
     token: string;
@@ -21,6 +22,8 @@ export class UsersService {
     currentUser$ = this.currentUser.asObservable();
 
     private httpClient = inject(HttpClient);
+
+    private notificationService = inject(NotificationService);
 
     constructor(private router: Router) {
         this.getUsers();
@@ -82,7 +85,8 @@ export class UsersService {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         this.currentUser.next(undefined);
-        this.router.navigate(['']);
+        this.router.navigate(['/login']);
+        this.notificationService.showNotification('message', 'Logged out succesfully');
     }
 
     /**
@@ -97,7 +101,7 @@ export class UsersService {
                 next: (responseData) => {
                     this.usersList.next([...this.usersList.value, newUser]);
                     this.router.navigate(['/login']);
-                    alert(`Welcome ${newUser.username}, please log in with your credentials.`);
+                    this.notificationService.showNotification('success', `Welcome ${newUser.username}, please log in with your credentials.`);
                 },
                 error: (error) => {
                     console.error('Error registering:', error);
