@@ -2,27 +2,21 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Travelplanner</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="icon" type="image\/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="./output.css" rel="stylesheet">
-  <!-- Load the Google Maps JavaScript API with libraries -->
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrVspyM83p7qRYzbHp8cBMulicoa13m6c&libraries=places,directions,geocoding"></script>
-  <!-- Load the Google Maps Extended Component Library -->
-  <script type="module">
-    // Initialize Extended Component Library with API key
-    window.googleMapsApiKey = 'AIzaSyCrVspyM83p7qRYzbHp8cBMulicoa13m6c';
-    import('https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.11/index.min.js');
-  </script>
+    <meta charset="utf-8">
+    <title>Travelplanner</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image\/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="./output.css" rel="stylesheet">
+    <!-- Load the Google Maps JavaScript API with libraries -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_MAPS_API_KEY}}&libraries=places,directions,geocoding"></script>
 </head>
 
 <body>
-  <app-root></app-root>
+    <app-root></app-root>
 </body>
 
 </html>
