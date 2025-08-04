@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Component, inject, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { GoogleMapsModule, MapMarker } from '@angular/google-maps';
 import { ActivatedRoute } from '@angular/router';
@@ -8,16 +8,20 @@ import { TripStop } from '../trip-stop.model';
 import { Place } from '../../place.model';
 import { Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
+import { UsersService } from '../../users/users.service';
+import { User } from '../../users/user.model';
+import { Trip } from '../trip.model';
 
 @Component({
     selector: 'app-stop-detail',
     standalone: true,
-    imports: [GoogleMapsModule, MapMarker, NgClass, RouterLink, MatIconModule],
+    imports: [GoogleMapsModule, MapMarker, NgClass, RouterLink, MatIconModule, NgIf],
     templateUrl: './stop-detail.component.html',
     styleUrl: './stop-detail.component.scss'
 })
 export class StopDetailComponent implements AfterViewInit, OnDestroy {
     tripsService = inject(TripsService);
+    usersService = inject(UsersService);
     place: any;
     center: google.maps.LatLngLiteral | undefined = undefined;
     zoom = 12;
@@ -35,6 +39,7 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     tripId: string | null = null;
     googlePlacesService?: google.maps.places.PlacesService;
 
+    tripData: Trip | undefined = undefined;
     stopData: TripStop | undefined = undefined;
     hotelMarker: { location: google.maps.LatLngLiteral, options: google.maps.MarkerOptions } | undefined = undefined;
     activityMarkers: { location: google.maps.LatLngLiteral, options: google.maps.MarkerOptions }[] = [];
@@ -42,6 +47,7 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     highlightedHotel: boolean = false;
     highlightedActivityIndex: number | null = null;
 
+    currentUser: User | undefined;
     private tripsSubscription?: Subscription;
 
     @ViewChild('mapContainer') mapContainer!: ElementRef;
@@ -54,6 +60,10 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
         this.stopId = this.route.snapshot.paramMap.get('stopId');
         this.tripId = this.route.snapshot.paramMap.get('tripId');
 
+        this.usersService.currentUser$.subscribe(user => {
+            this.currentUser = user;
+        });
+
         if (this.googlePlaceID && typeof (this.googlePlaceID) == 'string') {
             this.displayLocationById(this.googlePlaceID);
         }
@@ -62,6 +72,7 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
 
             // Subscribe to tripsList changes to keep stopData in sync
             this.tripsSubscription = this.tripsService.tripsList$.subscribe(() => {
+                this.tripData = this.tripsService.getTripById(this.tripId!);
                 this.stopData = this.tripsService.getStopByTripIdAndStopId(this.tripId!, this.stopId!);
                 this.displayHotelMarker();
                 this.displayActivitiesMarkers();
@@ -73,6 +84,18 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
 
     ngOnDestroy() {
         this.tripsSubscription?.unsubscribe();
+    }
+
+    get canEdit(): boolean {
+        if (!this.currentUser || !this.tripData) {
+            return false;
+        }
+
+        if (this.tripData.isRecommended) {
+            return this.currentUser.role === 'admin';
+        }
+
+        return this.tripData.userId === this.currentUser.id;
     }
 
     /**

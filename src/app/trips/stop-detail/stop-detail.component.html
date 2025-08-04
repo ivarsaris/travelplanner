@@ -15,9 +15,9 @@
     </div>
 </div>
 }
-<div class="grid grid-cols-2 gap-8">
+<div [class]="canEdit ? 'grid grid-cols-2 gap-8' : ''">
     @if (center !== undefined) {
-    <div class="mt-10">
+    <div class="mt-10" [class]="canEdit ? '' : 'grid grid-cols-2 gap-8'">
         <div class="relative map-container h-96 border-red-900 border-solid border" #mapContainer>
             <google-map height="100%" width="100%" [center]="center" [zoom]="zoom">
                 @for (marker of markerInfoObjects; track marker.index;) {
@@ -55,7 +55,7 @@
                         <div class="flex items-center gap-2 mb-1">
                             <mat-icon class="!text-2xl text-red-600">hotel</mat-icon>
                             <span class="text-xs font-medium text-red-600 uppercase tracking-wide">Selected Hotel</span>
-                            <button type="button" class="w-10 h-10 ml-auto btn btn-red-light !rounded-full !p-0"
+                            <button *ngIf="canEdit" type="button" class="w-10 h-10 ml-auto btn btn-red-light !rounded-full !p-0"
                                 (click)="deleteHotelFromStop()" aria-label="Delete Hotel">
                                 <mat-icon class="!text-lg">close</mat-icon>
                             </button>
@@ -70,7 +70,7 @@
             </div>
             }
             @else {
-            <button class="w-full btn btn-red" (click)="fetchHotelsNearStop()">
+            <button *ngIf="canEdit" class="w-full btn btn-red" (click)="fetchHotelsNearStop()">
                 find hotels
                 <mat-icon class="ml-1">hotel</mat-icon>
             </button>
@@ -92,7 +92,7 @@
                     <div class="flex-1 min-w-0">
                         <div class="flex align-center content-between">
                             <h3 class="text-lg font-bold text-gray-900 mb-1 truncate">{{activity.name}}</h3>
-                            <button type="button" class="w-10 h-10 ml-auto btn btn-indigo-light !rounded-full !p-0"
+                            <button *ngIf="canEdit" type="button" class="w-10 h-10 ml-auto btn btn-indigo-light !rounded-full !p-0"
                                 (click)="deleteActivityFromStop($index)" aria-label="Delete stop">
                                 <mat-icon class="!text-lg">close</mat-icon>
                             </button>
@@ -108,7 +108,7 @@
             }
             }
 
-            <button class="w-full btn btn-indigo mt-4" (click)="fetchActivitiesNearStop()">
+            <button *ngIf="canEdit" class="w-full btn btn-indigo mt-4" (click)="fetchActivitiesNearStop()">
                 find activities
                 <mat-icon class="ml-1">attractions</mat-icon>
             </button>
