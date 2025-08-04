@@ -6,7 +6,7 @@
             <mat-icon class="text-sm">arrow_back</mat-icon>
             Back to overview</button>
     </div>
-    <div class="absolute top-0 right-0 flex gap-4">
+    <div *ngIf="canEdit" class="absolute top-0 right-0 flex gap-4">
         <button
             class="inline-flex btn btn-indigo gap-2 items-center"
             (click)="openDialog()">

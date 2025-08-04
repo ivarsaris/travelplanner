@@ -12,6 +12,7 @@ import { RouterLink, Router } from '@angular/router';
 import { UsersService } from '../../users/users.service';
 import { User } from '../../users/user.model';
 import { MatIconModule } from '@angular/material/icon';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-trip-detail',
@@ -21,9 +22,12 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './trip-detail.component.scss'
 })
 export class TripDetailComponent implements OnInit {
-  private tripsService = inject(TripsService);
+
   private usersService = inject(UsersService);
-  trip!: Trip | undefined;
+  private tripsService = inject(TripsService);
+
+  trip: Trip | undefined;
+  tripSubscription!: Subscription;
   stops!: TripStop[];
   id!: string | null;
   currentUser: User | undefined = undefined;
@@ -44,6 +48,18 @@ export class TripDetailComponent implements OnInit {
       this.stops = this.sortStopsByOrder(trip.stops);
       console.log('trip', this.trip);
     }
+  }
+
+  get canEdit(): boolean {
+    if (!this.currentUser || !this.trip) {
+      return false;
+    }
+
+    if (this.trip.isRecommended) {
+      return this.currentUser.role === 'admin';
+    }
+
+    return this.trip.userId === this.currentUser.id;
   }
 
   /**
