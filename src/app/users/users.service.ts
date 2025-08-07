@@ -32,6 +32,7 @@ export class UsersService {
 
     /**
      * Load user from localStorage if available
+     *
      */
     private loadUserFromStorage(): void {
         if (typeof window !== 'undefined' && window.localStorage) {
@@ -52,6 +53,7 @@ export class UsersService {
 
     /**
      * send get request to server to retreive users list
+     *
      */
     getUsers() {
         this.httpClient.get<User[]>('http://localhost:3000/users-list').subscribe({
@@ -65,7 +67,9 @@ export class UsersService {
     }
 
     /**
-     * log in with email and password
+     * log in with email and password. sends post request to server,
+     * and matches the email and hashed password
+     *
      */
     login(email: string, password: string): Observable<AuthResponse> {
 
@@ -75,7 +79,11 @@ export class UsersService {
             tap(response => {
                 this.setSession(response);
                 this.notificationService.showNotification('success', `Hello, ${response.user.username}!`);
-                this.router.navigate(['/trips/personal']);
+                if (response.user.role === 'admin') {
+                    this.router.navigate(['/users']);
+                } else {
+                    this.router.navigate(['/trips/personal']);
+                }
             }),
             catchError(error => {
                 this.notificationService.showNotification('error', 'Login failed. Please check your credentials and try again.');
@@ -85,7 +93,8 @@ export class UsersService {
     }
 
     /**
-     * log out, remove user from localStorage
+     * log out, remove user from localStorage and navigate to login page
+     *
      */
     logout(): void {
         localStorage.removeItem('token');
@@ -96,15 +105,17 @@ export class UsersService {
     }
 
     /**
-     * register new user with put request
+     * send put request to server to register new user
+     *
      */
     register(newUser: User) {
         newUser.password = CryptoJS.SHA256(newUser.password).toString(CryptoJS.enc.Hex);
         newUser.id = uuid.v7();
 
-        this.httpClient.put<User>('http://localhost:3000/user/register', {user: newUser})
+        this.httpClient.put<User>('http://localhost:3000/user/register', { user: newUser })
             .subscribe({
                 next: (responseData) => {
+                    // add user to list and navigate to login page
                     this.usersList.next([...this.usersList.value, newUser]);
                     this.router.navigate(['/login']);
                     this.notificationService.showNotification('success', `Welcome ${newUser.username}, please log in with your credentials.`);
@@ -117,7 +128,8 @@ export class UsersService {
     }
 
     /**
-     * set session
+     * set local storage data for logged in user
+     *
      */
     private setSession(authResult: AuthResponse) {
         localStorage.setItem('token', authResult.token);

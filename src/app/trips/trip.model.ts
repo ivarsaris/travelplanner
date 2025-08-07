@@ -6,6 +6,6 @@ export interface Trip {
     title: string;
     description: string;
     stops: TripStop[];
-    userId?: string, // user that created the trip
-    isRecommended?: boolean; // on recommended overview page
+    userId?: string,
+    isRecommended?: boolean;
 }

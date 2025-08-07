@@ -15,11 +15,20 @@ import { MatIconModule } from '@angular/material/icon';
     templateUrl: '../trips.component.html',
     styleUrl: '../trips.component.scss'
 })
+
+/**
+ * extends the tripsComponent. Only difference is that is displays the personal trips for a certain user
+ *
+ */
 export class PersonalTripsComponent extends TripsComponent implements OnDestroy {
     private usersService = inject(UsersService);
     private currentUserSubscription!: Subscription;
     currentUser: User | undefined = undefined;
 
+    /**
+     * override ngOnInit to only get peronsal trips i.o. all of them
+     *
+     */
     override ngOnInit() {
         this.currentUserSubscription = this.usersService.currentUser$.subscribe(user => {
             this.currentUser = user;
@@ -33,6 +42,10 @@ export class PersonalTripsComponent extends TripsComponent implements OnDestroy 
         });
     }
 
+    /**
+     * unsunscribe on component destroy
+     *
+     */
     ngOnDestroy() {
         if (this.currentUserSubscription) {
             this.currentUserSubscription.unsubscribe();

@@ -5,44 +5,45 @@ import { UsersService } from '../users.service';
 import { User } from '../user.model';
 
 @Component({
-  selector: 'app-users-overview',
-  standalone: true,
-  imports: [CommonModule, RouterLink],
-  templateUrl: './users-overview.component.html',
-  styleUrl: './users-overview.component.scss'
+    selector: 'app-users-overview',
+    standalone: true,
+    imports: [CommonModule, RouterLink],
+    templateUrl: './users-overview.component.html',
+    styleUrl: './users-overview.component.scss'
 })
+
 export class UsersOverviewComponent implements OnInit {
-  private usersService = inject(UsersService);
+    private usersService = inject(UsersService);
 
-  users: User[] = [];
-  currentUser: User | undefined;
+    users: User[] = [];
+    currentUser: User | undefined;
 
-  ngOnInit() {
-    this.usersService.usersList$.subscribe(users => {
-      this.users = users;
-    });
+    /**
+     * subscribe to users list and current user
+     *
+     */
+    ngOnInit() {
+        this.usersService.usersList$.subscribe(users => {
+            this.users = users;
+        });
 
-    this.usersService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
-  }
+        this.usersService.currentUser$.subscribe(user => {
+            this.currentUser = user;
+        });
+    }
 
-  get userQty(): number {
-    return this.users.length;
-  }
+    /**
+     * get value with the number of users
+     *
+     */
+    get userQty(): number {
+        return this.users.length;
+    }
 
-  get activeUserCount(): number {
-    return this.users.filter(user => user.isActive).length;
-  }
-
-  get adminUserCount(): number {
-    return this.users.filter(user => user.role === 'admin').length;
-  }
-
-  /**
-   * format date to legible string
-   */
-  formatDate(date: Date): string {
-    return new Date(date).toLocaleDateString();
-  }
+    /**
+     * format date to legible string
+     */
+    formatDate(date: Date): string {
+        return new Date(date).toLocaleDateString();
+    }
 }

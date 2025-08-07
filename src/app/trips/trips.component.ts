@@ -8,24 +8,34 @@ import { HttpClient } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-trips',
-  standalone: true,
-  imports: [NgFor, RouterLink, MatIconModule],
-  templateUrl: './trips.component.html',
-  styleUrl: './trips.component.scss'
+    selector: 'app-trips',
+    standalone: true,
+    imports: [NgFor, RouterLink, MatIconModule],
+    templateUrl: './trips.component.html',
+    styleUrl: './trips.component.scss'
 })
+
 export class TripsComponent implements OnInit {
-  protected tripsService = inject(TripsService);
-  protected tripsListSubscription!: Subscription;
-  tripsList: Trip[] = [];
+    protected tripsService = inject(TripsService);
+    protected tripsListSubscription!: Subscription;
+    tripsList: Trip[] = [];
 
-  ngOnInit() {
-    this.tripsListSubscription = this.tripsService.tripsList$.subscribe(tripsList => {
-      this.tripsList = tripsList;
-    });
-  }
+    /**
+     * subscribe to tripsService on init
+     *
+     */
+    ngOnInit() {
+        this.tripsListSubscription = this.tripsService.tripsList$.subscribe(tripsList => {
+            this.tripsList = tripsList;
+        });
+    }
 
-  getTripDuration(trip: Trip) {
-    return this.tripsService.getTripDuration(trip);
-  }
+    /**
+     * @param trip
+     * @returns trips duration in days
+     *
+     */
+    getTripDuration(trip: Trip) {
+        return this.tripsService.getTripDuration(trip);
+    }
 }

@@ -15,91 +15,116 @@ import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-trip-detail',
-  standalone: true,
-  imports: [NgIf, DisplayRouteMapComponent, DecimalPipe, RouterLink, MatIconModule],
-  templateUrl: './trip-detail.component.html',
-  styleUrl: './trip-detail.component.scss'
+    selector: 'app-trip-detail',
+    standalone: true,
+    imports: [NgIf, DisplayRouteMapComponent, DecimalPipe, RouterLink, MatIconModule],
+    templateUrl: './trip-detail.component.html',
+    styleUrl: './trip-detail.component.scss'
 })
 export class TripDetailComponent implements OnInit {
 
-  private usersService = inject(UsersService);
-  private tripsService = inject(TripsService);
+    private usersService = inject(UsersService);
+    private tripsService = inject(TripsService);
 
-  trip: Trip | undefined;
-  tripSubscription!: Subscription;
-  stops!: TripStop[];
-  id!: string | null;
-  currentUser: User | undefined = undefined;
+    trip: Trip | undefined;
+    tripSubscription!: Subscription;
+    stops!: TripStop[];
+    id!: string | null;
+    currentUser: User | undefined = undefined;
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog, private router: Router) { }
+    /**
+     * create dialog to use when editing trip
+     *
+     */
+    constructor(private route: ActivatedRoute, public dialog: MatDialog, private router: Router) { }
 
-  ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
+    ngOnInit() {
+        this.id = this.route.snapshot.paramMap.get('id');
 
-    // Subscribe to current user
-    this.usersService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
+        // Subscribe to current user
+        this.usersService.currentUser$.subscribe(user => {
+            this.currentUser = user;
+        });
 
-    const trip = this.tripsService.getTripById(this.id ?? '');
-    if (trip) {
-      this.trip = trip;
-      this.stops = this.sortStopsByOrder(trip.stops);
-      console.log('trip', this.trip);
-    }
-  }
-
-  get canEdit(): boolean {
-    if (!this.currentUser || !this.trip) {
-      return false;
-    }
-
-    if (this.trip.isRecommended) {
-      return this.currentUser.role === 'admin';
-    }
-
-    return this.trip.userId === this.currentUser.id;
-  }
-
-  /**
-   * Get the appropriate back route based on user role
-   */
-  getBackRoute(): string {
-    if (this.currentUser?.role === 'admin') {
-      return '/trips/recommended';
-    } else {
-      return '/trips/personal';
-    }
-  }
-
-  openDialog() {
-    const dialog = this.dialog.open(TripEditComponent, {
-      data: this.trip
-    });
-
-    dialog.afterClosed().subscribe(() => {
-
-      if (this.id) {
-        const updatedTrip = this.tripsService.getTripById(this.id);
-        if (updatedTrip) {
-          this.trip = updatedTrip;
-          this.stops = this.sortStopsByOrder(updatedTrip.stops);
+        // get current trip based on id from route
+        const trip = this.tripsService.getTripById(this.id ?? '');
+        if (trip) {
+            this.trip = trip;
+            this.stops = this.sortStopsByOrder(trip.stops);
         }
-      }
-    });
-  }
+    }
 
-  getTripDuration(trip: Trip) {
-    return this.tripsService.getTripDuration(trip);
-  }
+    /**
+     * get value to use in the template. admins can edit recommended trips, users
+     * can edit their personal trips
+     *
+     */
+    get canEdit(): boolean {
+        if (!this.currentUser || !this.trip) {
+            return false;
+        }
 
-  onDeleteTripFromList(id: string) {
-    this.tripsService.removeTripFromList(id);
-  }
+        if (this.trip.isRecommended) {
+            return this.currentUser.role === 'admin';
+        }
 
-  sortStopsByOrder(stops: TripStop[]) {
-    return stops.sort((a, b) => Number(a.order) - Number(b.order));
-  }
+        return this.trip.userId === this.currentUser.id;
+    }
+
+    /**
+     * Get the appropriate back route based on user role
+     *
+     */
+    getBackRoute(): string {
+        if (this.currentUser?.role === 'admin') {
+            return '/trips/recommended';
+        } else {
+            return '/trips/personal';
+        }
+    }
+
+    /**
+     * open dialog with the trip edit component
+     *
+     */
+    openDialog() {
+        const dialog = this.dialog.open(TripEditComponent, {
+            data: this.trip
+        });
+
+        dialog.afterClosed().subscribe(() => {
+
+            if (this.id) {
+                const updatedTrip = this.tripsService.getTripById(this.id);
+                if (updatedTrip) {
+                    this.trip = updatedTrip;
+                    this.stops = this.sortStopsByOrder(updatedTrip.stops);
+                }
+            }
+        });
+    }
+
+    /**
+     * @param trip
+     * @returns duration of trip in days
+     *
+     */
+    getTripDuration(trip: Trip) {
+        return this.tripsService.getTripDuration(trip);
+    }
+
+    /**
+     * delete trips from the list based on its id
+     *
+     * @param id
+     *
+     */
+    onDeleteTripFromList(id: string) {
+        this.tripsService.removeTripFromList(id);
+    }
+
+    sortStopsByOrder(stops: TripStop[]) {
+        return stops.sort((a, b) => Number(a.order) - Number(b.order));
+    }
 }
 

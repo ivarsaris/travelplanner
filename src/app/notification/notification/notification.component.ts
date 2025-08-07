@@ -13,9 +13,15 @@ import { NotificationService } from '../notification.service';
     styleUrl: './notification.component.scss',
 })
 
+/**
+ * this notification component can be used throughout the application to display
+ * notifications to the user. It's implemented by injecting the NotificationService
+ * and calling the showNotification method
+ *
+ */
 export class NotificationComponent implements OnInit, OnDestroy {
     private notificationService = inject(NotificationService);
-    private subscription!: Subscription;
+    private notificationSubscription!: Subscription;
 
     notification: Notification | undefined = undefined;
 
@@ -23,16 +29,19 @@ export class NotificationComponent implements OnInit, OnDestroy {
      * subscribe to notification service on init
      */
     ngOnInit(): void {
-        this.subscription = this.notificationService.notification$.subscribe(
+        this.notificationSubscription = this.notificationService.notification$.subscribe(
             notification => {
                 this.notification = notification;
             }
         );
     }
 
+    /**
+     * unsubscribe from notificationservice on destroy
+     */
     ngOnDestroy(): void {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.notificationSubscription) {
+            this.notificationSubscription.unsubscribe();
         }
     }
 

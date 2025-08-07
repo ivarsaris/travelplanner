@@ -1,7 +1,6 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { UsersService } from '../users.service';
-import { NotificationService } from '../../notification/notification.service';
 
 @Component({
     selector: 'app-login',
@@ -12,8 +11,6 @@ import { NotificationService } from '../../notification/notification.service';
 })
 export class LoginComponent {
     private usersService = inject(UsersService);
-    private router = inject(Router);
-    private notificationService = inject(NotificationService);
 
     @ViewChild('emailInput') emailInput!: ElementRef;
     @ViewChild('passwordInput') passwordInput!: ElementRef;
@@ -22,6 +19,7 @@ export class LoginComponent {
 
     /**
      * log in
+     *
      */
     onLogin() {
         const email = this.emailInput.nativeElement.value;

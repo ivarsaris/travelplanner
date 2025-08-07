@@ -1,7 +1,6 @@
 import { Injectable, inject } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { Trip } from "./trip.model";
-import { tripsList } from "./trips.list";
 import { TripStop } from "./trip-stop.model";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
@@ -10,6 +9,7 @@ import { Place } from "../place.model";
 @Injectable({ providedIn: 'root' })
 
 export class TripsService {
+    // allow components to subscribe to tripsList
     private tripsList = new BehaviorSubject<Trip[]>([]);
     tripsList$ = this.tripsList.asObservable();
 
@@ -19,6 +19,10 @@ export class TripsService {
         this.getTrips();
     }
 
+    /**
+     * get all trips from the server
+     *
+     */
     getTrips() {
         this.httpClient.get<Trip[]>('http://localhost:3000/trips-list').subscribe({
             next: (response) => {
@@ -30,23 +34,37 @@ export class TripsService {
         });
     }
 
+    /**
+     * @param id of the trip
+     * @returns trip mathing the id
+     *
+     */
     getTripById(id: string) {
         return this.tripsList.value.find(trip => trip.id === id);
     }
 
     /**
-     *
      * @param id user Id
      * @returns trips matching the user id
+     *
      */
     getTripsByUserId(id: string) {
         return this.tripsList.value.filter(trip => trip.userId === id);
     }
 
+    /**
+     * @returns all trips with the isRecommended label
+     *
+     */
     getRecommendedTrips() {
         return this.tripsList.value.filter(trip => trip.isRecommended === true);
     }
 
+    /**
+     * send put request to the server  to add a new trips to the list
+     *
+     * @param newTripData
+     */
     addTripToList(newTripData: { image: string, title: string, description: string, stops: TripStop[], userId: string, isRecommended: boolean }) {
 
         const highestId = Math.max(...this.tripsList.value.map(trip => Number(trip.id)));
@@ -67,6 +85,7 @@ export class TripsService {
             })
             .subscribe({
                 next: (responseData) => {
+                    // update the current tripsList value
                     this.tripsList.next([...this.tripsList.value, newTrip]);
                     alert(`Trip "${newTrip.title}" has been added to the list`);
                     this.router.navigate([`/trip/${newTrip.id}`]);
@@ -74,10 +93,18 @@ export class TripsService {
             });
     }
 
+    /**
+     * send delete request to server to
+     * remove trip from the list based on its id
+     *
+     * @param id
+     *
+     */
     removeTripFromList(id: string) {
         this.httpClient.delete<string>(`http://localhost:3000/trips-list/${id}`, {})
             .subscribe({
                 next: (responseData) => {
+                    // update the current tripsList value
                     this.tripsList.next(this.tripsList.value.filter(trip => trip.id !== id));
                     this.router.navigate(['/trips']);
                     alert(`Trip with id ${id} has been deleted`);
@@ -88,20 +115,30 @@ export class TripsService {
             });
     }
 
+    /**
+     * send patch request to server to replace trip with new tripdata
+     *
+     * @param updatedTrip trip to update
+     */
     updateTrip(updatedTrip: Trip) {
-
         this.httpClient
             .patch<Trip>(`http://localhost:3000/trips-list/${updatedTrip.id}`, {
                 tripData: updatedTrip
             })
             .subscribe({
                 next: (responseData) => {
+                    // update the current tripsList value
                     this.tripsList.next(this.tripsList.value.map((trip) => (trip.id === updatedTrip.id ? trip = updatedTrip : trip)));
                     alert('Trip has been updated');
                 }
             });
     }
 
+    /**
+     * @param trip
+     * @returns duration of trip in days
+     *
+     */
     getTripDuration(trip: Trip) {
         let duration = 0;
         for (const stop of trip.stops) {
@@ -110,11 +147,25 @@ export class TripsService {
         return duration;
     }
 
+    /**
+     * @param tripId
+     * @param stopId
+     * @returns data of a stop based on the stop id and trip id
+     *
+     */
     getStopByTripIdAndStopId(tripId: string, stopId: string) {
         const trip = this.tripsList.value.find((trip) => trip.id === tripId);
         return trip?.stops.find((stop) => stop.id === stopId);
     }
 
+    /**
+     * send patch request to server to add a hotel to a stop
+     * based on the stopId, tripId
+     *
+     * @param tripId
+     * @param stopId
+     * @param hotel
+     */
     addHotelToStop(tripId: string, stopId: string, hotel: Place) {
         const targetTrip = this.tripsList.value.find((trip) => trip.id === tripId);
         const targetStop = targetTrip?.stops.find((stop) => stop.id === stopId);
@@ -130,6 +181,7 @@ export class TripsService {
                     stopId: stopId
                 })
                 .subscribe({
+                    // updates the current tripsList value
                     next: (responseData) => {
                         const updatedTripsList = this.tripsList.value.map((trip) => {
                             if (trip.id === tripId) {
@@ -155,6 +207,14 @@ export class TripsService {
         }
     }
 
+    /**
+     * send put request to server to add an activity to a stop
+     * based on the stopId, tripId
+     *
+     * @param tripId
+     * @param stopId
+     * @param activity
+     */
     addActivityToStop(tripId: string, stopId: string, activity: Place) {
         const targetTrip = this.tripsList.value.find((trip) => trip.id === tripId);
         const targetStop = targetTrip?.stops.find((stop) => stop.id === stopId);
@@ -168,6 +228,7 @@ export class TripsService {
                     stopId: stopId
                 })
                 .subscribe({
+                    // update current tripslist value
                     next: (responseData) => {
                         const updatedTripsList = this.tripsList.value.map((trip) => {
                             if (trip.id === tripId) {
@@ -194,12 +255,11 @@ export class TripsService {
     }
 
     /**
-     * @param tripId id of the trip
-     * @param stopId id of the stop
-     *
      * deletes the hotel object from a stop of a trip. this method sends a delete
      * request to the server, and updates the tripsList value
      *
+     * @param tripId id of the trip
+     * @param stopId id of the stop
      */
     deleteHotelFromStop(tripId: string, stopId: string) {
         const targetTrip = this.tripsList.value.find((trip) => trip.id === tripId);
@@ -236,14 +296,13 @@ export class TripsService {
         }
     }
 
-     /**
-     * @param tripId id of the trip
-     * @param stopId id of the stop
-     * @param activityIndex index of the activity in the activities array
-     *
+    /**
      * deletes the activity at a given index from a stop of a trip. this method sends a delete
      * request to the server, and updates the tripsList value
      *
+     * @param tripId id of the trip
+     * @param stopId id of the stop
+     * @param activityIndex index of the activity in the activities array
      */
     deleteActivityFromStop(tripId: string, stopId: string, activityIndex: number) {
         const targetTrip = this.tripsList.value.find((trip) => trip.id === tripId);

@@ -56,6 +56,7 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     constructor(private route: ActivatedRoute, private ngZone: NgZone) { }
 
     ngAfterViewInit() {
+        // get the ids from the current route
         this.googlePlaceID = this.route.snapshot.paramMap.get('googlePlaceId');
         this.stopId = this.route.snapshot.paramMap.get('stopId');
         this.tripId = this.route.snapshot.paramMap.get('tripId');
@@ -64,6 +65,7 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
             this.currentUser = user;
         });
 
+        // display location of the stop
         if (this.googlePlaceID && typeof (this.googlePlaceID) == 'string') {
             this.displayLocationById(this.googlePlaceID);
         }
@@ -78,14 +80,21 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
                 this.displayActivitiesMarkers();
             });
         }
-
-        console.log('markerobjects', this.markerInfoObjects);
     }
 
+    /**
+     * unsubscribe on destroy
+     *
+     */
     ngOnDestroy() {
         this.tripsSubscription?.unsubscribe();
     }
 
+    /**
+     * get value to use in the template. admins can edit recommended trips, users
+     * can edit their personal trips
+     *
+     */
     get canEdit(): boolean {
         if (!this.currentUser || !this.tripData) {
             return false;
@@ -99,10 +108,10 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     }
 
     /**
+     * gets details of a location by its locationId and focuses the map on this location
      *
      * @param placedId the google maps locationId of a location
      *
-     * gets details of a location by its locationId and focuses the map on this location
      */
     displayLocationById(placedId: string) {
         this.googlePlacesService = new google.maps.places.PlacesService(this.placesServiceDataEl.nativeElement);
@@ -112,6 +121,7 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
             fields: ['name', 'formatted_address', 'geometry']
         };
 
+        // send request to the googlePlacesService and set the current place to focus the map on
         this.googlePlacesService.getDetails(request, (place, status) => {
 
             if (status === 'OK' && place?.formatted_address) {
@@ -133,6 +143,7 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     /**
      * sends a request to google maps nearbySearch and retreives the 5 hotels
      * near a location with the highest reviews
+     *
      */
     fetchHotelsNearStop() {
         // show loading screen until fetching is done
@@ -210,8 +221,9 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     }
 
     /**
-     * send a request to google maps nearbySearch and retreives the 10 activities
+     * send a request to google maps nearbySearch and retreives the 15 activities
      * with the most reviews
+     *
      */
     fetchActivitiesNearStop() {
         // show loading screen until fetching is done
@@ -254,7 +266,7 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
 
                         this.fetchingResults = false;
 
-                        // of all the results, get the 5 with the highest rating (at least 50 ratings)
+                        // of all the results, get the 15 with the highest rating (at least 50 ratings)
                         const mostRatedActivities = allFetchedActivities.filter(
 
                             (activity) => activity.user_ratings_total
@@ -269,7 +281,7 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
 
                         mostRatedActivities.forEach((place, index) => {
 
-                            // display marker on maps for each hotel
+                            // display marker on maps for each activity
                             this.markerInfoObjects.push({
                                 index: this.markerInfoObjects.length,
                                 type: 'activity',
@@ -291,15 +303,16 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
 
     /**
      * clear map of search results
+     *
      */
     clearSearchResultsMarkers() {
         this.markerInfoObjects = [];
     }
 
     /**
-     *
      * @param priceLevel the price level of a location, number 1-5
      * @returns a string of euro signs symbolizing the price level
+     *
      */
     getPriceLevelString(priceLevel: number) {
         if (typeof priceLevel === 'number' && priceLevel > 0) {
@@ -309,22 +322,19 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     }
 
     /**
-     *
      * @param i
+     *
      */
     highlightMarker(i: number) {
         this.selectedIndex = i;
-        // this.highlightedHotel = false; // Clear hotel selection
-        // this.highlightedActivityIndex = null; // Clear activity selection
     }
 
     /**
      * highlight the hotel marker
+     *
      */
     highlightHotelMarker() {
         this.highlightedHotel = !this.highlightedHotel;
-        // this.highlightedActivityIndex = null; // Clear activity selection
-        // this.selectedIndex = null; // Clear search results selection
 
         if (this.hotelMarker) {
             this.hotelMarker.options = this.highlightedHotel ? this.createMarkerOptions('#00af50', '#00af50', 'hotel') : this.createMarkerOptions('#dc2626', '#dc2626', 'hotel');
@@ -332,22 +342,21 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     }
 
     /**
+     * highlight the activity marker
+     *
      * @param i index of the activity in selected list
      *
-     * highlight the activity marker
      */
     highlightActivityMarker(i: number) {
         this.highlightedActivityIndex = this.highlightedActivityIndex === i ? null : i;
-        // this.highlightedHotel = false; // Clear hotel selection
-        // this.selectedIndex = null; // Clear search results selection
         this.updateActivityMarkersOptions();
     }
 
     /**
+     * triggers patch request in the trips service to update the trip object with a selected hotel
      *
      * @param i index of hotel and corresponding markerInfoObject
      *
-     * triggers patch request in the trips service to update the trip object with a selected hotel
      */
     addHotelToStop(i: number) {
         const location = this.markerInfoObjects.find((marker) => marker.index === i);
@@ -372,16 +381,17 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
 
     /**
      * triggers delete request in the trips service to remove the selected hotel from this stop
+     *
      */
     deleteHotelFromStop() {
         this.tripsService.deleteHotelFromStop(this.tripId!, this.stopId!);
     }
 
     /**
+     * triggers put request in the trips service to update the trip object with a selected activity
      *
      * @param i index of activity and corresponding markerInfoObject
      *
-     * triggers put request in the trips service to update the trip object with a selected activity
      */
     addActivityToStop(i: number) {
         const location = this.markerInfoObjects.find((marker) => marker.index === i);
@@ -403,10 +413,9 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     }
 
     /**
+     * triggers delete request in the trips service to remove activity from stop at a certain index
      *
      * @param i index of activity in stop
-     *
-     * triggers delete request in the trips service to remove activity from stop at a certain index
      *
      */
     deleteActivityFromStop(i: number) {
@@ -414,9 +423,9 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     }
 
     /**
-     *
      * @param marker the marker object to determine options for
      * @returns the appropriate marker options based on marker type and selection state
+     *
      */
     getMarkerOptionsForMarker(marker: { index: number, type: string, markerInfo: any, location: google.maps.LatLngLiteral, image: string }): google.maps.MarkerOptions {
         if (marker.index === this.selectedIndex) {
@@ -431,10 +440,10 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
     }
 
     /**
-     *
      * @param fillColor background color of marker
      * @param strokeColor border color of marker
      * @returns marker icon to use on map
+     *
      */
     createMarkerOptions(fillColor: string, strokeColor: string, markerType: string = ''): google.maps.MarkerOptions {
 
@@ -467,6 +476,7 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
 
     /**
      * display marker on the map for the location of the hotel
+     *
      */
     displayHotelMarker() {
         if (this.stopData?.hotel) {
@@ -483,9 +493,11 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
 
     /**
      * display markers on the map for locations of the activities
+     *
      */
     displayActivitiesMarkers() {
-        this.activityMarkers = []; // Clear existing markers first
+        // Clear existing markers first
+        this.activityMarkers = [];
 
         if (this.stopData?.activities) {
             this.stopData.activities.forEach((activity, index) => {
@@ -502,12 +514,13 @@ export class StopDetailComponent implements AfterViewInit, OnDestroy {
 
     /**
      * Get marker options for activity based on highlighted state
+     *
      */
     getActivityMarkerOptions(index: number): google.maps.MarkerOptions {
         if (this.highlightedActivityIndex === index) {
-            return this.createMarkerOptions('#00af50', '#00af50', 'activity'); // Green when highlighted
+            return this.createMarkerOptions('#00af50', '#00af50', 'activity');
         }
-        return this.createMarkerOptions('#2626dc', '#2626dc', 'activity'); // Blue normally
+        return this.createMarkerOptions('#2626dc', '#2626dc', 'activity');
     }
 
     /**

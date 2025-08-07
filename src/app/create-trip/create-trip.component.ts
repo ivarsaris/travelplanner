@@ -49,16 +49,29 @@ export class CreateTripComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * unsubscribe from user on destroy
+     */
     ngOnDestroy() {
         if (this.currentUserSubscription) {
             this.currentUserSubscription.unsubscribe();
         }
     }
 
+    /**
+     *
+     * @param event click event
+     *
+     * set current Google maps location
+     */
     onPlaceSelected(event: Place) {
         this.googleMapsLocation = event;
     }
 
+    /**
+     * add location to current trip
+     *
+     */
     onAddLocationToTrip() {
         if (this.googleMapsLocation) {
             this.places.push({ id: uuid.v7(), order: (this.places.length + 1).toString(), duration: this.durationInput.nativeElement.value, location: this.googleMapsLocation });
@@ -66,8 +79,9 @@ export class CreateTripComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * add trip to list if user is logged in. If user is admin, it's saved to recommended trips.
+     * If user is user, it's saved to their personal trips
      *
-     * add trip to list if user is logged in
      */
     onAddTripToTripList() {
         if (!this.currentUser) {
@@ -91,6 +105,7 @@ export class CreateTripComponent implements OnInit, OnDestroy {
      * @param index
      *
      * delete stop from trip at given index
+     *
      */
     onDeleteStopFromTrip(index: number) {
         document.getElementById(`stop-${index}`)?.remove();

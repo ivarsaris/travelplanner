@@ -1,21 +1,21 @@
 import { Component, inject, ElementRef, ViewChild } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { UsersService } from '../users.service';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [RouterLink],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+    selector: 'app-register',
+    standalone: true,
+    imports: [RouterLink],
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
     private usersService = inject(UsersService);
-    private router = inject(Router);
 
     // TO DO: ability to choose avatar
     avatar = '';
 
+    // add viewchilds for all inputs
     @ViewChild('emailInput') emailInput!: ElementRef;
     @ViewChild('passwordInput') passwordInput!: ElementRef;
     @ViewChild('firstNameInput') firstNameInput!: ElementRef;
@@ -23,6 +23,7 @@ export class RegisterComponent {
 
     /**
      * register new user
+     *
      */
     onRegister() {
         const newUser = {

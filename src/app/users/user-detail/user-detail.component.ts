@@ -21,10 +21,11 @@ export class UserDetailComponent implements OnInit {
     currentUser: User | undefined;
     currentUserTrips: Trip[] = [];
 
+    /**
+     * subscribe to usersService on init to get current user
+     *
+     */
     ngOnInit() {
-        /**
-         * subscribe to usersService to get current user
-         */
         this.usersService.currentUser$.subscribe(user => {
             this.currentUser = user;
             if (user) {
@@ -33,26 +34,28 @@ export class UserDetailComponent implements OnInit {
         });
     }
 
+    /**
+     * subscribe to tripsService to get up to date tripdata
+     *
+     */
     getPersonalTripsFromUser(userId: string) {
-        /**
-         * subscribe to tripsService to get up to date tripdata
-         */
         this.tripsService.tripsList$.subscribe(trips => {
             this.currentUserTrips = this.tripsService.getTripsByUserId(userId);
         });
     }
 
     /**
-     * return number of trips a user has created
+     * get value with number of trips a user has created
+     *
      */
     get tripCount(): number {
         return this.currentUserTrips.length;
     }
 
     /**
-     *
      * @param date
      * @returns legible date string
+     *
      */
     formatDate(date: Date) {
         return new Date(date).toDateString();

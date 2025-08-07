@@ -14,62 +14,57 @@ import { MatIconModule } from '@angular/material/icon';
 import { NotificationComponent } from './notification/notification/notification.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [DisplayRouteMapComponent, PlacesSearchComponent, RouterOutlet, RouterLink, RouterLinkActive, TripsComponent, TripDetailComponent, StopDetailComponent, NgIf, CreateTripComponent, MatIconModule, NotificationComponent],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    selector: 'app-root',
+    standalone: true,
+    imports: [DisplayRouteMapComponent, PlacesSearchComponent, RouterOutlet, RouterLink, RouterLinkActive, TripsComponent, TripDetailComponent, StopDetailComponent, NgIf, CreateTripComponent, MatIconModule, NotificationComponent],
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
+
 export class AppComponent implements OnInit, OnDestroy {
-  private usersService = inject(UsersService);
-  private currentUserSubscription!: Subscription;
+    private usersService = inject(UsersService);
+    private currentUserSubscription!: Subscription;
 
-  currentUser: User | undefined = undefined;
-  isDropdownOpen = false;
+    currentUser: User | undefined = undefined;
+    isDropdownOpen = false;
 
-  constructor(private router: Router) { }
+    constructor(private router: Router) { }
 
-  ngOnInit() {
-    this.currentUserSubscription = this.usersService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.currentUserSubscription) {
-      this.currentUserSubscription.unsubscribe();
+    /**
+     * subscribe to current logged in user on init
+     *
+     */
+    ngOnInit() {
+        this.currentUserSubscription = this.usersService.currentUser$.subscribe(user => {
+            this.currentUser = user;
+        });
     }
-  }
 
-  getCurrentRoute() {
-    switch (this.router.url) {
-      case '/trips':
-        return 'Trips';
-        break;
-      case '/trip-details':
-        return 'Trip Details';
-        break;
-      case '/create-trip':
-        return 'Create Trip';
-        break;
-      default:
-        return '';
+    /**
+     * unsubscribe on destroy
+     *
+     */
+    ngOnDestroy() {
+        if (this.currentUserSubscription) {
+            this.currentUserSubscription.unsubscribe();
+        }
     }
-  }
 
-  /**
-   * toggle account dropdown
-   */
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
+    /**
+     * toggle account dropdown
+     *
+     */
+    toggleDropdown() {
+        this.isDropdownOpen = !this.isDropdownOpen;
+    }
 
-  /**
-   * log out user using service
-   */
-  onLogout() {
-    this.usersService.logout();
-    this.isDropdownOpen = false;
-  }
+    /**
+     * log out user using service
+     *
+     */
+    onLogout() {
+        this.usersService.logout();
+        this.isDropdownOpen = false;
+    }
 }

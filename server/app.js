@@ -20,13 +20,20 @@ app.use((request, response, next) => {
  * =    =   =   =   =   =   =
  */
 
-
+/**
+ * receives a get request and returns all trips saved
+ *
+ */
 app.get('/trips-list', (request, response) => {
     const tripsListData = JSON.parse(fs.readFileSync('./data/trips-list.json'));
 
     response.status(200).json(tripsListData);
 });
 
+/**
+ * receives a put request and adds a new trip to the list
+ *
+ */
 app.put("/trips-list", (request, response) => {
     const newTrip = request.body.tripData;
 
@@ -44,6 +51,9 @@ app.put("/trips-list", (request, response) => {
     }
 });
 
+/**
+ * receives a delete request and removes a trip from the list based on its id
+ */
 app.delete("/trips-list/:id", (request, response) => {
     const tripId = request.params.id;
 
@@ -61,6 +71,10 @@ app.delete("/trips-list/:id", (request, response) => {
     }
 });
 
+/**
+ * receives a patch request and updates a trip in the list based on its id
+ *
+ */
 app.patch("/trips-list/:id", (request, response) => {
     const updatedTrip = request.body.tripData;
 
@@ -78,6 +92,10 @@ app.patch("/trips-list/:id", (request, response) => {
     }
 });
 
+/**
+ * receives a patch request and adds/updates a hotel for a specific stop in a trip
+ *
+ */
 app.patch("/trips-list/hotel/:tripId/:stopId", (request, response) => {
     const hotel = request.body.hotel;
     const tripId = request.body.tripId;
@@ -118,7 +136,7 @@ app.patch("/trips-list/hotel/:tripId/:stopId", (request, response) => {
 });
 
 /**
- * receives a delete request from the angular application and deletes the hotel from a specific stop
+ * receives a delete request and deletes the hotel from a specific stop
  *
  */
 app.delete("/stop-hotel/:tripId/:stopId", (request, response) => {
@@ -163,7 +181,7 @@ app.delete("/stop-hotel/:tripId/:stopId", (request, response) => {
 });
 
 /**
- * receives a delete request from the angular application and deletes the
+ * receives a delete request and deletes the
  * activity of a certain index from a stop
  */
 app.delete("/stop-activity/:tripId/:stopId/:activityIndex", (request, response) => {
@@ -209,6 +227,10 @@ app.delete("/stop-activity/:tripId/:stopId/:activityIndex", (request, response) 
     return response.status(200).json({ message: `200 - Deleted activity ${activityName} from stop ${targetStopName}` });
 });
 
+/**
+ * receives a put request and adds an activity to a specific stop in a trip
+ *
+ */
 app.put("/trips-list/activities/:tripId/:stopId", (request, response) => {
     const activity = request.body.activity;
     const tripId = request.body.tripId;
@@ -259,7 +281,8 @@ app.put("/trips-list/activities/:tripId/:stopId", (request, response) => {
  */
 
 /**
- * retreive list of users through a get request
+ * receives a get request and returns all users
+ *
  */
 app.get('/users-list', (request, response) => {
     const usersListData = JSON.parse(fs.readFileSync('./data/users-list.json'));
@@ -268,7 +291,8 @@ app.get('/users-list', (request, response) => {
 });
 
 /**
- * add user to users list through a put request
+ * receives a put request and adds a new user to the list
+ *
  */
 app.put("/user/register", (request, response) => {
     const newUser = request.body.user;
@@ -288,7 +312,8 @@ app.put("/user/register", (request, response) => {
 });
 
 /**
- * login in using email and password
+ * receives a post request and logs in a user
+ *
  */
 app.post('/auth/login', (request, response) => {
     const email = request.body.email;
@@ -308,6 +333,10 @@ app.post('/auth/login', (request, response) => {
 });
 
 
+/**
+ * handles requests that don't match any of the defined routes
+ *
+ */
 app.use((request, response, next) => {
     if (request.method === "OPTIONS") {
         return next();
