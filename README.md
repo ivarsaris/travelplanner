@@ -1,27 +1,70 @@
-# Travelplanner
+# Travel Planner
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.2.
+This is an application for planning your next trip. The frontend is made with Angular, and the backend is a simple Node.js server. The data is stored in json files. You can create your own personal trips, or get inspiration from recommended trips. You can add stops to your trips, and for each stop, you can add a hotel and activities which are fetched from the Google Maps Places API.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **User Authentication**: Users can register and log in to their accounts.
+- **Trip Management**: Create, edit, and delete personal trips. Admins can edit any recommended trip.
+- **Recommended Trips**: View a list of recommended trips.
+- **Interactive Map**: View your trip route on an interactive map.
+- **Stop Details**: Add and view details for each stop, including a hotel and activities. Users can edit the stops of trips they've created. Admins can edit stops for any recommended trip.
+- **Role-based Access Control**: Admins have the ability to edit and delete recommended trips.
 
-## Code scaffolding
+## Requirements
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Node.js (v18.18.0 or higher recommended)
+- npm (v10.2.0 or higher recommended)
+- Angular CLI (v17.2.2 or higher recommended)
 
-## Build
+## Installation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Frontend
 
-## Running unit tests
+1. Navigate to the root directory of the project.
+2. Run `npm install` to install the required dependencies.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Server
 
-## Running end-to-end tests
+1. Navigate to the `server` directory.
+2. Run `npm install` to install the required dependencies.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Running the Project
 
-## Further help
+1. From the root directory, run `npm start`. This will start both the frontend and the server concurrently.
+2. The frontend will be available at `http://localhost:4200/`.
+3. The server will be running on `http://localhost:3000/`.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## API Key
+
+This project uses the Google Maps API. You will need to provide your own API key. In the `index.html` file, you will find the following line:
+
+```html
+<script src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_MAPS_API_KEY}}&libraries=places,directions,geocoding"></script>
+```
+
+Replace `{{GOOGLE_MAPS_API_KEY}}` with your actual Google Maps API key.
+
+### API Key requirements:
+
+Create an API key in your account on console.cloud.google.com. The API key needs to be restricted with at least the following restrictions:
+
+- Maps Elevation API
+- Maps Embed API
+- Geocoding API
+- Geolocation API
+- Maps JavaScript API
+- Maps Static API
+- Street View Static API
+- Routes API
+- Navigation SDK
+- Address Validation API
+- Route Optimization API
+
+## Icons
+
+This project uses the `MatIconModule` for icons. You can find a list of all available icons at [https://fonts.google.com/icons](https://fonts.google.com/icons).
+
+## Notifications
+
+This application includes a notification system to display messages to the user. To show a notification, inject the `NotificationService` into your component and call the `showNotification` method.
