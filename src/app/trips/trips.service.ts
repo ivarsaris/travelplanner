@@ -5,6 +5,7 @@ import { TripStop } from "./trip-stop.model";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Place } from "../place.model";
+import { NotificationService } from "../notification/notification.service";
 
 @Injectable({ providedIn: 'root' })
 
@@ -14,6 +15,8 @@ export class TripsService {
     tripsList$ = this.tripsList.asObservable();
 
     private httpClient = inject(HttpClient);
+
+    private notificationService = inject(NotificationService);
 
     constructor(private router: Router) {
         this.getTrips();
@@ -87,7 +90,7 @@ export class TripsService {
                 next: (responseData) => {
                     // update the current tripsList value
                     this.tripsList.next([...this.tripsList.value, newTrip]);
-                    alert(`Trip "${newTrip.title}" has been added to the list`);
+                    this.notificationService.showNotification('success', `Trip "${newTrip.title}" has been added to the list`);
                     this.router.navigate([`/trip/${newTrip.id}`]);
                 }
             });
@@ -107,7 +110,7 @@ export class TripsService {
                     // update the current tripsList value
                     this.tripsList.next(this.tripsList.value.filter(trip => trip.id !== id));
                     this.router.navigate(['/trips']);
-                    alert(`Trip with id ${id} has been deleted`);
+                    this.notificationService.showNotification('error', `Trip with id ${id} has been deleted`);
                 },
                 error: (error) => {
                     console.error('could not delete trip with id ' + id);
@@ -129,7 +132,7 @@ export class TripsService {
                 next: (responseData) => {
                     // update the current tripsList value
                     this.tripsList.next(this.tripsList.value.map((trip) => (trip.id === updatedTrip.id ? trip = updatedTrip : trip)));
-                    alert('Trip has been updated');
+                    this.notificationService.showNotification('message', `Trip has been updated`);
                 }
             });
     }
@@ -199,7 +202,7 @@ export class TripsService {
                             return trip;
                         });
                         this.tripsList.next(updatedTripsList);
-                        alert(`hotel ${hotel.name} has been added to stop`);
+                        this.notificationService.showNotification('message', `hotel ${hotel.name} has been added to stop`);
                     }
                 })
         } else {
@@ -248,7 +251,7 @@ export class TripsService {
                             return trip;
                         });
                         this.tripsList.next(updatedTripsList);
-                        alert(`Activity ${activity.name} has been added to stop`);
+                        this.notificationService.showNotification('message', `Activity ${activity.name} has been added to stop`);
                     }
                 })
         }
@@ -287,7 +290,7 @@ export class TripsService {
                         });
                         this.tripsList.next(updatedTripsList);
 
-                        alert(`Hotel has been removed from stop`);
+                        this.notificationService.showNotification('message', `Hotel has been removed from stop`);
                     },
                     error: (error) => {
                         console.error('could not remove hotel');
@@ -331,7 +334,7 @@ export class TripsService {
                         });
                         this.tripsList.next(updatedTripsList);
 
-                        alert(`Activity has been removed from stop`);
+                        this.notificationService.showNotification('message', `Activity has been removed from stop`);
                     },
                     error: (error) => {
                         console.error('could not remove activity');
