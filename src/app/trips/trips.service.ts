@@ -6,6 +6,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Place } from "../place.model";
 import { NotificationService } from "../notification/notification.service";
+import { serverUrl } from "../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
 
@@ -27,7 +28,7 @@ export class TripsService {
      *
      */
     getTrips() {
-        this.httpClient.get<Trip[]>('http://localhost:3000/trips-list').subscribe({
+        this.httpClient.get<Trip[]>(`${serverUrl}/trips-list`).subscribe({
             next: (response) => {
                 this.tripsList.next(response);
             },
@@ -83,7 +84,7 @@ export class TripsService {
         }
 
         this.httpClient
-            .put<Trip>('http://localhost:3000/trips-list', {
+            .put<Trip>(`${serverUrl}/trips-list`, {
                 tripData: newTrip
             })
             .subscribe({
@@ -104,7 +105,7 @@ export class TripsService {
      *
      */
     removeTripFromList(id: string) {
-        this.httpClient.delete<string>(`http://localhost:3000/trips-list/${id}`, {})
+        this.httpClient.delete<string>(`${serverUrl}/trips-list/${id}`, {})
             .subscribe({
                 next: (responseData) => {
                     // update the current tripsList value
@@ -125,7 +126,7 @@ export class TripsService {
      */
     updateTrip(updatedTrip: Trip) {
         this.httpClient
-            .patch<Trip>(`http://localhost:3000/trips-list/${updatedTrip.id}`, {
+            .patch<Trip>(`${serverUrl}/trips-list/${updatedTrip.id}`, {
                 tripData: updatedTrip
             })
             .subscribe({
@@ -178,7 +179,7 @@ export class TripsService {
             targetStop.hotel = hotel;
 
             this.httpClient
-                .patch<Place>(`http://localhost:3000/trips-list/hotel/${tripId}/${stopId}`, {
+                .patch<Place>(`${serverUrl}/trips-list/hotel/${tripId}/${stopId}`, {
                     hotel: hotel,
                     tripId: tripId,
                     stopId: stopId
@@ -225,7 +226,7 @@ export class TripsService {
         if (targetStop) {
 
             this.httpClient
-                .put<Place>(`http://localhost:3000/trips-list/activities/${tripId}/${stopId}`, {
+                .put<Place>(`${serverUrl}/trips-list/activities/${tripId}/${stopId}`, {
                     activity: activity,
                     tripId: tripId,
                     stopId: stopId
@@ -270,7 +271,7 @@ export class TripsService {
 
         if (targetStop) {
 
-            this.httpClient.delete<string>(`http://localhost:3000/stop-hotel/${tripId}/${stopId}`, {})
+            this.httpClient.delete<string>(`${serverUrl}/stop-hotel/${tripId}/${stopId}`, {})
                 .subscribe({
                     next: (responseData) => {
                         const updatedTripsList = this.tripsList.value.map((trip) => {
@@ -313,7 +314,7 @@ export class TripsService {
 
         if (targetStop) {
 
-            this.httpClient.delete<string>(`http://localhost:3000/stop-activity/${tripId}/${stopId}/${activityIndex}`, {})
+            this.httpClient.delete<string>(`${serverUrl}/stop-activity/${tripId}/${stopId}/${activityIndex}`, {})
                 .subscribe({
                     next: (responseData) => {
                         const updatedTripsList = this.tripsList.value.map((trip) => {

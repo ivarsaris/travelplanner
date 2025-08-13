@@ -344,4 +344,5 @@ app.use((request, response, next) => {
     response.status(404).json({ message: "Error 404: Not found" });
 });
 
-app.listen(3000);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT);

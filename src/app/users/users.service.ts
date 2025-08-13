@@ -6,6 +6,7 @@ import * as CryptoJS from 'crypto-js';
 import * as uuid from 'uuid';
 import { Router } from "@angular/router";
 import { NotificationService } from "../notification/notification.service";
+import { serverUrl } from "../../environments/environment";
 
 export interface AuthResponse {
     token: string;
@@ -56,7 +57,7 @@ export class UsersService {
      *
      */
     getUsers() {
-        this.httpClient.get<User[]>('http://localhost:3000/users-list').subscribe({
+        this.httpClient.get<User[]>(`${serverUrl}/users-list`).subscribe({
             next: (response) => {
                 this.usersList.next(response);
             },
@@ -75,7 +76,7 @@ export class UsersService {
 
         const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
 
-        return this.httpClient.post<AuthResponse>('http://localhost:3000/auth/login', { email, password: hashedPassword }).pipe(
+        return this.httpClient.post<AuthResponse>(`${serverUrl}/auth/login`, { email, password: hashedPassword }).pipe(
             tap(response => {
                 this.setSession(response);
                 this.notificationService.showNotification('success', `Hello, ${response.user.username}!`);
@@ -112,7 +113,7 @@ export class UsersService {
         newUser.password = CryptoJS.SHA256(newUser.password).toString(CryptoJS.enc.Hex);
         newUser.id = uuid.v7();
 
-        this.httpClient.put<User>('http://localhost:3000/user/register', { user: newUser })
+        this.httpClient.put<User>(`${serverUrl}/user/register`, { user: newUser })
             .subscribe({
                 next: (responseData) => {
                     // add user to list and navigate to login page
