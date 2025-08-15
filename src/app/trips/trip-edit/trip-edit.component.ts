@@ -63,7 +63,8 @@ export class TripEditComponent {
                     duration: this.stopDurationInputs.toArray()[index].nativeElement.value,
                     location: stop.location
                 }
-            })
+            }),
+            userId: this.data.userId
         };
 
         this.tripsService.updateTrip(updatedTrip);
