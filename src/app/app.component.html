@@ -21,8 +21,7 @@
                     <span class="ml-3 text-xl font-bold text-gray-800">Travelplanner</span>
                 </a>
             </div>
-
-            <div class="hidden md:block">
+            <div *ngIf="currentUser" class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
                     <a routerLink="/create-trip" routerLinkActive="bg-gray-100 text-gray-900"
                         class="header-link">
