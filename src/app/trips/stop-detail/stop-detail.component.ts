@@ -8,6 +8,7 @@ import { TripStop } from '../trip-stop.model';
 import { Place } from '../../place.model';
 import { Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { UsersService } from '../../users/users.service';
 import { User } from '../../users/user.model';
 import { Trip } from '../trip.model';
@@ -15,7 +16,7 @@ import { Trip } from '../trip.model';
 @Component({
     selector: 'app-stop-detail',
     standalone: true,
-    imports: [GoogleMapsModule, MapMarker, NgClass, RouterLink, MatIconModule, NgIf],
+    imports: [GoogleMapsModule, MapMarker, NgClass, RouterLink, MatIconModule, NgIf, MatTooltipModule],
     templateUrl: './stop-detail.component.html',
     styleUrl: './stop-detail.component.scss'
 })

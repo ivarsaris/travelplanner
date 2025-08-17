@@ -60,7 +60,7 @@
                         class="flex flex-col gap-4">
                         <div cdkDrag *ngFor="let stop of places; let i = index" [id]="'stop-' + i"
                             class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                            <div cdkDragHandle class="cursor-move text-gray-400 hover:text-gray-600">
+                            <div matTooltip="Drag to change order" cdkDragHandle class="cursor-move text-gray-400 hover:text-gray-600">
                                 <mat-icon class="!text-2xl">reorder</mat-icon>
                             </div>
                             <div
@@ -78,7 +78,7 @@
                                 </span>
                             </div>
                             <div class="ml-4">
-                                <button type="button" class="w-10 h-10 btn btn-red-light !p-0 !rounded-full"
+                                <button type="button" matTooltip="Remove stop from trip" class="w-10 h-10 btn btn-red-light !p-0 !rounded-full"
                                     (click)="onDeleteStopFromTrip(i)" aria-label="Delete stop">
                                     <mat-icon>close</mat-icon>
                                 </button>
