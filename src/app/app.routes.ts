@@ -9,10 +9,15 @@ import { PersonalTripsComponent } from './trips/personal-trips/personal-trips.co
 import { RegisterComponent } from './users/register/register.component';
 import { UserDetailComponent } from './users/user-detail/user-detail.component';
 import { UsersOverviewComponent } from './users/users-overview/users-overview.component';
+import { IntroductionComponent } from './introduction/introduction.component';
 import { adminGuard } from './guards/admin.guard';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+    {
+        path: '',
+        component: IntroductionComponent,
+    },
     {
         path: 'trips',
         component: TripsComponent,
